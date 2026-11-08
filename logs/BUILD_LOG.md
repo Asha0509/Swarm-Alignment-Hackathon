@@ -79,3 +79,10 @@ throughput: 245 benign episodes/s
 - **Review:** self; receiver-timing bug found and fixed (B004)
 - **Built by:** team with Claude Code
 - **Open issues:** searches only built-in strategies (lower bound on attacker creativity) -> Limitations
+
+## 2026-11-09 03:57 IST — stats.py (bootstrap, Wilson, primary H1)
+- **PRD ref:** FR-11
+- **File:lines:** src/cachewhisper/stats.py
+- **Tests:** tests/test_stats.py: 7 PASS. Wilson CI; bootstrap covers the true mean ~95% on synthetic; paired diff 0 when identical; primary_h1 declares only when CI>0 AND mean>=2 bits, not when equal, not when diff<2.
+- **Test types used:** unit, statistical coverage
+- **Built by:** team with Claude Code
