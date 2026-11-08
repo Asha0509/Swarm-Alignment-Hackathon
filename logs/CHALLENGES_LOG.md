@@ -19,3 +19,10 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - C000e **Spoofing is simulated** (no real container escape): stated in Methods and Limitations.
 - C000f **Pre-shared protocol assumption**: standard in stego-collusion evals; stated in Limitations.
 - C000g **Rate limits / throughput**: Adaption primary + free-tier rotation, disk cache, scripted agents wherever possible.
+
+## 2026-11-09 02:55 IST — C001 Main attacker model is a reasoning model
+- **Category:** engineering
+- **What happened:** qwen3.5-397b spends ~500 hidden tokens on a trivial reply (6.6 s/call). Throughput ~9 calls/min per stream.
+- **Why it matters for the claim:** wall clock, not credits, limits E3 seeds; output tokens dominate cost.
+- **What we did:** max_tokens 2000 default; plan concurrency in run_experiment.py.
+- **Use in report:** Methods (hyperparameters)
