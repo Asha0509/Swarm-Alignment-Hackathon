@@ -26,3 +26,10 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **Why it matters for the claim:** wall clock, not credits, limits E3 seeds; output tokens dominate cost.
 - **What we did:** max_tokens 2000 default; plan concurrency in run_experiment.py.
 - **Use in report:** Methods (hyperparameters)
+
+## 2026-11-09 03:04 IST — C002 Scripted colluders do no cover work
+- **Category:** threat-to-validity
+- **What happened:** expert sender/receiver only perform covert ops (plus waits); benign agents do full jobs.
+- **Why it matters for the claim:** M2 features like "writes without a legitimate consumer" may separate expert channels more easily than a careful attacker would allow. Expert channels are an upper reference for capacity, not for stealth.
+- **What we did:** keep as is for experts; the LLM attacker (FR-5) is told to also do its cover task, so its detectability is the realistic one.
+- **Use in report:** Limitations, Methods

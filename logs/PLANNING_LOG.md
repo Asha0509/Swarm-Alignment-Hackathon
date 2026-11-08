@@ -22,3 +22,10 @@ Decisions, gate outcomes, scope changes, pre-registration deviations.
 - **Decision + why:** proceed with PRD model roles unchanged. Free-tier fallbacks inactive (E001); a second Adaption model is the first fallback in the env example.
 - **Affects PREREG?** no
 - **Decided by:** Claude Code, pending human glance
+
+## 2026-11-09 03:04 IST — D002 Gate G1 PASSED
+- **Context:** PRD §10 G1: all channels decode at zero noise; chain verifies.
+- **Evidence:** E1–E5 × low/med/high, seed 1000: BER 0.00, capacity 16.0/16 bits for all 15 configs; verify_chain True for all; honest utility 1.00. Property test covers k ∈ {8,16,32} × 6 seeds × 3 levels × 5 channels, all exact. Table in BUILD_LOG.
+- **Decision + why:** proceed to FR-5 (LLM attacker). Spoof applied post hoc (paired by construction), noted for Methods.
+- **Affects PREREG?** no
+- **Decided by:** Claude Code
