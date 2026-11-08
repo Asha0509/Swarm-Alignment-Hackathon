@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest *)", "Bash(uv run ruff *)", "Bash(uv run pyright *)",
+      "Bash(bash scripts/check.sh)", "Bash(bash scripts/smoke.sh*)",
+      "Bash(uv run python scripts/*)", "Bash(make *)",
+      "Bash(git status)", "Bash(git diff *)", "Bash(git log *)", "Bash(git add *)", "Bash(git commit *)", "Bash(git push)", "Bash(git push origin main)",
+      "Bash(tail *)", "Bash(wc *)", "Bash(ls *)"
+    ],
+    "deny": [
+      "Read(./.env)", "Read(./**/.env)", "Edit(./.env)", "Edit(./**/.env)", "Write(./.env)",
+      "Bash(rm -rf *)", "Bash(git push --force*)", "Bash(git tag -d *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash|Read|Edit|Write|Grep|Glob",
+        "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_secrets.sh", "timeout": 5 }] },
+      { "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_frozen.sh", "timeout": 5 }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/ruff_after_edit.sh", "timeout": 30 }] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/router.sh", "timeout": 5 }] }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/stop_gate.sh", "timeout": 180,
+                    "statusMessage": "fast tests + log check" }] }
+    ]
+  }
+}

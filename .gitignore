@@ -1,0 +1,23 @@
+# secrets
+.env
+**/.env
+# envs / caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.pyright/
+# run stdout + big raw data
+logs/runs/
+data/swarmtraces/*
+!data/swarmtraces/.gitkeep
+data/metr_report.pdf
+# dual-use hygiene: evolved attacker protocols are never published (CLAUDE.md §0.8)
+results/raw/**/protocols/
+# LLM cache: commit only if < 50 MB (see PRD NFR-1); default ignored
+results/raw/llm_cache.sqlite
+# local template copies
+Copy of *
+*:Zone.Identifier
+.DS_Store
