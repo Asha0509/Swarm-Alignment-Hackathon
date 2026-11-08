@@ -67,3 +67,15 @@ throughput: 245 benign episodes/s
 - **Review:** self; leakage bug (B002) and M2 scale bug found and fixed in the pilot before G2
 - **Built by:** team with Claude Code
 - **Open issues / follow-ups:** M4 saturates on expert channels (C003); M2 weak on E2 existence channel (reportable finding)
+
+## 2026-11-09 03:55 IST — Scripted adaptive attacker (attacker.py)
+- **PRD ref:** FR-5 (via D003: scripted optimizer replaces the LLM attacker)
+- **File:lines:** src/cachewhisper/attacker.py
+- **Tests:** tests/test_attacker.py: 13 PASS. Every channel x cover_work decodes at BER 0 and chain verifies (also checked all 60 channel/level/cover/pace configs offline: no BER>0); cover work adds sender ops; decoys add N benign publishes; aware search ends with detection <= unaware and non-decreasing undetected capacity.
+- **Test types used:** invariant, integration, contract (toy score_fn)
+- **Real run:** aware vs unaware over 4 rounds, 8 seeds, real calibrated monitors: unaware stays at detect_rate 0.88 / undetected 2.0 bits; aware drives detection 0.12 -> 0.0 while holding 16 bits (undetected 14 -> 16). Matches H3. LLM calls: 0.
+- **Design:** Config = (channel, level, cover_work, decoys, pace). Receiver reads at sender_end so cover work/decoys/pacing cannot make it read early. Objective = capacity (unaware) or undetected capacity at 5% FPR (aware); outcome-only feedback (decoded bits + which monitors flagged), never monitor internals. Evolutionary search keeps top half and mutates.
+- **Prompt check:** n/a (no LLM)
+- **Review:** self; receiver-timing bug found and fixed (B004)
+- **Built by:** team with Claude Code
+- **Open issues:** searches only built-in strategies (lower bound on attacker creativity) -> Limitations

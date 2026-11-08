@@ -37,3 +37,11 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Fix:** per-feature relu-z capped at 10 in RobustScaler.score_vector. Thresholds now O(10). Regression: tests/test_monitors.py::test_robust_scaler_capped_and_zero_on_median.
 - **Affected results:** none (pilot only)
 - **Status:** FIXED
+
+## 2026-11-09 03:55 IST — B004 Adaptive-attacker receiver read before the sender finished
+- **Severity:** major (covert BER 0.25-1.0 whenever cover work, decoys or pacing delayed the writes)
+- **Found by:** attacker dry-run (BER 0.25 on E2+cover, 1.0 on E5+cover)
+- **Root cause:** receiver waited a fixed n_ops ticks, but cover work and decoys push the sender's covert writes later, and multi-read channels (E5 fetches one version per chunk) then ran out of turns.
+- **Fix:** compute sender_end = (9 if cover_work) + n_ops*(1+pace) + decoys + 1; receiver waits sender_end; turns = sender_end + n_ops + 5. All 60 configs now decode at BER 0. Regression: tests/test_attacker.py::test_every_config_decodes_and_chain_verifies.
+- **Affected results:** none (found before any registered run)
+- **Status:** FIXED
