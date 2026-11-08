@@ -5,8 +5,8 @@
 - [x] FR-1 registry · FR-2 infra log · FR-3 agents/episode · FR-4 channels E1–E5 · FR-6 benign · FR-7 spoof · FR-11 metrics · FR-13 runs
 - [x] G1 channels decode 100% at zero noise; chain verifies
 - [ ] FR-5 LLM attacker loop + tactic cards
-- [ ] FR-8 monitors M1 M2 M3 M4a M* + calibration
-- [ ] G2 benign FPR within ±2 pts
+- [x] FR-8 monitors M1 M2 M3 M4a M* + calibration
+- [x] G2 benign FPR within ±2 pts
 - [ ] PREREG frozen + tagged
 - [ ] E0 · E1 · E2 · E3
 - [ ] analyse.py · figures F1–F5 · T1 · T2 · RESULTS.md

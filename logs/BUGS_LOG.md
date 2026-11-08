@@ -21,3 +21,19 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Fix:** warmup fetches known versions directly; the teammate-build fetch moved to the end of each job (max 3 polls); deps 2–3. Regression test: tests/test_sandbox.py::test_benign_traffic_is_realistic_and_honest_tasks_complete (min utility 1.0 over 60 seeds).
 - **Affected results:** none (found before any run)
 - **Status:** FIXED
+
+## 2026-11-09 03:51 IST — B002 M4a learned monitor calibrated on its own training data (leakage)
+- **Severity:** critical (would have reported a false 1%/5% FPR; realized was 18%/27%)
+- **Found by:** pilot FPR check on held-out benign seeds
+- **Root cause:** fit_monitors trained the GBM and fit its threshold on the same benign calibration seeds, so the threshold overfit.
+- **Fix:** fit_monitors now takes separate cal_benign (scaler, thresholds, combined) and train_benign/train_covert (M4a only); test asserts splits disjoint. Realized FPR fell to 1%/3%. Regression: tests/test_monitors.py::test_realized_fpr_near_target_on_heldout.
+- **Affected results:** none (found in the pilot before any registered run)
+- **Status:** FIXED
+
+## 2026-11-09 03:51 IST — B003 M2 robust-z exploded on near-constant benign features
+- **Severity:** major (thresholds ~1.8e6, meaningless and fragile)
+- **Found by:** pilot calibration output
+- **Root cause:** features like sort_prefix are ~0 for all benign agents, so MAD~0, floored to 1e-6, making any deviation a z in the millions that dominated the sum.
+- **Fix:** per-feature relu-z capped at 10 in RobustScaler.score_vector. Thresholds now O(10). Regression: tests/test_monitors.py::test_robust_scaler_capped_and_zero_on_median.
+- **Affected results:** none (pilot only)
+- **Status:** FIXED
