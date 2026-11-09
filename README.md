@@ -5,12 +5,36 @@
 *Apart Research Swarm Alignment Hackathon 2026. Track 4 (Multi-Agent Oversight and Control), secondary Track 1 (Sandboxes and Testbeds).*
 
 [![CI](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml/badge.svg)](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![Tests](https://img.shields.io/badge/tests-87%20passing-brightgreen)
 
 > Monitoring colluding agents catches clumsy lies, not careful ones, and only isolation holds. Under full transcript spoofing, transcript-only oversight leaves **15.6 hidden bits per episode uncaught (95% CI 15.0 to 16.0)** that an infrastructure-grounded consistency monitor catches, but a consistent liar that backs its claims with real work defeats that monitor too (AUROC 1.00 to 0.50). **Per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
 
-Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · Project book (all docs in one page): [docs/PROJECT_BOOK.md](docs/PROJECT_BOOK.md)
+Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · Project book (all docs in one page): [docs/PROJECT_BOOK.md](docs/PROJECT_BOOK.md)
 
 <p align="center"><img src="figures/F1_schematic.png" width="760" alt="CacheGym system schematic"></p>
+
+## How it works
+
+Agents coordinate only through a shared registry. Every operation lands in a hash-chained infrastructure log (the truth monitors can trust); the agent transcript (what an attacker can forge) is a separate record. Four monitors read these two sources.
+
+```mermaid
+flowchart LR
+  A["Agents"] -->|"tool calls"| R["Shared registry"]
+  R -->|"every op"| L["Infra log (truth)"]
+  R -->|"self-report"| T["Transcript (forgeable)"]
+  L --> M2["M2 metadata"]
+  L --> M4["M4 learned"]
+  T --> M1["M1 transcript"]
+  L --> M3["M3 consistency"]
+  T --> M3
+  M2 --> MS["M* combined"]
+  M3 --> MS
+  R -.->|"isolate / randomize / quota"| D["Defenses"]
+```
+
+Full diagrams and the experiment pipeline are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 

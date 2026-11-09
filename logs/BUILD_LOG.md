@@ -215,3 +215,9 @@ throughput: 245 benign episodes/s
 - Added .github/workflows/ci.yml: on push/PR it installs with uv and runs ruff, pyright and the free pytest suite (no secrets). Added a CI badge to the README.
 - Duplication scan: no duplicate content among tracked files except the six intentional .gitkeep placeholders; nothing removed.
 - **Built by:** team with an AI coding assistant
+
+## 2026-11-09 15:31 IST — MIT license, badges, mermaid architecture
+- Added LICENSE (MIT, Asha Jyothi Boddu 2026).
+- README badges: CI, License MIT, Python 3.11+, tests passing. Added a mermaid system-flow diagram to the README and linked docs/ARCHITECTURE.md.
+- New docs/ARCHITECTURE.md: mermaid system data-flow and experiment-pipeline diagrams (GitHub renders natively) plus a component-responsibility table. results/RESULTS.md already exists; no separate results doc needed.
+- **Built by:** team with an AI coding assistant
