@@ -114,3 +114,9 @@ throughput: 245 benign episodes/s
 - **Real run:** E0-E4 analysed. H1 DECLARED (M1-M* = 15.61 bits undetected under spoofing, 95% CI 15.04-16.00, n=83). H2: M1 TPR 0.77->0.02, M3 0.0->1.0 under spoofing. H3: aware attacker detection 0.08 vs unaware 0.83 (E5 stego vs E2). H4 DECLARED: D1 removes 99.0% capacity at 0 utility loss. H5: no elicitation gap (expert = attacker = 16 undetected at spoof 0). F1-F6 render. trace_numbers passes (435 values).
 - **Tests:** full suite 83 PASS; pyright clean.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 10:24 IST — Report draft (DRAFT.md)
+- **PRD ref:** §11
+- **File:lines:** report/DRAFT.md
+- **Checks:** abstract 217 words (in 150-250); 0 em dashes; trace_numbers passes on DRAFT + RESULTS (435 values). Title row 1 (H1 declared). Primary result cites prereg commit 58ae747.
+- **Built by:** Claude drafts, human edits every section (pending).

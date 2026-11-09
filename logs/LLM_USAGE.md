@@ -11,3 +11,4 @@
 | 2026-11-09 10:00 IST | Claude Code (Opus) | Experiment engine, configs, E0 run | Team reviews |
 | 2026-11-09 10:10 IST | WebFetch (arXiv), WebSearch | Verify 8 citations (titles/authors/years/DOIs) | Human spot-checks |
 | 2026-11-09 10:21 IST | Claude Code (Opus) | analyse.py, figures, RESULTS, G3 trace, book | Team reviews |
+| 2026-11-09 10:24 IST | Claude Code (Opus) | Draft report/DRAFT.md from report_numbers.json | HUMAN edits every section next |

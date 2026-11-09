@@ -21,6 +21,6 @@
 - [ ] E6 scaling · F8
 
 ## Report & submit
-- [ ] DRAFT.md per PRD §11 · human edit · template · PDF
+- [~] DRAFT.md drafted (human edit + template + PDF next)
 - [ ] CLAUDE.md §8 checklist · cold read · fill README.md from docs/README_TEMPLATE.md (ONE commit) · Project Book · push · SUBMIT 16:00
 - [ ] (opt) video
