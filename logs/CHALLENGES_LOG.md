@@ -65,3 +65,14 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What happened:** best expert channel and best adaptive-attacker config both reach 16 undetected bits at spoof 0 (both via metadata stego E5, which the metadata monitor barely sees).
 - **Why it matters:** the adaptive search matches but does not beat hand-designed channels; our attacker is a lower bound on creativity. Honest null.
 - **Use in report:** Results, Limitations
+
+## 2026-11-09 10:27 IST — C008 Cold read as a strict Apart judge (from DRAFT only)
+- **Category:** threat-to-validity
+- **Scores (1-5):** Impact/Innovation 4, Execution 4, Presentation 4.
+- **5 most damaging weaknesses + cheapest fix:**
+  1. Perfect-decode channels => capacity is constant 16, so there is no real capacity-vs-detectability *frontier*, only a monitor comparison. Fix: state plainly that capacity is fixed by design and the tradeoff lives in the spoof sweep; already disclosed in Limitations.
+  2. The attacker is scripted, not an LLM, so "adaptive adversary" is weaker than it sounds. Fix: frame as a lower bound and cite D003 reason (safety-classifier block) in Methods; keep claims scoped.
+  3. M3 catching 100% of spoofing looks too good. Fix: note M3 is tautological against *our* spoof model (claim != infra); real spoofing that also forges infra-consistent stories would evade it. Add one sentence to Discussion/Limitations.
+  4. H3 "awareness" effect is on detection only (capacity equal), partially supported vs the pre-registered AND. Fix: already disclosed in D006; state it in the Results sentence.
+  5. Open-weight trusted-weaker judge, small n (83 for H1). Fix: widen CI language; note M1 subsample size; already in Limitations.
+- **Use in report:** Discussion, Limitations; human to apply fixes 3 and 4 explicitly in prose.
