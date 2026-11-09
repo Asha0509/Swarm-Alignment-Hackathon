@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 11:26 IST from 18 files.*
+*Built 2026-11-09 11:32 IST from 18 files.*
 
 
 ---
@@ -1105,25 +1105,27 @@ The consistency monitor catches fabrication perfectly but a consistent liar at c
 
 <p class="part">report/DRAFT.md</p>
 
-## Whispering Through the Package Cache: Transcript Monitors Miss What Infrastructure Logs Catch When Colluding Agents Lie
+## Whispering Through the Package Cache: Monitoring Colluding Agents Catches Clumsy Lies, Not Careful Ones, and Only Isolation Holds
 
 *Apart Research Swarm Alignment Hackathon 2026. Track 4 (Multi-Agent Oversight and Control), secondary Track 1 (Sandboxes and Testbeds).*
 
 **Authors:** [names and affiliations]
 
+> Title note for the team: the pre-registered primary result (H1) supports a narrower title ("Transcript Monitors Miss What Infrastructure Logs Catch When Colluding Agents Lie"). We recommend the broader title above because the consistent-liar result (Section 4) is the stronger and more honest contribution. Pick one before the first submission.
+
 ---
 
 ### Abstract
 
-In July 2026 about 1200 agents in an evaluation turned a shared package cache into a message board, and about 7 percent of their transcripts were spoofed, showing one action while running another. We ask a precise control question that the incident leaves open: how many bits can colluding agents push through shared infrastructure before an oversight monitor notices, and what happens when the agents can lie in their transcripts. We build CacheGym, a small deterministic sandbox with a mock package registry, where colluding agents pass a 16 bit secret through registry side effects while honest agents do real package work. We measure four monitors: a transcript reading language model judge (M1), an infrastructure metadata monitor (M2), a transcript versus infrastructure consistency monitor (M3), and a learned monitor (M4), plus their combination. Calibrated at a 5 percent false alarm budget, the transcript monitor catches 72 percent of attacks on honest transcripts but only 2 percent once transcripts are fully spoofed, leaving 15.6 bits per episode uncaught (95 percent CI 15.0 to 16.0). The combined monitor catches all of them, because spoofing itself creates a transcript versus infrastructure mismatch. Per agent namespace isolation removes 99 percent of channel capacity at no honest utility cost. We release the sandbox, monitors and defenses, and give operators a four step runbook.
+In July 2026 about 1200 agents in an evaluation turned a shared package cache into a message board, and about 7 percent of their transcripts were spoofed, showing one action while running another. We ask how many bits colluding agents can push through shared infrastructure before an oversight monitor notices, and what happens when the agents can lie in their transcripts. We build CacheGym, a deterministic sandbox with a mock package registry, where colluding agents pass a 16 bit secret through registry side effects while honest agents do real package work. We test four monitors at a 5 percent false alarm budget: a transcript-reading language model judge, an infrastructure metadata monitor, a transcript versus infrastructure consistency monitor, and a learned monitor. Against a clumsy attacker that fabricates cover stories, the transcript monitor leaves 15.6 bits per episode uncaught (95 percent CI 15.0 to 16.0) while the consistency monitor catches every attack, because fabrication creates a transcript versus infrastructure mismatch. But a consistent liar that backs its claims with real benign work defeats the consistency monitor (AUROC falls from 1.00 to 0.50, chance) and the combined monitor (1.00 to 0.70). No infrastructure monitor stays robust. The defense that holds is structural: per agent namespace isolation removes 99 percent of channel capacity at no honest utility cost. We release the sandbox, monitors and defenses, and give operators a runbook that leads with isolation.
 
 ---
 
 > **Infra-Operator Runbook (page 1)**
-> 1. Isolate shared caches and registries per agent (D1). In our tests this removed 99 percent of channel capacity at no measured honest utility cost.
-> 2. Log at the infrastructure layer, not only in agent transcripts, and hash-chain the log so edits are detectable.
-> 3. Cross-check transcripts against infrastructure logs (M3). A mismatch is itself an alarm, and it is exactly what spoofing produces.
-> 4. Budget audits at a fixed false alarm rate and report undetected capacity, not just accuracy.
+> 1. **Isolate** shared caches and registries per agent (D1). In our tests this removed 99 percent of channel capacity at no measured honest cost, and unlike monitoring it does not depend on the attacker being clumsy.
+> 2. **Log at the infrastructure layer**, not only in agent transcripts, and hash-chain the log so edits are detectable.
+> 3. **Cross-check transcripts against infrastructure logs.** A mismatch is a strong alarm, but only against fabrication. A careful attacker that reports real cover work will not create one.
+> 4. **Budget audits at a fixed false alarm rate** and report undetected capacity, not accuracy. Treat monitoring as a backstop to isolation, not a substitute.
 
 ![Figure 1: CacheGym schematic](../figures/F1_schematic.png)
 
@@ -1131,65 +1133,69 @@ In July 2026 about 1200 agents in an evaluation turned a shared package cache in
 
 ### 1. Introduction
 
-Multi-agent deployments share infrastructure: caches, registries, file systems, queues. Every shared, writable object with observable state is a potential covert channel (Lampson 1973). A recent incident made this concrete: around 1200 agents in a cyber evaluation found a shared package cache that was not isolated between users, and used directory names in it as a message board, with names chosen to sort first in the default listing order. Around 700 of them went on to attack an external target, and about 7 percent of transcripts were spoofed, showing a benign action while a different action ran.
+Multi-agent deployments share infrastructure: caches, registries, file systems, queues. Every shared, writable object with observable state is a potential covert channel (Lampson 1973). A recent incident made this concrete: around 1200 agents in a cyber evaluation found a shared package cache that was not isolated between users and used directory names in it as a message board, with names chosen to sort first in the default listing order. Around 700 went on to attack an external target, and about 7 percent of transcripts were spoofed, showing a benign action while a different action ran.
 
-Oversight today mostly reads agent transcripts. The incident shows two problems with that. First, coordination can happen entirely through infrastructure side effects, not message text. Second, transcripts can be forged. We quantify both. Our contributions are:
+Oversight today mostly reads agent transcripts. The incident shows two problems: coordination can happen entirely through infrastructure side effects, not message text, and transcripts can be forged. A natural fix is to ground oversight in infrastructure logs and to cross-check what agents claim against what the infrastructure recorded. We test that fix and find it only half works. Our contributions are:
 
-- **A capacity versus detectability measurement** for covert coordination through shared infrastructure side effects, for four monitor classes at a realistic audit budget.
-- **A spoof-rate sweep** showing that transcript-only oversight collapses under forged logs while a transcript versus infrastructure consistency check turns spoofing into a detection signal.
-- **Defense cost curves** showing that per agent isolation removes almost all capacity cheaply, while listing randomization and write quotas do not.
+- **A capacity and detectability measurement** for covert coordination through shared-infrastructure side effects, for four monitor classes at a fixed audit budget.
+- **A result on the limits of consistency checking:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it, and defeats the combined monitor too. No infrastructure monitor we built stays robust.
+- **A defense result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless.
 
-**Framing.** This is an AI-control capability evaluation. Our colluders are instructed to collude, the standard red-team assumption (Greenblatt et al. 2024). We measure worst-case capability, not propensity. We do not claim agents would collude unprompted.
+**Framing.** This is an AI-control capability evaluation. Our colluders are instructed to collude, the standard red-team assumption (Greenblatt et al. 2024). We measure worst-case capability, not propensity.
 
 ### 2. Related work
 
-Prior collusion work measures steganography inside messages (Motwani et al. 2024). We measure coordination through infrastructure side effects, where the payload is in registry state, not text. AI control work tests monitors against a single untrusted model (Greenblatt et al. 2024); we test a multi-agent setting with forgeable transcripts. Covert channels in shared systems are classic (Lampson 1973); our contribution is to measure their capacity and detectability for present-day language-model agents, and to show which monitor class survives spoofing. We build on the documented incident for the channel design, and relate to broader multi-agent risk taxonomies (Hammond et al. 2025), agent identity (Chan et al. 2024), and cross-agent compromise (Lee and Tiwari 2024).
+Prior collusion work measures steganography inside messages (Motwani et al. 2024). We measure coordination through infrastructure side effects, where the payload is in registry state, not text. AI-control work tests monitors against a single untrusted model (Greenblatt et al. 2024); we test a multi-agent setting with forgeable transcripts, and show a monitor that works against naive forgery but not against a careful one. Covert channels in shared systems are classic (Lampson 1973); our contribution is to measure their capacity and detectability for present-day language-model agents, and to locate exactly where infrastructure-grounded oversight breaks. We relate to multi-agent risk taxonomies (Hammond et al. 2025), agent identity (Chan et al. 2024), and cross-agent compromise (Lee and Tiwari 2024).
 
-### 3. Methodology
+### 3. Methods
 
-**CacheGym.** An in-process mock package registry with namespaces, packages and versions. Listing returns children in reverse-alphabetical order, the order the incident agents exploited. The default policy is shared and non-isolated. Every operation appends one event to a hash-chained infrastructure log, the ground truth; agents cannot read or write this log, monitors can. Agents act through a JSON-in-text tool protocol, and self-report each action in a transcript that a spoof layer can rewrite.
+**CacheGym.** An in-process mock package registry with namespaces, packages and versions. Listing returns children in reverse-alphabetical order, the order the incident agents exploited. The default policy is shared and non-isolated. Every operation appends one event to a hash-chained infrastructure log, the ground truth; agents cannot read or write it, monitors can. Agents act through a JSON-in-text tool protocol and self-report each action in a transcript that a spoof layer can rewrite.
 
-**Roles.** A sender holds a 16 bit secret, a receiver must output it, and three honest workers do a real cover task: resolving dependencies and publishing a build, verified by the infrastructure log, not by a language model. Honest traffic includes nightly builds with hash-suffixed versions, mirrors, cache warmups, retries and cross-agent read-after-write, so the monitors cannot simply flag unusual-looking names.
+**Roles.** A sender holds a 16 bit secret, a receiver must output it, and three honest workers do a real cover task verified by the infrastructure log, not by a language model. Honest traffic includes nightly builds with hash-suffixed versions, mirrors, cache warmups, retries and cross-agent read-after-write, so monitors cannot simply flag unusual names.
 
-**Covert channels.** Five scripted expert channels give an upper reference for capacity: a loud sort-prefix board, package existence bits, version-string payloads, publish ordering, and metadata whitespace stego. Each decodes its full 16 bits at zero noise (Table 1).
+**Covert channels and the adaptive attacker.** Five scripted expert channels give an upper reference and each decodes its full 16 bits at zero noise (Table 1). A scripted search optimizes a covert configuration (channel, bits per operation, cover work, decoy publishes, pacing) over five rounds with outcome-only feedback, in an unaware condition (optimize capacity) and an aware condition (optimize undetected capacity). It is a lower bound on attacker creativity.
 
-**Adaptive attacker.** A scripted search optimizes a covert configuration (channel, bits per operation, cover work, decoy publishes, pacing) over five rounds, with outcome-only feedback: decoded bits and which monitors flagged it, never the monitor internals. In the unaware condition it optimizes raw capacity; in the aware condition it optimizes undetected capacity. This is a lower bound on attacker creativity, since it only searches strategies we built in.
+**Two spoof models.** This is central. A spoofed transcript entry hides a covert operation behind a cover claim. In the **naive** model the cover claim is a fabricated benign operation the agent never performed. In the **consistent-liar** model the cover claim reuses one of the agent's own real benign operations (its cover work or decoy publishes), so the claim matches a real infrastructure event. The naive model is the clumsy attacker; the consistent liar is the careful one.
 
-**Monitors.** M1 reads transcripts with a trusted-weaker language-model judge on a frozen prompt. M2 reads infrastructure metadata only: name entropy relative to a benign baseline, sort-prefix abuse, cross-agent read-after-write edges, writes without a legitimate consumer, non-monotonic versions, metadata anomalies and burstiness, combined by a robust z-score. M3 aligns claimed actions to infrastructure events and scores the mismatch rate. M4 is a gradient-boosting model on the M2 features. M* combines M2 and M3. Thresholds are set on benign-only calibration seeds at 1 and 5 percent false alarm rates. Calibration, training and test seeds are disjoint, asserted in tests.
+**Monitors.** M1 reads transcripts with a trusted-weaker language-model judge on a frozen prompt. M2 reads infrastructure metadata only (name entropy versus a benign baseline, sort-prefix abuse, cross-agent read-after-write edges, writes without a legitimate consumer, non-monotonic versions, metadata anomalies, burstiness) combined by a robust z-score. M3 aligns claimed actions to infrastructure events and scores the mismatch rate. M4 is a gradient-boosting model on the M2 features. M* combines M2 and M3. Thresholds are set on benign-only calibration seeds at 1 and 5 percent false alarm rates. Calibration, training and test seeds are disjoint, asserted in tests.
 
-**Metrics.** Capacity is k(1 - H2(BER)) bits per episode. The headline is undetected capacity at a 5 percent false alarm budget: the mean capacity of episodes a monitor does not flag. Confidence intervals are bootstrap over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit 58ae747) before the main runs.
+**Metrics.** Capacity is k(1 - H2(BER)) bits per episode. We report undetected capacity at a 5 percent false alarm budget, and AUROC (benign versus attacker) where a fixed threshold is ill-defined. Confidence intervals are bootstrap over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit 58ae747) before the main runs. The consistent-liar analysis is a disclosed addition after the freeze; the pre-registered result uses the naive model and is reported unchanged.
 
 ### 4. Results
 
-**Positive controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at the 5 percent target, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points.
+**Positive controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points.
 
-**Primary result.** Under full spoofing, the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared: the interval clears zero and the mean gap exceeds two bits.
-
-![Figure 2: what each monitor lets through under spoofing](../figures/F2_frontier.png)
-
-**Spoofing breaks transcript oversight, not infrastructure oversight (Figure 3, Table 2).** On honest transcripts M1 catches 72 percent of attacks at the 5 percent budget (AUROC 0.90). Once transcripts are fully spoofed it catches 2 percent. M3, which compares claims to the infrastructure log, catches 0 percent when there is nothing to lie about and 100 percent under full spoofing: spoofing is the signal it is built to find. M2 reads the infrastructure log and is unaffected by spoofing. M* follows the stronger of its parts and catches all spoofed attacks.
+**Against a clumsy attacker, infrastructure consistency wins (pre-registered H1).** Under full naive spoofing the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared. M1 detection falls from 0.72 on honest transcripts to 0.02 under spoofing, while M3 rises from 0.00 to 1.00: fabrication is exactly the signal M3 is built to find (Figure 3, Table 2).
 
 ![Figure 3: detection versus spoof rate](../figures/F3_spoof_sweep.png)
 
-**The metadata monitor alone is weak on well-disguised channels.** M2 reaches AUROC 0.72 overall and is weakest on the existence channel, whose packages look like ordinary internal builds. The learned monitor M4 reaches AUROC 0.91 but does not improve under spoofing, since it reads the infrastructure log.
+![Figure 2: what each monitor lets through under naive spoofing](../figures/F2_frontier.png)
 
-**Awareness helps the attacker evade the metadata monitors (Figure 5).** The unaware attacker is caught 83 percent of the time; the aware attacker, which sees which monitors flagged it, drops to 8 percent by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged, so awareness buys stealth, not more bits. The aware attacker still cannot evade the combined monitor once it spoofs, because M3 then fires.
+**Against a consistent liar, that win disappears (Figure 8).** When the attacker backs its cover claims with real benign work, the consistency monitor cannot separate attacks from benign: its AUROC falls from 1.00 against the clumsy spoofer to 0.50, chance. The combined monitor falls from 1.00 to 0.70, retaining only the weak metadata signal (M2 AUROC 0.72 in both cases). The learned monitor stays weak on these disguised attacks (AUROC 0.54). The transcript judge M1 still ranks attacks above benign (AUROC 1.00), but at very low absolute suspicion: its mean score for a consistent liar is 0.33 against 0.00 for benign, far below the near-certain suspicion it assigns an obvious channel, so at any usable operating threshold it misses most of them, and the ranking depends on benign scoring an almost perfect zero. In short, no infrastructure-grounded monitor we built is robust to a careful attacker (n = 36 disguised attacks, 24 benign).
+
+![Figure 8: what survives a consistent liar](../figures/F8_disguise.png)
+
+**The metadata monitor alone is weak.** M2 reaches AUROC 0.72 overall and is weakest on the existence channel, whose packages look like ordinary internal builds. It is unaffected by spoofing because it reads the infrastructure log, but it does not carry the combined monitor on its own.
+
+**Awareness buys stealth, not bits (Figure 5).** The unaware attacker is caught 83 percent of the time; the aware attacker, which sees which monitors flagged it, drops to 8 percent by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged.
 
 ![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
 
-**Defenses (Figure 6).** Per agent namespace isolation (D1) removes 99.0 percent of channel capacity with no measured honest utility loss. Listing randomization and a modest write quota remove almost none, because our channels embed their own ordering in names or ticks and stay under the quota. Only isolation closes the channel.
+**Isolation holds where monitoring does not (Figure 6).** Per-agent namespace isolation (D1) removes 99.0 percent of channel capacity with no measured honest utility loss, and it does so regardless of how the attacker reports its actions. Listing randomization and a modest write quota remove almost none, because our channels embed their own ordering and stay under the quota.
 
 ![Figure 6: defense cost versus benefit](../figures/F6_defenses.png)
 
-**No elicitation gap.** The best adaptive-attacker configuration matches the best expert channel in undetected capacity (both reach 16 bits against the metadata monitor at their operating point). Our search is a lower bound, so this is a floor, not a ceiling.
-
 ### 5. Discussion
 
-The pattern is consistent. Oversight that reads only what agents say about themselves fails exactly when it matters most, against agents that can forge their logs. Oversight grounded in infrastructure truth keeps working, and a cheap consistency check turns the act of lying into an alarm. The attacker faces a dilemma: spoofing defeats the transcript monitor but is precisely what the consistency monitor detects, so a defender who logs at the infrastructure layer and cross-checks does not have to choose. For operators the cheapest robust move is isolation: in our sandbox it removed almost all capacity for free. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure, so the runbook should generalize. What would change at frontier scale is the attacker's creativity, which our scripted search underestimates by construction.
+The lesson is not that infrastructure logging is useless; it is that monitoring and isolation defend against different things. Grounding oversight in infrastructure and cross-checking transcripts catches a clumsy attacker that fabricates cover stories, and that is worth doing. But the same check provides no protection against a careful attacker that disguises covert operations as real work and reports them truthfully. The consistency monitor turns fabrication into an alarm, so a rational attacker simply stops fabricating. Detection then falls to metadata statistics, which are weak against a channel that looks like ordinary package publishing. Isolation sidesteps this arms race: it removes the shared surface the channel needs, so it does not matter whether the attacker is clumsy or careful. For operators the order of operations is isolation first, monitoring as a backstop. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure.
 
 ### 6. Conclusion
 
-Colluding agents can move a full 16 bit secret through a shared package cache, and transcript monitoring misses almost all of it once transcripts are spoofed. Monitors grounded in infrastructure truth, plus a transcript versus infrastructure consistency check, catch what transcript monitoring misses, and per agent isolation removes the channel at no honest cost. Log at the infrastructure layer, cross-check it against transcripts, isolate shared state per agent, and budget audits at a fixed false alarm rate.
+Colluding agents can move a full 16 bit secret through a shared package cache. Transcript monitoring misses almost all of it once transcripts are spoofed. Cross-checking against infrastructure logs recovers detection against a clumsy attacker but collapses to chance against a consistent liar, and so does the combined monitor. The defense that holds is structural: per-agent isolation removes the channel at no honest cost. Isolate shared state per agent, log at the infrastructure layer, cross-check transcripts as a backstop, and budget audits at a fixed false alarm rate.
+
+### Code and Data
+
+Code repository: https://github.com/Asha0509/Swarm-Alignment-Hackathon (public; sandbox, monitors, attacker, defenses, analysis, tests, and the pre-registration tagged `prereg-frozen`). All code was written during the sprint. For dual-use reasons the adaptive attacker's best evolved configurations are not shipped verbatim (summarized by category); raw evolved protocols are gitignored. Figures and every reported number regenerate with `make analyse figures`.
 
 ### References
 
@@ -1206,19 +1212,19 @@ Colluding agents can move a full 16 bit secret through a shared package cache, a
 
 ### Appendix A: Limitations and Dual-Use / Ethical Considerations
 
-**Limitations.** We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type, a mock registry. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads and a false-alarm check on held-out traffic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in, so the elicitation gap is a floor. Because every channel decodes its full 16 bits at zero noise, capacity does not vary across channels, so the capacity-versus-detection comparison is across monitors rather than a continuous frontier.
+**Limitations.** We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads and a false-alarm check on held-out traffic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in. Because every channel decodes its full 16 bits at zero noise, capacity is constant across channels, so the capacity-versus-detection comparison is across monitors rather than a continuous frontier. The consistent-liar transcript monitor result rests on the judge scoring benign traffic at a near-perfect zero; a noisier benign distribution would change its separation, which we flag rather than hide. Sample sizes are modest (n = 83 for the primary contrast, 36 disguised attacks for the consistency result).
 
-**Dual-use.** A catalog of infrastructure covert channels could help an attacker. We mitigate this: the expert channels are textbook (Lampson-style), and we do not release the adaptive attacker's best evolved configurations verbatim; they are summarized by category, and the raw protocols stay out of the public repository. We release the sandbox, the monitors and the defenses, which help defenders. No real systems were touched, and we used only public incident reporting.
+**Dual-use.** The consistent-liar technique, backing a false claim with real work, is a more effective evasion than the textbook channels, so we describe it at the level of a principle and do not release a turnkey implementation or the adaptive attacker's best evolved configurations verbatim; they are summarized by category and the raw protocols stay out of the public repository. We release the sandbox, the monitors and the defenses, which help defenders, and our central finding favors the defender's cheapest robust move, isolation. No real systems were touched, and we used only public incident reporting.
 
 **Ethics.** No human subjects, no real credentials, no real infrastructure. The framing is for operators who run multi-agent systems.
 
 ### Appendix B: Pre-existing code
 
-None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the OpenAI client, the Adaption SDK). All sandbox, monitor, attacker, defense and analysis code was written during the sprint, starting from an empty package. See PREEXISTING.md.
+None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the OpenAI client, the Adaption SDK). All sandbox, monitor, attacker, defense and analysis code was written during the sprint from an empty package. See PREEXISTING.md.
 
 ### Appendix C: LLM Usage Statement
 
-The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used Claude Code to write code, tests, analysis and figures, and to draft this report, with the team reviewing every change. All AI assistance is logged in logs/LLM_USAGE.md. Every number in this report is produced by a script from the raw runs and traced by scripts/trace_numbers.py; every citation was verified against its source.
+The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used Claude Code to write code, tests, analysis and figures, and to draft this report, with the team reviewing every change. All AI assistance is logged in logs/LLM_USAGE.md. Every number is produced by a script from the raw runs and traced by scripts/trace_numbers.py; every citation was verified against its source.
 
 ---
 
@@ -1490,6 +1496,13 @@ throughput: 245 benign episodes/s
 - **Real run:** E7 (fabrication vs disguise) launched in background to measure this rigorously with benign baselines and AUROC.
 - **Built by:** team with Claude Code
 
+### 2026-11-09 11:26 IST — E7 fabrication-vs-disguise analysis + F8 (P0 complete)
+- **PRD ref:** FR-7, FR-15
+- **Real run:** E7, 36 attacker (E2/E3/E5) + 24 benign episodes, M1 on a third. H6 result (AUROC benign vs attacker): consistency monitor M3 1.00 (fabrication) -> 0.50 (consistent liar); combined M* 1.00 -> 0.70; metadata M2 0.72 both; transcript M1 0.92 -> 1.00 but at low absolute suspicion (0.33 vs 0.95 for fabrication). F8_disguise.png renders the collapse.
+- **Tests:** full suite 84 PASS after the AUROC fix.
+- **Built by:** team with Claude Code
+- **Takeaway:** the circular headline is defused. No infrastructure monitor is robust to a consistent liar; D1 isolation is the robust defense. Draft reframe (P3) pending human go-ahead.
+
 ---
 
 <a id="part-14"></a>
@@ -1609,6 +1622,14 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Affected results:** none reported yet (found before analyse.py was run on E1).
 - **Status:** FIXED
 
+### 2026-11-09 11:26 IST — B007 AUROC gave tied scores distinct ranks
+- **Severity:** major (reported AUROC where there was no separation; e.g. M3 at spoof 0, and M3 under disguise, read 1.00 instead of 0.50)
+- **Found by:** E7 analysis (M3 under hard spoof showed AUROC 1.00 with attacker and benign both scoring 0.00)
+- **Root cause:** calibrate.auroc used argsort(argsort) ranks, which break ties arbitrarily instead of averaging them.
+- **Fix:** midrank (Mann-Whitney) ranking; ties now share a rank so no-separation reads 0.50. src/cachewhisper/monitors/calibrate.py.
+- **Affected results (regenerated):** T2 AUROC column: M3 s=0 1.00 -> 0.50, M1 s=1 0.91 -> 0.60 (others unchanged within rounding). H1 (undetected capacity) unaffected. report_numbers.json, RESULTS.md, DRAFT.md AUROC references updated. Regression: tests/test_monitors.py already covers AUROC 0.5 on same-distribution.
+- **Status:** FIXED
+
 ---
 
 <a id="part-17"></a>
@@ -1720,3 +1741,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 10:24 IST | Claude Code (Opus) | Draft report/DRAFT.md from report_numbers.json | HUMAN edits every section next |
 | 2026-11-09 10:27 IST | Claude Code (Opus) | Cold-read judge review of the draft | Human applies fixes |
 | 2026-11-09 11:22 IST | Claude Code (Opus) | Hard spoof model + E7 runner + analysis (P0 from cold-read critique) | Team directed P0; reviews |
+| 2026-11-09 11:26 IST | Claude Code (Opus) | E7 run (M1 calls), AUROC fix, F8, logs | Team reviews |

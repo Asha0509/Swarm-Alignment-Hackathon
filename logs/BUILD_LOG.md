@@ -136,3 +136,10 @@ throughput: 245 benign episodes/s
 - **Tests:** full suite 84 PASS after the AUROC fix.
 - **Built by:** team with Claude Code
 - **Takeaway:** the circular headline is defused. No infrastructure monitor is robust to a consistent liar; D1 isolation is the robust defense. Draft reframe (P3) pending human go-ahead.
+
+## 2026-11-09 11:32 IST — Report draft reframed around the consistent-liar finding (P3)
+- **PRD ref:** §11
+- **File:lines:** report/DRAFT.md (full rewrite)
+- **What changed:** new title + abstract (231 words) leading with the limits of consistency checking and isolation as the robust defense. Results now has three regimes: clumsy fabrication (M* wins, pre-registered H1), consistent liar (M3 -> chance, M* -> 0.70, no infra monitor robust, F8), and defenses (D1 removes 99%). Runbook leads with isolation. Discussion reframed as monitoring vs isolation defend different things. Methods renamed per official template; added Code and Data section. Dual-use appendix notes the consistent-liar technique is described as a principle, not a recipe.
+- **Checks:** trace_numbers passes (495 values), 0 em dashes, abstract in range. Read official template (Copy of Apart...docx): recommends 4 pages, our section order matches.
+- **Built by:** Claude drafts, human edits every section.

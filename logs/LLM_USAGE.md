@@ -15,3 +15,4 @@
 | 2026-11-09 10:27 IST | Claude Code (Opus) | Cold-read judge review of the draft | Human applies fixes |
 | 2026-11-09 11:22 IST | Claude Code (Opus) | Hard spoof model + E7 runner + analysis (P0 from cold-read critique) | Team directed P0; reviews |
 | 2026-11-09 11:26 IST | Claude Code (Opus) | E7 run (M1 calls), AUROC fix, F8, logs | Team reviews |
+| 2026-11-09 11:32 IST | Claude Code (Opus) | Draft reframe (P3) + template alignment | Human edits every section |
