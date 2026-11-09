@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 11:58 IST from 18 files.*
+*Built 2026-11-09 12:51 IST from 18 files.*
 
 
 ---
@@ -1148,7 +1148,7 @@ Multi-agent deployments share infrastructure: caches, registries, file systems, 
 Oversight today mostly reads agent transcripts. The incident shows two problems: coordination can happen entirely through infrastructure side effects, not message text, and transcripts can be forged. A natural fix is to ground oversight in infrastructure logs and to cross-check what agents claim against what the infrastructure recorded. We test that fix and find it only half works. Our contributions are:
 
 - **A capacity and detectability measurement** for covert coordination through shared-infrastructure side effects, for four monitor classes at a fixed audit budget.
-- **A result on the limits of consistency checking:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it, and defeats the combined monitor too. No infrastructure monitor we built stays robust.
+- **A result on the limits of consistency checking, and a trap:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it and the combined monitor too. Worse, deploying the check gives a rational attacker a reason to stop fabricating and switch to disguise, which is quieter on every monitor we measured.
 - **A defense result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless.
 - **A scaling result:** one covert broadcast reaches a whole swarm, and the bits it delivers without raising the metadata monitor grow close to linearly with the number of receivers.
 
@@ -1198,7 +1198,7 @@ The thread is one argument in three steps: grounding oversight in infrastructure
 
 ### 5. Discussion
 
-The lesson is not that infrastructure logging is useless; it is that monitoring and isolation defend against different things. Grounding oversight in infrastructure and cross-checking transcripts catches a clumsy attacker that fabricates cover stories, and that is worth doing. But the same check provides no protection against a careful attacker that disguises covert operations as real work and reports them truthfully. The consistency monitor turns fabrication into an alarm, so a rational attacker simply stops fabricating. Detection then falls to metadata statistics, which are weak against a channel that looks like ordinary package publishing. Isolation sidesteps this arms race: it removes the shared surface the channel needs, so it does not matter whether the attacker is clumsy or careful. For operators the order of operations is isolation first, monitoring as a backstop. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure.
+There is a trap here that is easy to miss. A consistency monitor does not just fail against a careful attacker; it can push a rational attacker toward being harder to catch. Fabrication is noisy: it leaves a claimed-but-absent trail that the monitor reads at once. Deploying the monitor makes fabrication a losing move, so the rational response is to stop fabricating and switch to disguise, performing real benign work and reporting it truthfully while the payload rides in benign-looking state. That attacker is quieter on every channel we measured, including the transcript judge. So a defender who adds a consistency check, and stops there, may select for adversaries that their other monitors cannot see. The broader lesson is that monitoring and isolation defend against different things. Cross-checking transcripts against infrastructure is worth doing against clumsy attackers, but once it is present the remaining threat is the disguised one, where detection falls to weak metadata statistics. Isolation sidesteps the arms race: it removes the shared surface the channel needs, so it does not matter whether the attacker is clumsy or careful, and it does not teach the attacker anything. For operators the order of operations is isolation first, monitoring as a backstop. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure.
 
 ### 6. Conclusion
 
@@ -1318,7 +1318,7 @@ Status: ✔ verified (link + authors + year + the claim we use checked) · ☐ u
 ### Should
 - [x] FR-9 defenses D1 D2 D3 · E4 (F6 after analyse)
 - [~] F7 gap (E5 model sweep dropped with LLM attacker, D003)
-- [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · A3 Invent → benign · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
+- [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · [x] A3 Invent->benign (FPR holds) · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
 
 ### Could
 - [x] P1 channel noise + real F2 frontier (E8)
@@ -1554,6 +1554,14 @@ throughput: 245 benign episodes/s
 - **Checks:** trace passes (1273 values), 0 em dashes, abstract 231 words.
 - **Built by:** Claude drafts, human edits.
 
+### 2026-11-09 11:58 IST — A3 benign realism via Adaption-invented scenarios (#2)
+- **PRD ref:** FR-12 A3, FR-6
+- **File:lines:** src/cachewhisper/adaption_jobs.py, scripts/adaption_invent.py, benign.make_tasks(weights=...)
+- **Tests:** tests/test_llm.py::test_invent_parser_and_fallback PASS; full suite 87 PASS.
+- **Real run:** an Adaption model (benign role) generated 8 diverse benign scenarios (mirror-heavy org, nightly-heavy ML, CI-fanout monorepo, cache-warmup data platform, flaky-retry, balanced, startup, internal mirror). 96 episodes scored with the FROZEN E0 monitors: realized FPR within 2 pts of budget (M2 0.00/0.04, M3 0.00/0.00, M4 0.02/0.06, M* 0.00/0.04), honest utility 1.00. So the monitors are not overfit to our hand-written benign mix. ~1 Adaption call, <0.01 credits.
+- **Note:** used Adaption inference to generate scenario specs rather than the async Invent dataset job (time-boxed per PRD); same validity check.
+- **Built by:** team with Claude Code
+
 ---
 
 <a id="part-14"></a>
@@ -1778,6 +1786,12 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What we did:** added a lossy-channel model (each covert write lost with probability p). Capacity now varies 0-16, F2 is a real frontier, and channel noise-robustness is a new finding. The old constant-capacity limitation is removed from the report.
 - **Use in report:** Methods, Results (F2), Limitations
 
+### 2026-11-09 11:58 IST — C011 Self-made benign traffic (addressed by A3)
+- **Category:** threat-to-validity (mitigated)
+- **What happened:** every FPR/AUROC rests on benign traffic we wrote, so monitors could be overfit to our distribution.
+- **What we did:** had an Adaption model design 8 benign workload mixes we did not choose; the frozen monitors' FPR held within 2 pts of budget across 96 episodes. Remaining caveat: all benign traffic is still synthetic (stated in Limitations).
+- **Use in report:** Results (controls), Limitations
+
 ---
 
 <a id="part-18"></a>
@@ -1807,3 +1821,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 11:40 IST | Claude Code (Opus) | P1 channel noise + frontier, draft updates | Team directed P1 |
 | 2026-11-09 11:44 IST | Claude Code (Opus) | P2 swarm scaling + F9 + draft | Team directed P2 |
 | 2026-11-09 11:52 IST | Claude Code (Opus) | Presentation tightening + framing | Human edits |
+| 2026-11-09 11:58 IST | Adaption (benign model) + Claude Code | A3 invented benign scenarios + FPR test | Team reviews |

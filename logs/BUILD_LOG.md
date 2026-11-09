@@ -173,3 +173,9 @@ throughput: 245 benign episodes/s
 - **Real run:** an Adaption model (benign role) generated 8 diverse benign scenarios (mirror-heavy org, nightly-heavy ML, CI-fanout monorepo, cache-warmup data platform, flaky-retry, balanced, startup, internal mirror). 96 episodes scored with the FROZEN E0 monitors: realized FPR within 2 pts of budget (M2 0.00/0.04, M3 0.00/0.00, M4 0.02/0.06, M* 0.00/0.04), honest utility 1.00. So the monitors are not overfit to our hand-written benign mix. ~1 Adaption call, <0.01 credits.
 - **Note:** used Adaption inference to generate scenario specs rather than the async Invent dataset job (time-boxed per PRD); same validity check.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 12:51 IST — Discussion reframe: the monitor trains the adversary (#2)
+- **File:lines:** report/DRAFT.md Discussion + contribution bullet
+- **What changed:** added the trap framing: deploying a consistency monitor makes noisy fabrication a losing move, so a rational attacker switches to silent disguise that other monitors miss. A consistency check can select for quieter adversaries. Isolation does not teach the attacker anything.
+- **Checks:** trace passes, 0 em dashes.
+- **Built by:** Claude drafts, human edits.
