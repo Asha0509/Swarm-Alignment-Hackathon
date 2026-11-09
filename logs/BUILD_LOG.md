@@ -158,3 +158,10 @@ throughput: 245 benign episodes/s
 - **Tests:** tests/test_sandbox.py::test_broadcast_scales_delivered_capacity_with_receivers PASS; full suite 86 PASS.
 - **Real run:** E6, 240 episodes (E2/E3 x N in 1,2,4,8 x 30 seeds), 0 API cost. Delivered capacity = 16 x N. Undetected delivered capacity (vs the spoof-invariant metadata monitor) scales close to linearly: E2 15 -> 128 bits (8.6x), E3 14 -> 111 bits (8.0x). The metadata monitor does not catch more as receivers grow, so one broadcast reaches the whole swarm nearly for free. Ties to the incident (one board, 50+ readers) and Track 2.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 11:52 IST — Report tightened to one spine + simulation framing (#1, #3)
+- **PRD ref:** §11
+- **File:lines:** report/DRAFT.md
+- **What changed:** Results reduced to a three-step spine (clumsy -> careful -> swarm, then isolation), 5 main-body figures (F1,F3,F8,F9,F6), ~1750 words (~4 pages). F2 (frontier) and F5 (adaptive attacker) moved to Appendix D. Added an explicit simulation-scope framing in Intro and made it the first Limitation (scripted, not live agents; eliciting from live models is the next step).
+- **Checks:** trace passes (1273 values), 0 em dashes, abstract 231 words.
+- **Built by:** Claude drafts, human edits.

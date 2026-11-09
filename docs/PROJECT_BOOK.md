@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 11:43 IST from 18 files.*
+*Built 2026-11-09 11:52 IST from 18 files.*
 
 
 ---
@@ -1152,7 +1152,7 @@ Oversight today mostly reads agent transcripts. The incident shows two problems:
 - **A defense result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless.
 - **A scaling result:** one covert broadcast reaches a whole swarm, and the bits it delivers without raising the metadata monitor grow close to linearly with the number of receivers.
 
-**Framing.** This is an AI-control capability evaluation. Our colluders are instructed to collude, the standard red-team assumption (Greenblatt et al. 2024). We measure worst-case capability, not propensity.
+**Framing.** This is an AI-control capability evaluation (Greenblatt et al. 2024): we bound what colluding agents could do and what oversight could catch, using scripted encoders and a language-model judge rather than live colluding models. Our colluders are instructed, so we measure worst-case capability, not propensity, and the numbers are a bound on mechanism, not a claim about how any particular model behaves. Eliciting these strategies from live agents is the clear next step, discussed in Limitations.
 
 ### 2. Related work
 
@@ -1176,31 +1176,23 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 
 ### 4. Results
 
-**Positive controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points.
+The thread is one argument in three steps: grounding oversight in infrastructure beats a clumsy attacker, fails against a careful one, and gets worse as the swarm grows; the defense that survives all three is isolation.
 
-**Against a clumsy attacker, infrastructure consistency wins (pre-registered H1).** Under full naive spoofing the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared. M1 detection falls from 0.72 on honest transcripts to 0.02 under spoofing, while M3 rises from 0.00 to 1.00: fabrication is exactly the signal M3 is built to find (Figure 3, Table 2).
+**Controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points. (Appendix D reports the capacity frontier when channels are made lossy, and the adaptive attacker.)
+
+**Step 1. Against a clumsy attacker, infrastructure consistency wins (Figure 3, pre-registered H1).** Under full naive spoofing the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared. M1 detection falls from 0.72 on honest transcripts to 0.02 under spoofing, while M3 rises from 0.00 to 1.00: fabrication is exactly the signal M3 is built to find.
 
 ![Figure 3: detection versus spoof rate](../figures/F3_spoof_sweep.png)
 
-**The capacity frontier (Figure 2).** Sweeping channel, bits per operation and channel noise gives covert configurations from 0 to 16 bits of capacity. Against a clumsy spoofer the combined monitor catches nearly every configuration at any capacity, while the metadata monitor alone leaves a low-detection corridor. Channels differ sharply in how gracefully they lose capacity to noise: at 35 percent loss the ordering channel falls from 16 to 1.2 bits, because a dropped write destroys a whole permutation group, while channels that embed a chunk index in names keep 7.2 bits.
-
-![Figure 2: capacity vs detection across covert configurations](../figures/F2_frontier.png)
-
-**Against a consistent liar, that win disappears (Figure 8).** When the attacker backs its cover claims with real benign work, the consistency monitor cannot separate attacks from benign: its AUROC falls from 1.00 against the clumsy spoofer to 0.50, chance. The combined monitor falls from 1.00 to 0.70, retaining only the weak metadata signal (M2 AUROC 0.72 in both cases). The learned monitor stays weak on these disguised attacks (AUROC 0.54). The transcript judge M1 still ranks attacks above benign (AUROC 1.00), but at very low absolute suspicion: its mean score for a consistent liar is 0.33 against 0.00 for benign, far below the near-certain suspicion it assigns an obvious channel, so at any usable operating threshold it misses most of them, and the ranking depends on benign scoring an almost perfect zero. In short, no infrastructure-grounded monitor we built is robust to a careful attacker (n = 36 disguised attacks, 24 benign).
+**Step 2. Against a consistent liar, that win disappears (Figure 8).** When the attacker backs its cover claims with its own real benign work, the consistency monitor cannot separate attacks from benign: its AUROC falls from 1.00 to 0.50, chance. The combined monitor falls from 1.00 to 0.70, keeping only the weak metadata signal (M2 AUROC 0.72, M4 0.54). The transcript judge M1 still ranks attacks above benign, but at near-benign absolute suspicion (mean 0.33 versus 0.00), so at any usable threshold it misses most of them, and the ranking depends on benign scoring an almost perfect zero. No infrastructure-grounded monitor we built is robust to a careful attacker (n = 36 disguised attacks, 24 benign).
 
 ![Figure 8: what survives a consistent liar](../figures/F8_disguise.png)
 
-**The metadata monitor alone is weak.** M2 reaches AUROC 0.72 overall and is weakest on the existence channel, whose packages look like ordinary internal builds. It is unaffected by spoofing because it reads the infrastructure log, but it does not carry the combined monitor on its own.
-
-**Awareness buys stealth, not bits (Figure 5).** The unaware attacker is caught 83 percent of the time; the aware attacker, which sees which monitors flagged it, drops to 8 percent by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged.
-
-![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
-
-**One broadcast scales to the swarm (Figure 9).** In the incident one agent set up the board and many others found it. We model this directly: a coordinator broadcasts the secret and N receivers each decode it. Delivered capacity is 16 bits times the number of receivers, and the bits delivered without tripping the spoof-invariant metadata monitor grow close to linearly with swarm size, from about 15 bits at one receiver to 128 at eight for the existence channel, an 8.6 fold increase. More readers do not make the coordinator's footprint more suspicious, so reaching the whole swarm is nearly free for the attacker. This is the regime a consistent liar operates in, where the consistency monitor is already defeated and only the weak metadata monitor remains.
+**Step 3. The failure grows with the swarm (Figure 9).** In the incident one agent set up the board and many others found it. We model this: a coordinator broadcasts the secret and N receivers each decode it. The bits delivered without tripping the spoof-invariant metadata monitor grow close to linearly with swarm size, from about 15 bits at one receiver to 128 at eight, an 8.6 fold increase, because more readers do not make the coordinator more suspicious. In the regime where a consistent liar has already defeated the consistency monitor, reaching the whole swarm is nearly free.
 
 ![Figure 9: one broadcast scales to the whole swarm](../figures/F9_scaling.png)
 
-**Isolation holds where monitoring does not (Figure 6).** Per-agent namespace isolation (D1) removes 99.0 percent of channel capacity with no measured honest utility loss, and it does so regardless of how the attacker reports its actions. Listing randomization and a modest write quota remove almost none, because our channels embed their own ordering and stay under the quota.
+**The defense that survives: isolation (Figure 6).** Per-agent namespace isolation (D1) removes 99.0 percent of channel capacity with no measured honest utility loss, regardless of how the attacker reports its actions. Listing randomization and a write quota remove almost none, because our channels embed their own ordering and stay under the quota.
 
 ![Figure 6: defense cost versus benefit](../figures/F6_defenses.png)
 
@@ -1231,11 +1223,21 @@ Code repository: https://github.com/Asha0509/Swarm-Alignment-Hackathon (public; 
 
 ### Appendix A: Limitations and Dual-Use / Ethical Considerations
 
-**Limitations.** We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads and a false-alarm check on held-out traffic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in. Our channel noise is a simple erasure model, not the full statistics of real cache eviction. The consistent-liar transcript monitor result rests on the judge scoring benign traffic at a near-perfect zero; a noisier benign distribution would change its separation, which we flag rather than hide. Sample sizes are modest (n = 83 for the primary contrast, 36 disguised attacks for the consistency result).
+**Limitations.** The largest is that colluders and attacker are scripted, not live language-model agents: we measure what the shared surface and the monitors permit, not what current models would actually do. This is a deliberate scope choice, and eliciting the consistent-liar and broadcast strategies from live agents is the most important next step. We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads and a false-alarm check on held-out traffic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in. Our channel noise is a simple erasure model, not the full statistics of real cache eviction. The consistent-liar transcript monitor result rests on the judge scoring benign traffic at a near-perfect zero; a noisier benign distribution would change its separation, which we flag rather than hide. Sample sizes are modest (n = 83 for the primary contrast, 36 disguised attacks for the consistency result).
 
 **Dual-use.** The consistent-liar technique, backing a false claim with real work, is a more effective evasion than the textbook channels, so we describe it at the level of a principle and do not release a turnkey implementation or the adaptive attacker's best evolved configurations verbatim; they are summarized by category and the raw protocols stay out of the public repository. We release the sandbox, the monitors and the defenses, which help defenders, and our central finding favors the defender's cheapest robust move, isolation. No real systems were touched, and we used only public incident reporting.
 
 **Ethics.** No human subjects, no real credentials, no real infrastructure. The framing is for operators who run multi-agent systems.
+
+### Appendix D: Capacity frontier and the adaptive attacker
+
+**Capacity frontier (Figure 2).** Making the channel lossy (each covert write lost with probability p) spreads covert configurations from 0 to 16 bits of capacity. Against a clumsy spoofer the combined monitor catches nearly every configuration at any capacity, while the metadata monitor alone leaves a low-detection corridor. Channels differ in noise robustness: at 35 percent loss the ordering channel falls from 16 to 1.2 bits, because a dropped write destroys a whole permutation group, while index-embedded channels keep 7.2 bits.
+
+![Figure 2: capacity vs detection across covert configurations](../figures/F2_frontier.png)
+
+**Adaptive attacker (Figure 5).** A scripted search over covert configurations, with outcome-only feedback, shows that an attacker aware of which monitors flagged it is caught 8 percent of the time versus 83 percent when unaware, by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged, so awareness buys stealth, not bits.
+
+![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
 
 ### Appendix B: Pre-existing code
 
@@ -1320,7 +1322,7 @@ Status: ✔ verified (link + authors + year + the claim we use checked) · ☐ u
 
 ### Could
 - [x] P1 channel noise + real F2 frontier (E8)
-- [ ] E6 scaling · F8
+- [x] E6 swarm scaling · F9 (undetected delivered capacity vs N)
 
 ### Report & submit
 - [~] DRAFT.md drafted (human edit + template + PDF next)
@@ -1538,6 +1540,13 @@ throughput: 245 benign episodes/s
 - **Decisions:** title fixed to the consistent-liar framing; author set to Asha Jyothi Boddu (BVRIT Hyderabad).
 - **Built by:** team with Claude Code
 
+### 2026-11-09 11:44 IST — P2: swarm scaling (broadcast to N receivers, E6, F9)
+- **PRD ref:** E6, FR-14 (F9)
+- **File:lines:** episode.py broadcast_episode, experiment.py _run_e6, configs/e6_scaling.yaml, analyse.py H7/F9, make_figures.py f9_scaling, report/DRAFT.md
+- **Tests:** tests/test_sandbox.py::test_broadcast_scales_delivered_capacity_with_receivers PASS; full suite 86 PASS.
+- **Real run:** E6, 240 episodes (E2/E3 x N in 1,2,4,8 x 30 seeds), 0 API cost. Delivered capacity = 16 x N. Undetected delivered capacity (vs the spoof-invariant metadata monitor) scales close to linearly: E2 15 -> 128 bits (8.6x), E3 14 -> 111 bits (8.0x). The metadata monitor does not catch more as receivers grow, so one broadcast reaches the whole swarm nearly for free. Ties to the incident (one board, 50+ readers) and Track 2.
+- **Built by:** team with Claude Code
+
 ---
 
 <a id="part-14"></a>
@@ -1564,6 +1573,7 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 10:26 IST | 36fd326 | ✔ | ✔ | 83/0/0 |
 | 2026-11-09 11:26 IST | 9a64929 | ✔ | ✔ | 84/0/0 |
 | 2026-11-09 11:38 IST | 552d684 | ✔ | ✔ | 85/0/0 |
+| 2026-11-09 11:43 IST | c188439 | ✔ | ✔ | 86/0/0 |
 
 ---
 
@@ -1786,3 +1796,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 11:26 IST | Claude Code (Opus) | E7 run (M1 calls), AUROC fix, F8, logs | Team reviews |
 | 2026-11-09 11:32 IST | Claude Code (Opus) | Draft reframe (P3) + template alignment | Human edits every section |
 | 2026-11-09 11:40 IST | Claude Code (Opus) | P1 channel noise + frontier, draft updates | Team directed P1 |
+| 2026-11-09 11:44 IST | Claude Code (Opus) | P2 swarm scaling + F9 + draft | Team directed P2 |
