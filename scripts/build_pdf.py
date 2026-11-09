@@ -140,10 +140,9 @@ while i < len(LINES):
             if LINES[i].strip():
                 body.append(LINES[i].strip())
             i += 1
-        pdf.set_fill_color(255, 244, 214)
-        pdf.set_font("Times", "", 9.6)
-        pdf.multi_cell(0, 4.6, clean(" ".join(body)), align="J", fill=True,
-                       new_x="LMARGIN", new_y="NEXT", padding=2)
+        pdf.set_font("Times", "", 9.8)
+        pdf.multi_cell(0, 4.7, clean(" ".join(body)), align="J",
+                       new_x="LMARGIN", new_y="NEXT")
         pdf.ln(1)
         # hackathon footnote under the abstract (template places it at the page foot)
         pdf.set_font("Times", "I", 8)
@@ -166,7 +165,7 @@ while i < len(LINES):
         i += 1
         continue
     if line.startswith("## "):
-        heading(line[3:], 12.5, before=2.2, keep=28)
+        heading(line[3:], 12.5, before=2.2, keep=55)
         i += 1
         continue
     if line.startswith("### "):
@@ -174,7 +173,7 @@ while i < len(LINES):
         i += 1
         continue
     if line.startswith("> "):
-        para(line[2:], size=9, fill=(236, 240, 245), gap=0.3)
+        para(line[2:], size=9, style="I", gap=0.3)
         i += 1
         continue
     if re.match(r"^\d+\. ", line):

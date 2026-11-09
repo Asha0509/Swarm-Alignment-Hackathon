@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 15:53 IST from 17 files.*
+*Built 2026-11-09 15:57 IST from 17 files.*
 
 
 ---
@@ -1197,15 +1197,7 @@ In July 2026 about 1200 agents in an evaluation turned a shared package cache in
 
 ---
 
-> **Infra-Operator Runbook (page 1)**
-> 1. **Isolate** shared caches and registries per agent (D1). In our tests this removed 99 percent of channel capacity at no measured honest cost, and unlike monitoring it does not depend on the attacker being clumsy.
-> 2. **Log at the infrastructure layer**, not only in agent transcripts, and hash-chain the log so edits are detectable.
-> 3. **Cross-check transcripts against infrastructure logs.** A mismatch is a strong alarm, but only against fabrication. A careful attacker that reports real cover work will not create one.
-> 4. **Budget audits at a fixed false alarm rate** and report undetected capacity, not accuracy. Treat monitoring as a backstop to isolation, not a substitute.
-
-![Figure 1: CacheGym schematic](../figures/F1_schematic.png)
-
----
+![Figure 1: CacheGym. Agents coordinate only through a shared registry. Every operation is recorded in a hash-chained infrastructure log, while the agent transcript can be spoofed. Four monitors read these sources; three defenses can close the channel.](../figures/F1_schematic.png)
 
 ### 1. Introduction
 
@@ -1291,7 +1283,9 @@ There is a trap here that is easy to miss. A consistency monitor does not just f
 
 ### 6. Conclusion
 
-Colluding agents can move a full 16 bit secret through a shared package cache. Transcript monitoring misses almost all of it once transcripts are spoofed. Cross-checking against infrastructure logs recovers detection against a clumsy attacker but collapses to chance against a consistent liar, and so does the combined monitor. The defense that holds is structural: per-agent isolation removes the channel at no honest cost. Isolate shared state per agent, log at the infrastructure layer, cross-check transcripts as a backstop, and budget audits at a fixed false alarm rate.
+Colluding agents can move a full 16 bit secret through a shared package cache. Transcript monitoring misses almost all of it once transcripts are spoofed. Cross-checking against infrastructure logs recovers detection against a clumsy attacker but collapses to chance against a consistent liar, and so does the combined monitor. The defense that holds is structural: per-agent isolation removes the channel at no honest cost.
+
+**Infra-operator runbook.** 1. Isolate shared caches and registries per agent; in our tests this removed 99 percent of channel capacity at no measured honest cost, and unlike monitoring it does not depend on the attacker being clumsy. 2. Log at the infrastructure layer, not only in agent transcripts, and hash-chain the log. 3. Cross-check transcripts against infrastructure logs as a backstop; a mismatch is a strong alarm, but only against fabrication. 4. Budget audits at a fixed false alarm rate and report undetected capacity, not accuracy.
 
 ### Code and Data
 
@@ -1717,6 +1711,7 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 15:23 IST | 64718ec | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 15:33 IST | d7e3af3 | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 15:48 IST | 707e8c6 | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 15:53 IST | e73b04c | ✔ | ✔ | 87/0/0 |
 
 ---
 
