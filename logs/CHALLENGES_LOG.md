@@ -95,3 +95,9 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What happened:** every FPR/AUROC rests on benign traffic we wrote, so monitors could be overfit to our distribution.
 - **What we did:** had an Adaption model design 8 benign workload mixes we did not choose; the frozen monitors' FPR held within 2 pts of budget across 96 episodes. Remaining caveat: all benign traffic is still synthetic (stated in Limitations).
 - **Use in report:** Results (controls), Limitations
+
+## 2026-11-09 12:59 IST — C012 Real agents added to the loop (honest side)
+- **Category:** threat-to-validity (partly mitigated)
+- **What happened:** the pipeline was scripted encoders + one judge; a multi-agent hackathon wants real agents.
+- **What we did:** ran live LLM agents as honest build workers; they complete tasks with zero parse failures and the monitors raise no false alarm (FPR 0.00). Real agents are now in the loop on the honest and oversight side. The covert attacker stays scripted (capability bound; eliciting it from live agents is future work and the earlier evolved-attacker prompts were classifier-blocked).
+- **Use in report:** Framing, Results (controls), Limitations

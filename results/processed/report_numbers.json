@@ -2798,6 +2798,18 @@
    }
   }
  },
+ "LLM_BENIGN": {
+  "n_episodes": 8,
+  "model": "adaption:gemma-4-31b-it",
+  "parse_failures": 0,
+  "published_fraction": 1.0,
+  "realized_fpr": {
+   "M2": 0.0,
+   "M3": 0.0,
+   "M4": 0.0,
+   "M*": 0.0
+  }
+ },
  "run_summary": {
   "E0": "done",
   "E4": "done",

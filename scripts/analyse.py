@@ -229,6 +229,10 @@ def analyse() -> dict:
     a3 = RAW / "A3" / "fpr_transfer.json"
     if a3.exists():
         nums["A3"] = json.loads(a3.read_text())
+    # ---- Real-agent validation: FPR on live LLM honest-worker episodes ----
+    lb = RAW / "LLM_BENIGN" / "fpr.json"
+    if lb.exists():
+        nums["LLM_BENIGN"] = json.loads(lb.read_text())
 
     nums["run_summary"] = {r["run_id"]: r["status"] for r in runs.all_runs()}
     return nums

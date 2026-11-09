@@ -179,3 +179,11 @@ throughput: 245 benign episodes/s
 - **What changed:** added the trap framing: deploying a consistency monitor makes noisy fabrication a losing move, so a rational attacker switches to silent disguise that other monitors miss. A consistency check can select for quieter adversaries. Isolation does not teach the attacker anything.
 - **Checks:** trace passes, 0 em dashes.
 - **Built by:** Claude drafts, human edits.
+
+## 2026-11-09 12:59 IST — Real-agent validation: live LLM honest workers (#1)
+- **PRD ref:** FR-6 (LLM benign workers), E0 LLM-benign FPR check
+- **File:lines:** scripts/llm_benign.py, analyse.py (LLM_BENIGN), report/DRAFT.md framing
+- **Real run:** 8 episodes x 3 live adaption:gemma-4-31b-it agents doing legitimate build work (list/fetch deps, publish own package). 8/8 published, 0 parse failures. Frozen monitors scored at spoof 0: realized FPR 0.000 across M2/M3/M4/M*. So detection transfers from scripted to real-agent benign traffic, and the monitors do not over-trigger on live agents. ~150 calls, a few credits. No collusion instructed (honest workers only; safe).
+- **Framing update:** real agents are now accurately described as on the honest + oversight side (live workers + the M1 judge); only the covert attacker is scripted, as a capability bound.
+- **Tests:** full suite 87 PASS.
+- **Built by:** team with Claude Code
