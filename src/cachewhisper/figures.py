@@ -26,10 +26,10 @@ def new_ax(xlabel: str, ylabel: str, title: str = "", figsize: tuple[float, floa
     return fig, ax
 
 
-def label_line_end(ax, x: list[float], y: list[float], text: str, color: str) -> None:
-    """Direct label at the right end of a line, no legend hunting."""
+def label_line_end(ax, x: list[float], y: list[float], text: str, color: str, dy: float = 0) -> None:
+    """Direct label at the right end of a line, no legend hunting. dy offsets co-located labels (points)."""
     if x and y:
-        ax.annotate(text, (x[-1], y[-1]), xytext=(4, 0), textcoords="offset points",
+        ax.annotate(text, (x[-1], y[-1]), xytext=(4, dy), textcoords="offset points",
                     va="center", ha="left", color=color, fontsize=9, fontweight="bold")
 
 

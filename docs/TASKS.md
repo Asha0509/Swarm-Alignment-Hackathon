@@ -8,13 +8,13 @@
 - [x] FR-8 monitors M1 M2 M3 M4a M* + calibration
 - [x] G2 benign FPR within ±2 pts
 - [x] PREREG frozen + tagged
-- [ ] E0 · E1 · E2 · E3
-- [ ] analyse.py · figures F1–F5 · T1 · T2 · RESULTS.md
-- [ ] G3 trace_numbers passes
+- [x] E0 · E1 · E2 · E3
+- [x] analyse.py · figures F1-F6 · T1 · T2 · RESULTS.md
+- [x] G3 trace_numbers passes
 
 ## Should
 - [x] FR-9 defenses D1 D2 D3 · E4 (F6 after analyse)
-- [ ] E5 model sweep · F7 · F9
+- [~] F7 gap (E5 model sweep dropped with LLM attacker, D003)
 - [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · A3 Invent → benign · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
 
 ## Could

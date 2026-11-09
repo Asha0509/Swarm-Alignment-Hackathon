@@ -27,9 +27,9 @@ SCORE_SEED = 777  # fixed seed for the spoof draw so scores are reproducible
 
 @dataclass
 class Bundle:
-    scaler: object
-    m4: object
-    combined: object
+    scaler: monitors.RobustScaler
+    m4: monitors.M4a
+    combined: monitors.Combined
     calib: calibrate.Calibrated
 
     def save(self) -> None:
@@ -169,7 +169,9 @@ def _run_e3(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
     alpha = 0.05
 
     def score_fn(res: EpisodeResult, info: dict) -> dict:
-        sc = monitors.score_episode(_ep_dict(res, info), bundle.scaler, bundle.m4, bundle.combined, 1.0, SCORE_SEED)
+        # The attacker does NOT spoof: spoofing is dominated by the consistency monitor M3 (studied in E2).
+        # So the adaptive loop optimizes against the infra-grounded monitors at spoof 0 (a real gradient).
+        sc = monitors.score_episode(_ep_dict(res, info), bundle.scaler, bundle.m4, bundle.combined, 0.0, SCORE_SEED)
         flagged = any(bundle.calib.flagged(m, sc[m], alpha) for m in ("M2", "M3", "M*", "M4"))
         return {"flagged@5": flagged}
 

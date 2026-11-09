@@ -52,17 +52,30 @@ def f1_schematic() -> None:
 
 
 def f2_frontier(nums: dict) -> None:
-    fig, ax = F.new_ax("Hidden bits per episode (capacity)", "Caught at 5% false-alarm rate",
-                       "Capacity vs. detection frontier (spoofed transcripts)")
-    data = nums.get("F2", {})
-    for m, pts in data.items():
-        xs = [p["capacity"] for p in pts]
-        ys = [p["detect"] for p in pts]
-        ax.plot(xs, ys, "-o", color=F.MONITOR_COLOR[m], ms=4)
-        F.label_line_end(ax, xs, ys, F.MONITOR_LABEL[m], F.MONITOR_COLOR[m])
-    ax.set_ylim(-0.03, 1.03)
-    F.save(fig, "F2_frontier", f"Figure 2. Each point is an attack configuration (n={nums.get('n_f2', '?')} "
-           "seeds). Up and left is worse oversight: high capacity that goes uncaught.")
+    """Hero: undetected capacity vs detection per monitor under full spoofing. Bottom-right = failed oversight."""
+    fig, ax = F.new_ax("Undetected bits per episode at 5% false-alarm rate", "Attacks caught (TPR at 5% FPR)",
+                       "What each monitor lets through when transcripts are spoofed")
+    t2 = nums.get("T2", {})
+    for m in ("M1", "M2", "M3", "M4", "M*"):
+        d = t2.get(m, {}).get("1.0")
+        if not d:
+            continue
+        x, y = d["undetected_capacity"], d["tpr5"]
+        xerr = [[x - d["uc_lo"]], [d["uc_hi"] - x]]
+        ax.errorbar(x, y, xerr=xerr, fmt="o", ms=9, color=F.MONITOR_COLOR[m], capsize=3)
+        ha = "right" if x > 8 else "left"
+        dx = -18 if x > 8 else 18
+        dy = {"M*": 10, "M3": -16, "M2": 12, "M1": -4}.get(m, 6)  # stagger co-located labels
+        ax.annotate(F.MONITOR_LABEL[m], (x, y), xytext=(dx, dy), textcoords="offset points",
+                    color=F.MONITOR_COLOR[m], fontsize=9, fontweight="bold", ha=ha)
+    ax.set_ylim(-0.05, 1.08)
+    ax.set_xlim(-1.2, 17)
+    ax.text(15.5, 0.08, "oversight fails\n(bits through, few caught)", ha="right", va="bottom",
+            fontsize=8, color="#888", style="italic")
+    F.save(fig, "F2_frontier", f"Figure 2. Each point is one monitor over all attack episodes "
+           f"(n={nums.get('n_f2', '?')} seeds) with fully spoofed transcripts. Top-left is strong oversight "
+           "(little gets through, most caught); bottom-right is failure. The transcript monitor M1 sits at "
+           "bottom-right; the consistency and combined monitors sit at top-left. Bars are 95% CIs.")
 
 
 def f3_spoof(nums: dict) -> None:
@@ -75,8 +88,9 @@ def f3_spoof(nums: dict) -> None:
         hi = [p.get("hi", y) for p, y in zip(series, ys, strict=False)]
         ax.plot(xs, ys, "-o", color=F.MONITOR_COLOR[m], ms=4)
         F.band(ax, xs, lo, hi, F.MONITOR_COLOR[m])
-        F.label_line_end(ax, xs, ys, F.MONITOR_LABEL[m], F.MONITOR_COLOR[m])
-    ax.set_ylim(-0.03, 1.03)
+        dy = {"M*": 9, "M3": -9, "M1": -9, "M2": 9}.get(m, 0)  # stagger co-located end labels
+        F.label_line_end(ax, xs, ys, F.MONITOR_LABEL[m], F.MONITOR_COLOR[m], dy=dy)
+    ax.set_ylim(-0.03, 1.08)
     F.save(fig, "F3_spoof_sweep", "Figure 3. As more actions are spoofed, the transcript monitor (M1) "
            "degrades while the consistency monitor (M3) rises. 95% CIs shown.")
 

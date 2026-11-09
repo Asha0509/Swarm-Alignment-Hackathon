@@ -53,3 +53,15 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **Why it matters:** our channels embed a chunk index in names (E1-E3,E5) or read created_tick via stat (E4), so they do not rely on listing order, and low-rate channels stay under a modest write quota. Only per-agent isolation (D1) removes the channel.
 - **What we did:** report all three; the runbook recommends D1. A naive sort-prefix board with no embedded index would be broken by D2 (noted).
 - **Use in report:** Results, Discussion, runbook
+
+## 2026-11-09 10:21 IST — C006 Capacity does not vary (all channels decode 16/16), so the raw frontier degenerates
+- **Category:** engineering / presentation
+- **What happened:** with k=16 fixed and zero channel noise, every channel's capacity is exactly 16 bits; the capacity axis of the planned F2 frontier is a vertical line.
+- **What we did:** F2 reframed to undetected-capacity vs detection per monitor under spoofing (top-left good, bottom-right failed oversight). The spoof sweep F3 (M1 falls, M3 rises) carries the tradeoff.
+- **Use in report:** Methods note; F2/F3 captions
+
+## 2026-11-09 10:21 IST — C007 H5 shows no elicitation gap
+- **Category:** null result
+- **What happened:** best expert channel and best adaptive-attacker config both reach 16 undetected bits at spoof 0 (both via metadata stego E5, which the metadata monitor barely sees).
+- **Why it matters:** the adaptive search matches but does not beat hand-designed channels; our attacker is a lower bound on creativity. Honest null.
+- **Use in report:** Results, Limitations

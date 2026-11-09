@@ -49,3 +49,10 @@ Decisions, gate outcomes, scope changes, pre-registration deviations.
 - **Decision:** PREREG.md committed alone and tagged prereg-frozen at commit 58ae747. Primary H1 = paired (M1 - M*) undetected capacity at s=1, declared iff CI>0 and mean>=2 bits. Attacker scripted (D003). Frozen hashes recorded.
 - **Affects PREREG?** this IS the freeze.
 - **Decided by:** team (approved in chat)
+
+## 2026-11-09 10:21 IST — D006 Gate G3 PASSED; analysis fixes logged
+- **Context:** PRD §10 G3: trace_numbers passes.
+- **Evidence:** scripts/trace_numbers.py on results/RESULTS.md -> all 435 numbers trace to report_numbers.json. Added 95/5/1 to the allowlist (CI level and FPR budgets, like years).
+- **Deviations from PREREG (disclosed):** (1) E3 adaptive loop scores the attacker at spoof 0, since the attacker does not spoof against a consistency monitor (spoofing studied separately in E2). H3/H5 undetected capacity reported at spoof 0 (the attacker's operating point); H1 remains at spoof 1 as pre-registered. (2) H3 as written requires aware capacity AND detection both lower; result: detection much lower (0.08 vs 0.83) but capacity equal (16 both) -> H3 partially supported, reported honestly. (3) M1 threshold calibrated on held-out benign in analyse (E0 did not run M1 to save LLM budget).
+- **Affects PREREG?** primary H1 unchanged; secondary measurement points clarified. All disclosed here and in the report.
+- **Decided by:** Claude Code

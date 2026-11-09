@@ -1,1 +1,1 @@
-Figure 2. Each point is an attack configuration (n=? seeds). Up and left is worse oversight: high capacity that goes uncaught.
+Figure 2. Each point is one monitor over all attack episodes (n=42 seeds) with fully spoofed transcripts. Top-left is strong oversight (little gets through, most caught); bottom-right is failure. The transcript monitor M1 sits at bottom-right; the consistency and combined monitors sit at top-left. Bars are 95% CIs.

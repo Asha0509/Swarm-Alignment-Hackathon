@@ -107,3 +107,10 @@ throughput: 245 benign episodes/s
 - **Tests:** full suite 83 PASS.
 - **Real run:** E0/E1/E4 complete (E1 450 unique episodes, 60 M1-scored); E2/E3 running in background (task bz8b2nks2). Dedup verified: 545 raw -> 450 unique.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 10:21 IST — Analysis, figures, RESULTS, G3
+- **PRD ref:** FR-14, FR-15
+- **File:lines:** scripts/analyse.py, scripts/make_figures.py, src/cachewhisper/figures.py
+- **Real run:** E0-E4 analysed. H1 DECLARED (M1-M* = 15.61 bits undetected under spoofing, 95% CI 15.04-16.00, n=83). H2: M1 TPR 0.77->0.02, M3 0.0->1.0 under spoofing. H3: aware attacker detection 0.08 vs unaware 0.83 (E5 stego vs E2). H4 DECLARED: D1 removes 99.0% capacity at 0 utility loss. H5: no elicitation gap (expert = attacker = 16 undetected at spoof 0). F1-F6 render. trace_numbers passes (435 values).
+- **Tests:** full suite 83 PASS; pyright clean.
+- **Built by:** team with Claude Code
