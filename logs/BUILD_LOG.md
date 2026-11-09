@@ -204,3 +204,8 @@ throughput: 245 benign episodes/s
 - **Checks:** check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
 - **Open:** official-template exact styling (optional, no LibreOffice here); video (optional).
 - **Built by:** team with an AI coding assistant
+
+## 2026-11-09 15:18 IST — Fix orphaned headings in the report PDF
+- **File:lines:** scripts/build_pdf.py (keep-with-next heading logic)
+- **What changed:** headings now reserve room for the heading plus ~4 body lines; if the space is not there the heading moves to the next page with its paragraph. Verified: no page ends with a bare section title (0 orphans across 9 pages). Tables and images also keep-together. Main text still 6 pages; references and appendices follow.
+- **Built by:** team with an AI coding assistant
