@@ -181,6 +181,29 @@ def analyse() -> dict:
         for mode in ("naive", "hard"):
             nums["F8"][mode] = {m: nums["H6"][mode][m]["auroc"] for m in MONITORS if m in nums["H6"][mode]}
 
+    # ---- Capacity frontier (from E8 noise sweep): capacity varies, so this is a real frontier ----
+    e8 = load_rows("E8")
+    if e8:
+        nums["F2b"] = {}
+        for m in ("M2", "M3", "M4", "M*"):
+            pts = []
+            cfgs: dict = {}
+            for r in e8:
+                cfgs.setdefault((r["channel"], r["level"], r["noise"]), []).append(r)
+            for (ch, lv, noise), rows in sorted(cfgs.items()):
+                cap = sum(r["capacity"] for r in rows) / len(rows)
+                det = sum(r["flags"][m] for r in rows) / len(rows)
+                pts.append({"channel": ch, "level": lv, "noise": noise, "capacity": cap, "detect": det})
+            nums["F2b"][m] = pts
+        # noise robustness: capacity at each noise level, best channel
+        nums["noise_curve"] = {}
+        for ch in sorted({r["channel"] for r in e8}):
+            nums["noise_curve"][ch] = {}
+            for noise in sorted({r["noise"] for r in e8}):
+                caps = [r["capacity"] for r in e8 if r["channel"] == ch and r["noise"] == noise and r["level"] == "med"]
+                if caps:
+                    nums["noise_curve"][ch][str(noise)] = sum(caps) / len(caps)
+
     nums["run_summary"] = {r["run_id"]: r["status"] for r in runs.all_runs()}
     return nums
 

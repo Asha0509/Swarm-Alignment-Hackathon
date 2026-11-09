@@ -143,3 +143,11 @@ throughput: 245 benign episodes/s
 - **What changed:** new title + abstract (231 words) leading with the limits of consistency checking and isolation as the robust defense. Results now has three regimes: clumsy fabrication (M* wins, pre-registered H1), consistent liar (M3 -> chance, M* -> 0.70, no infra monitor robust, F8), and defenses (D1 removes 99%). Runbook leads with isolation. Discussion reframed as monitoring vs isolation defend different things. Methods renamed per official template; added Code and Data section. Dual-use appendix notes the consistent-liar technique is described as a principle, not a recipe.
 - **Checks:** trace_numbers passes (495 values), 0 em dashes, abstract in range. Read official template (Copy of Apart...docx): recommends 4 pages, our section order matches.
 - **Built by:** Claude drafts, human edits every section.
+
+## 2026-11-09 11:40 IST — P1: channel noise -> real capacity frontier; title + author set
+- **PRD ref:** FR-4, FR-11, FR-14
+- **File:lines:** episode.py noisy_send + noise param, experiment.py _run_e8, configs/e8_noise.yaml, analyse.py F2b/noise_curve, make_figures.py f2_frontier (rebuilt), report/DRAFT.md
+- **Tests:** tests/test_sandbox.py::test_channel_noise_reduces_capacity_monotonically PASS; full suite 85 PASS.
+- **Real run:** E8, 1200 episodes (5 channels x 3 levels x 4 noise x 20 seeds), 0 API cost. Capacity now spans 0-16: E2 16.0->5.7, E4 16.0->1.2 at 35% loss. F2 rebuilt as a genuine capacity-vs-detection frontier with the combined-monitor Pareto envelope. Noise-robustness is a secondary finding (ordering channel E4 fragile; index-embedded channels keep 7.2 bits).
+- **Decisions:** title fixed to the consistent-liar framing; author set to Asha Jyothi Boddu (BVRIT Hyderabad).
+- **Built by:** team with Claude Code

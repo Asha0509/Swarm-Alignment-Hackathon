@@ -1,0 +1,8 @@
+run_id: E8
+experiment: E8
+tier: should
+label: capacity_frontier
+channels: [E1, E2, E3, E4, E5]
+levels: [low, med, high]
+noise: [0.0, 0.1, 0.2, 0.35]
+seeds: [2000, 2020]

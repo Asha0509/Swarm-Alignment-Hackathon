@@ -18,6 +18,7 @@
 - [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · A3 Invent → benign · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
 
 ## Could
+- [x] P1 channel noise + real F2 frontier (E8)
 - [ ] E6 scaling · F8
 
 ## Report & submit

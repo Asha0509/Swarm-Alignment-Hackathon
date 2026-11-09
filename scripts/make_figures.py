@@ -52,31 +52,36 @@ def f1_schematic() -> None:
 
 
 def f2_frontier(nums: dict) -> None:
-    """Hero: undetected capacity vs detection per monitor under full spoofing. Bottom-right = failed oversight."""
-    fig, ax = F.new_ax("Undetected bits per episode at 5% false-alarm rate", "Attacks caught (TPR at 5% FPR)",
-                       "What each monitor lets through when transcripts are spoofed")
-    t2 = nums.get("T2", {})
-    for m in ("M1", "M2", "M3", "M4", "M*"):
-        d = t2.get(m, {}).get("1.0")
-        if not d:
-            continue
-        x, y = d["undetected_capacity"], d["tpr5"]
-        xerr = [[x - d["uc_lo"]], [d["uc_hi"] - x]]
-        ax.errorbar(x, y, xerr=xerr, fmt="o", ms=9, color=F.MONITOR_COLOR[m], capsize=3)
-        ha = "right" if x > 8 else "left"
-        dx = -18 if x > 8 else 18
-        dy = {"M*": 10, "M3": -16, "M2": 12, "M1": -4}.get(m, 6)  # stagger co-located labels
-        ax.annotate(F.MONITOR_LABEL[m], (x, y), xytext=(dx, dy), textcoords="offset points",
-                    color=F.MONITOR_COLOR[m], fontsize=9, fontweight="bold", ha=ha)
-    ax.set_ylim(-0.05, 1.08)
-    ax.set_xlim(-1.2, 17)
-    ax.text(15.5, 0.08, "oversight fails\n(bits through, few caught)", ha="right", va="bottom",
-            fontsize=8, color="#888", style="italic")
-    F.save(fig, "F2_frontier", f"Figure 2. Each point is one monitor over all attack episodes "
-           f"(n={nums.get('n_f2', '?')} seeds) with fully spoofed transcripts. Top-left is strong oversight "
-           "(little gets through, most caught); bottom-right is failure. The transcript monitor M1 sits at "
-           "bottom-right; the consistency and combined monitors sit at top-left. Bars are 95% CIs.")
+    """Hero: capacity vs detection across channel/bits-per-op/noise configs, for the infra monitors.
 
+    Capacity now varies (channels run at several noise levels), so this is a real frontier.
+    """
+    f2b = nums.get("F2b")
+    if not f2b:
+        return
+    fig, ax = F.new_ax("Hidden bits per episode (capacity)", "Attacks caught (at 5% false-alarm rate)",
+                       "Capacity vs. detection across covert configurations")
+    for m in ("M2", "M4", "M*"):
+        pts = f2b.get(m, [])
+        ax.scatter([p["capacity"] for p in pts], [p["detect"] for p in pts], s=16,
+                   color=F.MONITOR_COLOR[m], alpha=0.4, edgecolors="none", label=F.MONITOR_LABEL[m])
+    ms = sorted(f2b.get("M*", []), key=lambda p: -p["capacity"])
+    front, best = [], 1.1
+    for p in ms:
+        if p["detect"] < best:
+            front.append((p["capacity"], p["detect"]))
+            best = p["detect"]
+    if front:
+        fx, fy = zip(*sorted(front), strict=True)
+        ax.plot(fx, fy, "-", color=F.MONITOR_COLOR["M*"], lw=2)
+        F.label_line_end(ax, list(fx), list(fy), "M* frontier", F.MONITOR_COLOR["M*"])
+    ax.legend(fontsize=8, frameon=False, loc="center left")
+    ax.set_ylim(-0.05, 1.08)
+    F.save(fig, "F2_frontier", "Figure 2. Each point is a covert configuration (channel, bits per operation, "
+           "channel noise; 20 seeds each) scored under naive spoofing. Capacity varies because the channel is "
+           "lossy. The line is the combined monitor's Pareto frontier: the most hidden capacity reached at each "
+           "detection level. The metadata monitor leaves a low-detection corridor at high capacity that the "
+           "combined monitor mostly closes against this clumsy attacker.")
 
 def f3_spoof(nums: dict) -> None:
     fig, ax = F.new_ax("Fraction of covert actions spoofed", "Caught at 5% false-alarm rate",

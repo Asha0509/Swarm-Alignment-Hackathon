@@ -83,3 +83,9 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What we did:** added a consistent-liar spoof mode (cover claims reuse the agent's own real benign ops). M3 then drops to 0 detection. The honest finding: consistency checking catches clumsy fabrication but not disguise; a careful attacker that disguises covert ops as benign work and reports consistently evades M1, M2, M3 and M* together. The robust defense is per-agent isolation (D1). This defuses the circularity and strengthens the operator message.
 - **Affects PREREG?** The pre-registered H1 used the naive spoof model; it stands and is reported as-is. The hard-spoof result is a disclosed post-hoc addition (new hypothesis H6), not a change to H1.
 - **Use in report:** Results (new section), Discussion, Limitations, runbook (lead with D1)
+
+## 2026-11-09 11:40 IST — C010 Capacity was constant (resolved by P1)
+- **Category:** engineering / presentation (resolved)
+- **What happened:** with zero channel noise every channel decoded all 16 bits, so capacity did not vary and the "frontier" degenerated.
+- **What we did:** added a lossy-channel model (each covert write lost with probability p). Capacity now varies 0-16, F2 is a real frontier, and channel noise-robustness is a new finding. The old constant-capacity limitation is removed from the report.
+- **Use in report:** Methods, Results (F2), Limitations

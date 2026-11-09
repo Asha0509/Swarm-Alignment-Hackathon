@@ -987,12 +987,1735 @@
    "M*": 0.6990740740740741
   }
  },
+ "F2b": {
+  "M2": [
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.2
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.350977500432695,
+    "detect": 0.2
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.208713731031827,
+    "detect": 0.2
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 6.8737160633488354,
+    "detect": 0.2
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 12.127532901625134,
+    "detect": 0.05
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.372749423197801,
+    "detect": 0.05
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 5.941104122579196,
+    "detect": 0.05
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.1
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 12.545078754671916,
+    "detect": 0.1
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 10.916994753005174,
+    "detect": 0.1
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 5.728367530323515,
+    "detect": 0.1
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 7.140144956903184,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 4.795867279667986,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 0.42516047189116984,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 7.487543877455936,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 4.9727471316081004,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 1.2950555438016162,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 7.18114601500465,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 4.471719892329129,
+    "detect": 0.05
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 1.2271514759457307,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 0.05
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.05
+   }
+  ],
+  "M3": [
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.9
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.350977500432695,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.208713731031827,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 6.8737160633488354,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 12.127532901625134,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.372749423197801,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 5.941104122579196,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 12.545078754671916,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 10.916994753005174,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 5.728367530323515,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 7.140144956903184,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 4.795867279667986,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 0.42516047189116984,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 7.487543877455936,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 4.9727471316081004,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 1.2950555438016162,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 7.18114601500465,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 4.471719892329129,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 1.2271514759457307,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 1.0
+   }
+  ],
+  "M4": [
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.8
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.6
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.25
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.350977500432695,
+    "detect": 0.25
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.208713731031827,
+    "detect": 0.25
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 6.8737160633488354,
+    "detect": 0.2
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.7
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 12.127532901625134,
+    "detect": 0.6
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.372749423197801,
+    "detect": 0.6
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 5.941104122579196,
+    "detect": 0.65
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.6
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 12.545078754671916,
+    "detect": 0.65
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 10.916994753005174,
+    "detect": 0.7
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 5.728367530323515,
+    "detect": 0.7
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.3
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.3
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.2
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.15
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.35
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.35
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 0.25
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 0.2
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.25
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.25
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 0.25
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.25
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.9
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 7.140144956903184,
+    "detect": 0.65
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 4.795867279667986,
+    "detect": 0.5
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 0.42516047189116984,
+    "detect": 0.35
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.85
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 7.487543877455936,
+    "detect": 0.75
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 4.9727471316081004,
+    "detect": 0.6
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 1.2950555438016162,
+    "detect": 0.15
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.95
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 7.18114601500465,
+    "detect": 0.5
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 4.471719892329129,
+    "detect": 0.55
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 1.2271514759457307,
+    "detect": 0.35
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 0.8
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.6
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.5
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.5
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 0.5
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 0.5
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 0.95
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.9
+   }
+  ],
+  "M*": [
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 0.9
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E1",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 0.95
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.350977500432695,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.208713731031827,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 6.8737160633488354,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 12.127532901625134,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.372749423197801,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 5.941104122579196,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 12.545078754671916,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 10.916994753005174,
+    "detect": 1.0
+   },
+   {
+    "channel": "E2",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 5.728367530323515,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E3",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 7.140144956903184,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 4.795867279667986,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 0.42516047189116984,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 7.487543877455936,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 4.9727471316081004,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 1.2950555438016162,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 7.18114601500465,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 4.471719892329129,
+    "detect": 1.0
+   },
+   {
+    "channel": "E4",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 1.2271514759457307,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.2,
+    "capacity": 12.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "high",
+    "noise": 0.35,
+    "capacity": 8.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.2,
+    "capacity": 9.870599712065076,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "low",
+    "noise": 0.35,
+    "capacity": 3.585124414837742,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.0,
+    "capacity": 16.0,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.1,
+    "capacity": 15.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.2,
+    "capacity": 11.2,
+    "detect": 1.0
+   },
+   {
+    "channel": "E5",
+    "level": "med",
+    "noise": 0.35,
+    "capacity": 7.2,
+    "detect": 1.0
+   }
+  ]
+ },
+ "noise_curve": {
+  "E1": {
+   "0.0": 16.0,
+   "0.1": 15.2,
+   "0.2": 11.2,
+   "0.35": 7.2
+  },
+  "E2": {
+   "0.0": 16.0,
+   "0.1": 12.545078754671916,
+   "0.2": 10.916994753005174,
+   "0.35": 5.728367530323515
+  },
+  "E3": {
+   "0.0": 16.0,
+   "0.1": 15.2,
+   "0.2": 11.2,
+   "0.35": 7.2
+  },
+  "E4": {
+   "0.0": 16.0,
+   "0.1": 7.18114601500465,
+   "0.2": 4.471719892329129,
+   "0.35": 1.2271514759457307
+  },
+  "E5": {
+   "0.0": 16.0,
+   "0.1": 15.2,
+   "0.2": 11.2,
+   "0.35": 7.2
+  }
+ },
  "run_summary": {
   "E0": "done",
   "E4": "done",
   "E1": "done",
   "E2": "done",
   "E3": "done",
-  "E7": "done"
+  "E7": "done",
+  "E8": "done"
  }
 }

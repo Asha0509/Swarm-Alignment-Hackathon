@@ -190,3 +190,14 @@ def test_run_registry_keeps_failed_rows(tmp_path: Path) -> None:
     rows = {r["run_id"]: r for r in runs.all_runs(p)}
     assert rows["a"]["status"] == "done" and rows["b"]["status"] == "rate_limited: 429 x5"
     assert rows["a"]["finished_ist"]
+
+
+def test_channel_noise_reduces_capacity_monotonically() -> None:
+    """A lossy channel decodes with BER > 0, so capacity falls as noise rises (P1)."""
+    caps = []
+    for noise in (0.0, 0.1, 0.35):
+        c = [scripted_episode("E2", "med", s, noise=noise)[1]["capacity"] for s in range(2000, 2020)]
+        caps.append(sum(c) / len(c))
+    assert caps[0] == 16.0
+    assert caps[0] > caps[1] > caps[2]  # more noise, less capacity
+    assert caps[2] < 10.0

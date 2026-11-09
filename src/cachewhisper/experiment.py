@@ -107,6 +107,8 @@ def run_config(cfg: dict) -> Path:
         return _run_e4(cfg, out, rows_path, done)
     if exp == "E7":
         return _run_e7(cfg, out, rows_path, done)
+    if exp == "E8":
+        return _run_e8(cfg, out, rows_path, done)
 
     bundle = Bundle.load()
     n_written = 0
@@ -272,4 +274,32 @@ def _run_e7(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
             f.write(json.dumps(row, default=str) + "\n")
             n += 1
     runs.finish_run(cfg["run_id"], "done", n_llm_calls=n)
+    return out
+
+
+def _run_e8(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
+    """Capacity frontier: sweep channel x level x noise. Record capacity and each non-LLM monitor's flag
+    at 5% FPR under naive spoof, so capacity varies and F2 becomes a real capacity-vs-detection frontier.
+    """
+    from cachewhisper.episode import scripted_episode
+
+    bundle = Bundle.load()
+    n = 0
+    with rows_path.open("a") as f:
+        for ch in cfg["channels"]:
+            for lv in cfg["levels"]:
+                for noise in cfg["noise"]:
+                    for seed in range(*cfg["seeds"]):
+                        hint = f"E8-{ch}-{lv}-n{noise}-s{seed}"
+                        if hint in done:
+                            continue
+                        res, info = scripted_episode(ch, lv, seed, noise=noise)
+                        sc = monitors.score_episode(_ep_dict(res, info), bundle.scaler, bundle.m4,
+                                                    bundle.combined, 1.0, SCORE_SEED)
+                        flags = {m: bool(bundle.calib.flagged(m, sc[m], 0.05)) for m in monitors.NO_LLM}
+                        f.write(json.dumps({"episode_id": hint, "channel": ch, "level": lv, "noise": noise,
+                                            "seed": seed, "capacity": info["capacity"], "ber": info["ber"],
+                                            "flags": flags}, default=str) + "\n")
+                        n += 1
+    runs.finish_run(cfg["run_id"], "done", n_llm_calls=0)
     return out
