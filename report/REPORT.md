@@ -34,7 +34,7 @@ Oversight today mostly reads agent transcripts. The incident shows two problems:
 
 **Framing.** This is an AI-control capability evaluation (Greenblatt et al. 2024). Real language-model agents run on the honest and oversight side of our sandbox: live agents do the legitimate build work, and the transcript monitor is itself a language-model judge. The covert attacker is scripted, so its capacity is a worst-case bound on mechanism rather than a claim about how any model behaves. Eliciting the covert strategies from live agents is the clear next step, discussed in Limitations.
 
-## 2. Related work
+## 2. Related Work
 
 Prior collusion work measures steganography inside messages (Motwani et al. 2024). We measure coordination through infrastructure side effects, where the payload is in registry state, not text. AI-control work tests monitors against a single untrusted model (Greenblatt et al. 2024); we test a multi-agent setting with forgeable transcripts, and show a monitor that works against naive forgery but not against a careful one. Covert channels in shared systems are classic (Lampson 1973); our contribution is to measure their capacity and detectability for present-day language-model agents, and to locate exactly where infrastructure-grounded oversight breaks. We relate to multi-agent risk taxonomies (Hammond et al. 2025), agent identity (Chan et al. 2024), and cross-agent compromise (Lee and Tiwari 2024).
 
@@ -98,9 +98,11 @@ The thread is one argument in three steps: grounding oversight in infrastructure
 
 ![Figure 6: defense cost versus benefit](../figures/F6_defenses.png)
 
-## 5. Discussion
+## 5. Discussion and Limitations
 
 There is a trap here that is easy to miss. A consistency monitor does not just fail against a careful attacker; it can push a rational attacker toward being harder to catch. Fabrication is noisy: it leaves a claimed-but-absent trail that the monitor reads at once. Deploying the monitor makes fabrication a losing move, so the rational response is to stop fabricating and switch to disguise, performing real benign work and reporting it truthfully while the payload rides in benign-looking state. That attacker is quieter on every channel we measured, including the transcript judge. So a defender who adds a consistency check, and stops there, may select for adversaries that their other monitors cannot see. The broader lesson is that monitoring and isolation defend against different things. Cross-checking transcripts against infrastructure is worth doing against clumsy attackers, but once it is present the remaining threat is the disguised one, where detection falls to weak metadata statistics. Isolation sidesteps the arms race: it removes the shared surface the channel needs, so it does not matter whether the attacker is clumsy or careful, and it does not teach the attacker anything. For operators the order of operations is isolation first, monitoring as a backstop. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure.
+
+**Limitations and future work.** The main limitation is scope: the covert attacker is scripted rather than a live colluding model, we model one infrastructure type, and sample sizes are modest. The full list, with the dual-use and ethics discussion required by the sprint, is in Appendix A. The clearest next step is to elicit the consistent-liar and broadcast strategies from live agents, to measure whether current models discover them unprompted, and to replace the erasure noise model with the statistics of real cache eviction.
 
 ## 6. Conclusion
 

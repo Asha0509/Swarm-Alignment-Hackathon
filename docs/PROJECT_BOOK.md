@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 15:05 IST from 17 files.*
+*Built 2026-11-09 15:48 IST from 17 files.*
 
 
 ---
@@ -17,11 +17,39 @@
 
 *Apart Research Swarm Alignment Hackathon 2026. Track 4 (Multi-Agent Oversight and Control), secondary Track 1 (Sandboxes and Testbeds).*
 
+[![CI](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml/badge.svg)](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![Tests](https://img.shields.io/badge/tests-87%20passing-brightgreen)
+
 > Monitoring colluding agents catches clumsy lies, not careful ones, and only isolation holds. Under full transcript spoofing, transcript-only oversight leaves **15.6 hidden bits per episode uncaught (95% CI 15.0 to 16.0)** that an infrastructure-grounded consistency monitor catches, but a consistent liar that backs its claims with real work defeats that monitor too (AUROC 1.00 to 0.50). **Per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
 
-Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · One-page project book: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
+Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · Project book (all docs in one page): [docs/PROJECT_BOOK.md](docs/PROJECT_BOOK.md)
+
+**Contents:** [Overview](#overview) · [Key results](#key-results) · [How it works](#how-it-works) · [Runbook](#infra-operator-runbook) · [Repository structure](#repository-structure) · [Reproduce](#reproduce) · [Citation](#citation)
 
 <p align="center"><img src="../figures/F1_schematic.png" width="760" alt="CacheGym system schematic"></p>
+
+### How it works
+
+Agents coordinate only through a shared registry. Every operation lands in a hash-chained infrastructure log (the truth monitors can trust); the agent transcript (what an attacker can forge) is a separate record. Four monitors read these two sources.
+
+```mermaid
+flowchart LR
+  A["Agents"] -->|"tool calls"| R["Shared registry"]
+  R -->|"every op"| L["Infra log (truth)"]
+  R -->|"self-report"| T["Transcript (forgeable)"]
+  L --> M2["M2 metadata"]
+  L --> M4["M4 learned"]
+  T --> M1["M1 transcript"]
+  L --> M3["M3 consistency"]
+  T --> M3
+  M2 --> MS["M* combined"]
+  M3 --> MS
+  R -.->|"isolate / randomize / quota"| D["Defenses"]
+```
+
+Full diagrams and the experiment pipeline are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
@@ -31,12 +59,14 @@ In July 2026 about 1200 AI agents in a cyber evaluation turned a shared, non-iso
 
 This project builds **CacheGym**, a deterministic, zero-cost sandbox with a mock package registry modeled on that channel, and measures four things:
 
-1. **Capacity** — how many secret bits colluding agents can pass through registry side effects.
-2. **Detectability** — which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-versus-infrastructure consistency (M3), and learned (M4).
-3. **Spoof-robustness** — how each monitor degrades as transcripts are forged, including a *consistent liar* who backs false claims with real work.
-4. **Defense cost** — how much capacity cheap mitigations remove, and what they cost honest agents.
+1. **Capacity**: how many secret bits colluding agents can pass through registry side effects.
+2. **Detectability**: which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-versus-infrastructure consistency (M3), and learned (M4).
+3. **Spoof-robustness**: how each monitor degrades as transcripts are forged, including a *consistent liar* who backs false claims with real work.
+4. **Defense cost**: how much capacity cheap mitigations remove, and what they cost honest agents.
 
 This is an AI-control capability evaluation: the covert attacker is scripted (a worst-case bound), while live language-model agents run on the honest and oversight side.
+
+> **What is real and what is simulated.** *Real:* live language-model agents do the honest build work, the M1 transcript monitor is a language-model judge, and the shared registry, hash-chained infrastructure log, monitors and defenses are a working implementation. *Simulated:* the covert sender and receiver are scripted encoders (a worst-case capability bound, not live colluding models), spoofing is modeled at the transcript layer rather than a real container escape, and benign traffic is synthetic (validated against externally generated and live-agent traffic). Full detail in the report's Limitations appendix.
 
 ### Key results
 
@@ -157,6 +187,21 @@ The scripted experiments reproduce exactly from seeds and need no API key. The e
 ### Responsible release
 
 The expert channels are textbook covert-channel patterns. The scripted adaptive attacker's best configurations are summarized by category rather than shipped as a turnkey recipe, and raw evolved protocols are gitignored. No real systems were touched; the work uses only public incident reporting. See Appendix A of the report for the full dual-use and ethics discussion.
+
+### Citation
+
+If you reference this work, please cite:
+
+```bibtex
+@misc{boddu2026whispering,
+  title  = {Whispering Through the Package Cache: Why Monitoring Colluding Agents
+            Catches Clumsy Lies but Not Careful Ones, and Only Isolation Holds},
+  author = {Boddu, Asha Jyothi},
+  year   = {2026},
+  note   = {Apart Research Swarm Alignment Hackathon},
+  url    = {https://github.com/Asha0509/Swarm-Alignment-Hackathon}
+}
+```
 
 ### Acknowledgements
 
@@ -1174,7 +1219,7 @@ Oversight today mostly reads agent transcripts. The incident shows two problems:
 
 **Framing.** This is an AI-control capability evaluation (Greenblatt et al. 2024). Real language-model agents run on the honest and oversight side of our sandbox: live agents do the legitimate build work, and the transcript monitor is itself a language-model judge. The covert attacker is scripted, so its capacity is a worst-case bound on mechanism rather than a claim about how any model behaves. Eliciting the covert strategies from live agents is the clear next step, discussed in Limitations.
 
-### 2. Related work
+### 2. Related Work
 
 Prior collusion work measures steganography inside messages (Motwani et al. 2024). We measure coordination through infrastructure side effects, where the payload is in registry state, not text. AI-control work tests monitors against a single untrusted model (Greenblatt et al. 2024); we test a multi-agent setting with forgeable transcripts, and show a monitor that works against naive forgery but not against a careful one. Covert channels in shared systems are classic (Lampson 1973); our contribution is to measure their capacity and detectability for present-day language-model agents, and to locate exactly where infrastructure-grounded oversight breaks. We relate to multi-agent risk taxonomies (Hammond et al. 2025), agent identity (Chan et al. 2024), and cross-agent compromise (Lee and Tiwari 2024).
 
@@ -1238,9 +1283,11 @@ The thread is one argument in three steps: grounding oversight in infrastructure
 
 ![Figure 6: defense cost versus benefit](../figures/F6_defenses.png)
 
-### 5. Discussion
+### 5. Discussion and Limitations
 
 There is a trap here that is easy to miss. A consistency monitor does not just fail against a careful attacker; it can push a rational attacker toward being harder to catch. Fabrication is noisy: it leaves a claimed-but-absent trail that the monitor reads at once. Deploying the monitor makes fabrication a losing move, so the rational response is to stop fabricating and switch to disguise, performing real benign work and reporting it truthfully while the payload rides in benign-looking state. That attacker is quieter on every channel we measured, including the transcript judge. So a defender who adds a consistency check, and stops there, may select for adversaries that their other monitors cannot see. The broader lesson is that monitoring and isolation defend against different things. Cross-checking transcripts against infrastructure is worth doing against clumsy attackers, but once it is present the remaining threat is the disguised one, where detection falls to weak metadata statistics. Isolation sidesteps the arms race: it removes the shared surface the channel needs, so it does not matter whether the attacker is clumsy or careful, and it does not teach the attacker anything. For operators the order of operations is isolation first, monitoring as a backstop. These mechanisms are not specific to a package cache; any shared, writable, observable surface has the same structure.
+
+**Limitations and future work.** The main limitation is scope: the covert attacker is scripted rather than a live colluding model, we model one infrastructure type, and sample sizes are modest. The full list, with the dual-use and ethics discussion required by the sprint, is in Appendix A. The clearest next step is to elicit the consistent-liar and broadcast strategies from live agents, to measure whether current models discover them unprompted, and to replace the erasure noise model with the statistics of real cache eviction.
 
 ### 6. Conclusion
 
@@ -1606,6 +1653,33 @@ throughput: 245 benign episodes/s
 - Built the submission PDF from report/REPORT.md with Python (fpdf2), figures and tables embedded: report/final/Whispering-Through-the-Package-Cache.pdf, 9 pages, text verified clean and copy-pasteable. scripts/build_pdf.py added.
 - check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
 
+### 2026-11-09 15:09 IST — Official-template PDF, Tables 1-2, H5, compliance audit
+- **PRD ref:** §11, §8
+- **File:lines:** report/REPORT.md, scripts/build_pdf.py, report/final/*.pdf, pyproject.toml
+- **What changed:** matched the official template structure (title block, author, With Apart Research, numbered contributions, section order), embedded Table 1 (controls) and Table 2 (main results) which the report had referenced but omitted, added the pre-registered H5 elicitation-gap result. Rebuilt report/final PDF with Python (fpdf2, serif/Times, letter): 9 pages, main text ends by page 6, appendices after. Excluded the one-off build_pdf.py from ruff/pyright.
+- **Compliance audit (all required PASS):** PDF present; main text <=8 pages excl refs/appendix; abstract 231 words; author + affiliation; Limitations+Dual-Use appendix; trace passes (no fabricated numbers); all recommended sections; prior code marked; AI usage disclosed; 0 evolved protocols tracked.
+- **Rubric self-assessment (strict judge):** Impact 4, Execution 4, Presentation 4. Blockers to 5: scripted (not live) colluders, modest n, findings partly confirm priors.
+- **Checks:** check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
+- **Open:** official-template exact styling (optional, no LibreOffice here); video (optional).
+- **Built by:** team with an AI coding assistant
+
+### 2026-11-09 15:18 IST — Fix orphaned headings in the report PDF
+- **File:lines:** scripts/build_pdf.py (keep-with-next heading logic)
+- **What changed:** headings now reserve room for the heading plus ~4 body lines; if the space is not there the heading moves to the next page with its paragraph. Verified: no page ends with a bare section title (0 orphans across 9 pages). Tables and images also keep-together. Main text still 6 pages; references and appendices follow.
+- **Built by:** team with an AI coding assistant
+
+### 2026-11-09 15:23 IST — Untrack heavy book HTML, add CI, dedup check
+- Removed docs/PROJECT_BOOK.html from version control (3.3 MB base64 file GitHub refuses to render); gitignored it, kept the renderable PROJECT_BOOK.md, and pointed the README at the .md. Regenerate the HTML locally with make book.
+- Added .github/workflows/ci.yml: on push/PR it installs with uv and runs ruff, pyright and the free pytest suite (no secrets). Added a CI badge to the README.
+- Duplication scan: no duplicate content among tracked files except the six intentional .gitkeep placeholders; nothing removed.
+- **Built by:** team with an AI coding assistant
+
+### 2026-11-09 15:31 IST — MIT license, badges, mermaid architecture
+- Added LICENSE (MIT, Asha Jyothi Boddu 2026).
+- README badges: CI, License MIT, Python 3.11+, tests passing. Added a mermaid system-flow diagram to the README and linked docs/ARCHITECTURE.md.
+- New docs/ARCHITECTURE.md: mermaid system data-flow and experiment-pipeline diagrams (GitHub renders natively) plus a component-responsibility table. results/RESULTS.md already exists; no separate results doc needed.
+- **Built by:** team with an AI coding assistant
+
 ---
 
 <a id="part-14"></a>
@@ -1638,6 +1712,10 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 12:58 IST | 0e01a8f | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 13:03 IST | 6ebde80 | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 14:57 IST | 838d788 | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 15:05 IST | 092a9b1 | ✘ | ✘ | 87/0/0 |
+| 2026-11-09 15:06 IST | 348cf48 | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 15:23 IST | 64718ec | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 15:33 IST | d7e3af3 | ✔ | ✔ | 87/0/0 |
 
 ---
 
@@ -1876,3 +1954,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 11:52 IST | Claude Code (Opus) | Presentation tightening + framing | Human edits |
 | 2026-11-09 11:58 IST | Adaption (benign model) + Claude Code | A3 invented benign scenarios + FPR test | Team reviews |
 | 2026-11-09 12:59 IST | Adaption gemma-4-31b-it (honest workers) + Claude Code | Live LLM-benign validation (FPR transfer) | Team reviews |
+| 2026-11-09 15:09 IST | AI coding assistant | Template PDF, tables/H5, compliance audit and rubric ranking | Author reviews |
