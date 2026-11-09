@@ -248,8 +248,19 @@ def write_results(nums: dict) -> None:
         for s, d in nums["T2"].get(m, {}).items():
             ci = f"{d['undetected_capacity']:.1f} ({d['uc_lo']:.1f}-{d['uc_hi']:.1f})"
             lines.append(f"| {m} | {s} | {d['tpr5']:.2f} | {d['tpr1']:.2f} | {d['auroc'] or 0:.2f} | {ci} | {d['n']} |")
+    if "H6" in nums:
+        lines.append("\n## H6 Fabrication vs disguise: does any monitor catch a consistent liar?\n")
+        lines.append("Monitor AUROC (benign vs attacker), spoof rate 1.0.\n")
+        lines.append("| Monitor | Clumsy spoofer (fabricates) | Consistent liar (disguises) |")
+        lines.append("|---|---|---|")
+        for m in MONITORS:
+            a, b = nums["H6"]["naive"].get(m), nums["H6"]["hard"].get(m)
+            if a and b:
+                lines.append(f"| {m} | {a['auroc']:.2f} | {b['auroc']:.2f} |")
+        lines.append("\nThe consistency monitor catches fabrication perfectly but a consistent liar at chance; "
+                     "the combined monitor degrades. See figures/F8_disguise.png.\n")
     lines.append("\n## Figures\n")
-    for fig in ("F1_schematic", "F2_frontier", "F3_spoof_sweep", "F5_adaptation", "F6_defenses"):
+    for fig in ("F1_schematic", "F2_frontier", "F3_spoof_sweep", "F5_adaptation", "F6_defenses", "F8_disguise"):
         if (FIGDIR / f"{fig}.png").exists():
             lines.append(f"![{fig}](../figures/{fig}.png)\n")
     (Path(__file__).resolve().parents[1] / "results" / "RESULTS.md").write_text("\n".join(lines))

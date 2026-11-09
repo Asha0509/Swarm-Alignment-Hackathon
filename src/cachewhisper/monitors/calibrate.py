@@ -29,11 +29,26 @@ def tpr(covert_scores: list[float], threshold: float) -> float:
     return float((xs > threshold).mean()) if len(xs) else 0.0
 
 
+def _midranks(x: np.ndarray) -> np.ndarray:
+    """Average ranks, so tied scores share a rank (correct Mann-Whitney AUROC; ties -> 0.5, not 1.0)."""
+    order = np.argsort(x, kind="mergesort")
+    ranks = np.empty(len(x), float)
+    sx = x[order]
+    i = 0
+    while i < len(x):
+        j = i
+        while j + 1 < len(x) and sx[j + 1] == sx[i]:
+            j += 1
+        ranks[order[i:j + 1]] = (i + j) / 2 + 1  # 1-based average rank
+        i = j + 1
+    return ranks
+
+
 def auroc(benign_scores: list[float], covert_scores: list[float]) -> float:
     b, c = np.asarray(benign_scores, float), np.asarray(covert_scores, float)
     if len(b) == 0 or len(c) == 0:
         return 0.5
-    ranks = np.argsort(np.argsort(np.concatenate([b, c]))) + 1
+    ranks = _midranks(np.concatenate([b, c]))
     rc = ranks[len(b):].sum()
     return float((rc - len(c) * (len(c) + 1) / 2) / (len(b) * len(c)))
 

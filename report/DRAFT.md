@@ -60,7 +60,7 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 
 ![Figure 2: what each monitor lets through under spoofing](../figures/F2_frontier.png)
 
-**Spoofing breaks transcript oversight, not infrastructure oversight (Figure 3, Table 2).** On honest transcripts M1 catches 72 percent of attacks at the 5 percent budget (AUROC 0.97). Once transcripts are fully spoofed it catches 2 percent. M3, which compares claims to the infrastructure log, catches 0 percent when there is nothing to lie about and 100 percent under full spoofing: spoofing is the signal it is built to find. M2 reads the infrastructure log and is unaffected by spoofing. M* follows the stronger of its parts and catches all spoofed attacks.
+**Spoofing breaks transcript oversight, not infrastructure oversight (Figure 3, Table 2).** On honest transcripts M1 catches 72 percent of attacks at the 5 percent budget (AUROC 0.90). Once transcripts are fully spoofed it catches 2 percent. M3, which compares claims to the infrastructure log, catches 0 percent when there is nothing to lie about and 100 percent under full spoofing: spoofing is the signal it is built to find. M2 reads the infrastructure log and is unaffected by spoofing. M* follows the stronger of its parts and catches all spoofed attacks.
 
 ![Figure 3: detection versus spoof rate](../figures/F3_spoof_sweep.png)
 

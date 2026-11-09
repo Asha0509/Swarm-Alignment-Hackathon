@@ -1,0 +1,1 @@
+Figure 8. Grey bars: a spoofer that fabricates cover stories is caught by the consistency and combined monitors (AUROC 1.0). Colored bars: a consistent liar that backs its claims with real benign work defeats the consistency monitor (AUROC 0.50, chance) and degrades the combined monitor, so no infrastructure monitor is robust. n=36 attacks.

@@ -129,3 +129,10 @@ throughput: 245 benign episodes/s
 - **Measured (ad hoc, pre-E7):** M3 mismatch 0.98 under naive s=1 -> 0.00 under hard s=1. Across E2/E3/E5 the consistent liar evades M2, M3, M4 and M* (TPR/AUROC near benign); M1 scores it ~0.05 (near-benign 0.0), so M1 does not meaningfully catch it either. D1 isolation still removes the channel regardless of reporting.
 - **Real run:** E7 (fabrication vs disguise) launched in background to measure this rigorously with benign baselines and AUROC.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 11:26 IST — E7 fabrication-vs-disguise analysis + F8 (P0 complete)
+- **PRD ref:** FR-7, FR-15
+- **Real run:** E7, 36 attacker (E2/E3/E5) + 24 benign episodes, M1 on a third. H6 result (AUROC benign vs attacker): consistency monitor M3 1.00 (fabrication) -> 0.50 (consistent liar); combined M* 1.00 -> 0.70; metadata M2 0.72 both; transcript M1 0.92 -> 1.00 but at low absolute suspicion (0.33 vs 0.95 for fabrication). F8_disguise.png renders the collapse.
+- **Tests:** full suite 84 PASS after the AUROC fix.
+- **Built by:** team with Claude Code
+- **Takeaway:** the circular headline is defused. No infrastructure monitor is robust to a consistent liar; D1 isolation is the robust defense. Draft reframe (P3) pending human go-ahead.

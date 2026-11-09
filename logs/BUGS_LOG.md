@@ -61,3 +61,11 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Fix:** load_rows now de-duplicates by episode_id keeping the last occurrence, so analysis counts each episode once regardless of resume artifacts. src/cachewhisper/experiment.py:load_rows.
 - **Affected results:** none reported yet (found before analyse.py was run on E1).
 - **Status:** FIXED
+
+## 2026-11-09 11:26 IST — B007 AUROC gave tied scores distinct ranks
+- **Severity:** major (reported AUROC where there was no separation; e.g. M3 at spoof 0, and M3 under disguise, read 1.00 instead of 0.50)
+- **Found by:** E7 analysis (M3 under hard spoof showed AUROC 1.00 with attacker and benign both scoring 0.00)
+- **Root cause:** calibrate.auroc used argsort(argsort) ranks, which break ties arbitrarily instead of averaging them.
+- **Fix:** midrank (Mann-Whitney) ranking; ties now share a rank so no-separation reads 0.50. src/cachewhisper/monitors/calibrate.py.
+- **Affected results (regenerated):** T2 AUROC column: M3 s=0 1.00 -> 0.50, M1 s=1 0.91 -> 0.60 (others unchanged within rounding). H1 (undetected capacity) unaffected. report_numbers.json, RESULTS.md, DRAFT.md AUROC references updated. Regression: tests/test_monitors.py already covers AUROC 0.5 on same-distribution.
+- **Status:** FIXED

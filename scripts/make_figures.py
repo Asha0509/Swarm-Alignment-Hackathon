@@ -121,10 +121,37 @@ def f6_defenses(nums: dict) -> None:
            "Error bars are 95% CIs.")
 
 
+def f8_disguise(nums: dict) -> None:
+    """Fabrication vs disguise: each monitor's AUROC against a clumsy spoofer and a consistent liar."""
+    h6 = nums.get("H6")
+    if not h6:
+        return
+    import numpy as np
+    mons = [m for m in ("M1", "M2", "M3", "M4", "M*") if m in h6.get("naive", {}) and m in h6.get("hard", {})]
+    fig, ax = F.new_ax("", "Separates attacks from benign (AUROC)",
+                       "What survives a consistent liar")
+    x = np.arange(len(mons))
+    naive = [h6["naive"][m]["auroc"] for m in mons]
+    hard = [h6["hard"][m]["auroc"] for m in mons]
+    ax.bar(x - 0.2, naive, 0.38, label="clumsy spoofer (fabricates)", color="#BBBBBB")
+    ax.bar(x + 0.2, hard, 0.38, label="consistent liar (disguises)",
+           color=[F.MONITOR_COLOR[m] for m in mons])
+    ax.axhline(0.5, ls="--", lw=1, color="#999")
+    ax.text(len(mons) - 0.5, 0.52, "chance", fontsize=8, color="#999", ha="right")
+    ax.set_xticks(x)
+    ax.set_xticklabels([F.MONITOR_LABEL[m] for m in mons], rotation=20, ha="right", fontsize=8)
+    ax.set_ylim(0, 1.05)
+    ax.legend(fontsize=8, frameon=False, loc="lower left")
+    F.save(fig, "F8_disguise", "Figure 8. Grey bars: a spoofer that fabricates cover stories is caught by the "
+           "consistency and combined monitors (AUROC 1.0). Colored bars: a consistent liar that backs its "
+           "claims with real benign work defeats the consistency monitor (AUROC 0.50, chance) and degrades "
+           f"the combined monitor, so no infrastructure monitor is robust. n={h6['hard']['M2']['n_att']} attacks.")
+
+
 def main() -> None:
     f1_schematic()
     nums = json.loads(NUMS.read_text()) if NUMS.exists() else {}
-    for fn in (f2_frontier, f3_spoof, f5_adapt, f6_defenses):
+    for fn in (f2_frontier, f3_spoof, f5_adapt, f6_defenses, f8_disguise):
         try:
             fn(nums)
         except Exception as e:  # noqa: BLE001 - a missing arm should not stop the others
