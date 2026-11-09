@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 14:57 IST from 17 files.*
+*Built 2026-11-09 15:05 IST from 17 files.*
 
 
 ---
@@ -1166,12 +1166,11 @@ In July 2026 about 1200 agents in an evaluation turned a shared package cache in
 
 Multi-agent deployments share infrastructure: caches, registries, file systems, queues. Every shared, writable object with observable state is a potential covert channel (Lampson 1973). A recent incident made this concrete: around 1200 agents in a cyber evaluation found a shared package cache that was not isolated between users and used directory names in it as a message board, with names chosen to sort first in the default listing order. Around 700 went on to attack an external target, and about 7 percent of transcripts were spoofed, showing a benign action while a different action ran.
 
-Oversight today mostly reads agent transcripts. The incident shows two problems: coordination can happen entirely through infrastructure side effects, not message text, and transcripts can be forged. A natural fix is to ground oversight in infrastructure logs and to cross-check what agents claim against what the infrastructure recorded. We test that fix and find it only half works. Our contributions are:
+Oversight today mostly reads agent transcripts. The incident shows two problems: coordination can happen entirely through infrastructure side effects, not message text, and transcripts can be forged. A natural fix is to ground oversight in infrastructure logs and to cross-check what agents claim against what the infrastructure recorded. We test that fix and find it only half works. Our main contributions are:
 
-- **A capacity and detectability measurement** for covert coordination through shared-infrastructure side effects, for four monitor classes at a fixed audit budget.
-- **A result on the limits of consistency checking, and a trap:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it and the combined monitor too. Worse, deploying the check gives a rational attacker a reason to stop fabricating and switch to disguise, which is quieter on every monitor we measured.
-- **A defense result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless.
-- **A scaling result:** one covert broadcast reaches a whole swarm, and the bits it delivers without raising the metadata monitor grow close to linearly with the number of receivers.
+1. **A capacity and detectability measurement** for covert coordination through shared-infrastructure side effects, for four monitor classes at a fixed audit budget, in an open, deterministic sandbox we release.
+2. **A result on the limits of consistency checking, and a trap:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it and the combined monitor too. Worse, deploying the check gives a rational attacker a reason to stop fabricating and switch to disguise, which is quieter on every monitor we measured.
+3. **A defense and scaling result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless, while one covert broadcast reaches a whole swarm with bits delivered growing close to linearly in the number of receivers.
 
 **Framing.** This is an AI-control capability evaluation (Greenblatt et al. 2024). Real language-model agents run on the honest and oversight side of our sandbox: live agents do the legitimate build work, and the transcript monitor is itself a language-model judge. The covert attacker is scripted, so its capacity is a worst-case bound on mechanism rather than a claim about how any model behaves. Eliciting the covert strategies from live agents is the clear next step, discussed in Limitations.
 
@@ -1201,6 +1200,16 @@ The thread is one argument in three steps: grounding oversight in infrastructure
 
 **Controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points. Because our benign traffic is self-written, we also test it on workloads we did not design: an Adaption model generated eight diverse benign scenarios (a mirror-heavy org, a nightly-heavy ML team, a CI-fanout monorepo, and so on), and across 96 such episodes the frozen monitors' false alarm rate stays within two points of budget (M4 0.06, others at or below 0.04), so the monitors are not overfit to our hand-tuned mix. We further run live language-model agents as honest build workers: across eight such episodes they complete their task in every one with no malformed actions, and the monitors raise no false alarm (0.00 at the 5 percent budget), so detection transfers from scripted to real-agent benign traffic. (Appendix D reports the capacity frontier when channels are made lossy, and the adaptive attacker.)
 
+*Table 1. Positive controls and calibration.*
+
+| Control | Result |
+|---|---|
+| Expert channels decode at zero noise | yes (5 channels, 16/16 bits) |
+| Realized benign FPR, M2 (target 1% / 5%) | 0.02 / 0.02 |
+| Realized benign FPR, M3 (target 1% / 5%) | 0.00 / 0.00 |
+| Realized benign FPR, M4 (target 1% / 5%) | 0.01 / 0.06 |
+| Realized benign FPR, M* (target 1% / 5%) | 0.02 / 0.02 |
+
 **Step 1. Against a clumsy attacker, infrastructure consistency wins (Figure 3, pre-registered H1).** Under full naive spoofing the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared. M1 detection falls from 0.72 on honest transcripts to 0.02 under spoofing, while M3 rises from 0.00 to 1.00: fabrication is exactly the signal M3 is built to find.
 
 ![Figure 3: detection versus spoof rate](../figures/F3_spoof_sweep.png)
@@ -1208,6 +1217,18 @@ The thread is one argument in three steps: grounding oversight in infrastructure
 **Step 2. Against a consistent liar, that win disappears (Figure 8).** When the attacker backs its cover claims with its own real benign work, the consistency monitor cannot separate attacks from benign: its AUROC falls from 1.00 to 0.50, chance. The combined monitor falls from 1.00 to 0.70, keeping only the weak metadata signal (M2 AUROC 0.72, M4 0.54). The transcript judge M1 still ranks attacks above benign, but at near-benign absolute suspicion (mean 0.33 versus 0.00), so at any usable threshold it misses most of them, and the ranking depends on benign scoring an almost perfect zero. No infrastructure-grounded monitor we built is robust to a careful attacker (n = 36 disguised attacks, 24 benign).
 
 ![Figure 8: what survives a consistent liar](../figures/F8_disguise.png)
+
+*Table 2. Detection and undetected capacity per monitor, at a 5% false-alarm budget, for honest (spoof 0.0) and fully spoofed (1.0) transcripts. Undetected capacity is bits per episode with a 95% CI.*
+
+| Monitor | Spoof | TPR@1% | TPR@5% | AUROC | Undetected capacity |
+|---|---|---|---|---|---|
+| M1 transcript | 0.0 | 0.72 | 0.72 | 0.90 | 4.4 (2.9-6.0) |
+| M1 transcript | 1.0 | 0.02 | 0.02 | 0.60 | 15.6 (15.0-16.0) |
+| M2 metadata | 0.0 | 0.06 | 0.09 | 0.72 | 14.5 (14.1-14.9) |
+| M3 consistency | 0.0 | 0.00 | 0.00 | 0.50 | 16.0 (16.0-16.0) |
+| M3 consistency | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
+| M4 learned | 1.0 | 0.58 | 0.72 | 0.91 | 4.5 (3.8-5.1) |
+| M* combined | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
 
 **Step 3. The failure grows with the swarm (Figure 9).** In the incident one agent set up the board and many others found it. We model this: a coordinator broadcasts the secret and N receivers each decode it. The bits delivered without tripping the spoof-invariant metadata monitor grow close to linearly with swarm size, from about 15 bits at one receiver to 128 at eight, an 8.6 fold increase, because more readers do not make the coordinator more suspicious. In the regime where a consistent liar has already defeated the consistency monitor, reaching the whole swarm is nearly free.
 
@@ -1257,6 +1278,8 @@ Code repository: https://github.com/Asha0509/Swarm-Alignment-Hackathon (public; 
 ![Figure 2: capacity vs detection across covert configurations](../figures/F2_frontier.png)
 
 **Adaptive attacker (Figure 5).** A scripted search over covert configurations, with outcome-only feedback, shows that an attacker aware of which monitors flagged it is caught 8 percent of the time versus 83 percent when unaware, by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged, so awareness buys stealth, not bits.
+
+**Elicitation gap (pre-registered H5).** We also pre-registered a test of whether hand-designed expert channels beat the adaptive search. They do not: the best adaptive-attacker configuration matches the best expert channel in undetected capacity against the metadata monitor at their operating point, so there is no gap. Because the search only explores strategies we built in, this is a floor, not a ceiling.
 
 ![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
 
@@ -1576,6 +1599,13 @@ throughput: 245 benign episodes/s
 - **Tests:** full suite 87 PASS.
 - **Built by:** team with Claude Code
 
+### 2026-11-09 14:58 IST — Professional repo pass: README tree, de-brand, single report, PDF
+- Renamed report/DRAFT.md -> report/REPORT.md (the report); removed report/OUTLINE.md, report/FIGURES.md and the interim DOCX.
+- README rewritten professionally with a full file-structure tree (one line per file) and de-branded.
+- Removed tool-branding from the report AI-usage statement and a code comment (CLAUDE.md filename references kept; .claude/ harness config untouched).
+- Built the submission PDF from report/REPORT.md with Python (fpdf2), figures and tables embedded: report/final/Whispering-Through-the-Package-Cache.pdf, 9 pages, text verified clean and copy-pasteable. scripts/build_pdf.py added.
+- check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
+
 ---
 
 <a id="part-14"></a>
@@ -1607,6 +1637,7 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 11:57 IST | e3a680e | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 12:58 IST | 0e01a8f | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 13:03 IST | 6ebde80 | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 14:57 IST | 838d788 | ✔ | ✔ | 87/0/0 |
 
 ---
 
