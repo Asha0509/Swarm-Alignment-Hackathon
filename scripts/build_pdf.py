@@ -205,6 +205,32 @@ while i < len(LINES):
     if re.fullmatch(r"\s*", line) or line.strip() == "---":
         i += 1
         continue
+    if line.startswith("*Table") and line.endswith("*"):
+        # a table caption: keep it on the same page as its table
+        j = i + 1
+        while j < len(LINES) and not LINES[j].strip():
+            j += 1
+        if j < len(LINES) and re.match(r"^\|.*\|", LINES[j]):
+            rows = []
+            k = j
+            while k < len(LINES) and re.match(r"^\|.*\|", LINES[k]):
+                rows.append(LINES[k])
+                k += 1
+            cells = [[c.strip() for c in r.split("|")[1:-1]] for r in rows]
+            cells = [r for r in cells if not all(re.fullmatch(r"\s*:?-+:?\s*", c or " ") for c in r)]
+            ncol = max(len(r) for r in cells)
+            w = CW / ncol
+            pdf.set_font("Times", "", 8.5)
+            th = sum(4.0 * max(1, *[len(pdf.multi_cell(w, 4.0, c, dry_run=True, output="LINES"))
+                                    for c in (r + [""] * (ncol - len(r)))]) for r in cells)
+            pdf.set_font("Times", "I", 9)
+            ch = len(pdf.multi_cell(0, 4.6, line.strip("*"), dry_run=True, output="LINES")) * 4.6 + 3
+            usable = pdf.page_break_trigger - pdf.t_margin
+            if pdf.get_y() + ch + th + 4 > pdf.page_break_trigger and (ch + th) <= usable:
+                pdf.add_page()
+        para(line.strip("*"), size=9, style="I", align="L", gap=0.6)
+        i += 1
+        continue
     if line.startswith("*") and line.endswith("*") and not line.startswith("**"):
         para(line.strip("*"), size=9, style="I", align="C", gap=1)
         i += 1
