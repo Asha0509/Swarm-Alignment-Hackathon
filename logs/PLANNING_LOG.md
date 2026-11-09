@@ -43,3 +43,9 @@ Decisions, gate outcomes, scope changes, pre-registration deviations.
 - **Decision + why:** proceed to PREREG. Real E0 will use 200 benign seeds to finalize thresholds.
 - **Affects PREREG?** no (thresholds refit on frozen calibration seeds at E0)
 - **Decided by:** Claude Code
+
+## 2026-11-09 09:57 IST — D005 PREREG frozen
+- **Context:** PRD §6 / KICKOFF Prompt 5.
+- **Decision:** PREREG.md committed alone and tagged prereg-frozen at commit 58ae747. Primary H1 = paired (M1 - M*) undetected capacity at s=1, declared iff CI>0 and mean>=2 bits. Attacker scripted (D003). Frozen hashes recorded.
+- **Affects PREREG?** this IS the freeze.
+- **Decided by:** team (approved in chat)

@@ -7,7 +7,7 @@
 - [x] FR-5 adaptive attacker (scripted, D003) + tactic cards
 - [x] FR-8 monitors M1 M2 M3 M4a M* + calibration
 - [x] G2 benign FPR within ±2 pts
-- [ ] PREREG frozen + tagged
+- [x] PREREG frozen + tagged
 - [ ] E0 · E1 · E2 · E3
 - [ ] analyse.py · figures F1–F5 · T1 · T2 · RESULTS.md
 - [ ] G3 trace_numbers passes
