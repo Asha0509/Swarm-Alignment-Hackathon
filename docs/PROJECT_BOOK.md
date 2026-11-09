@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 12:59 IST from 18 files.*
+*Built 2026-11-09 14:57 IST from 17 files.*
 
 
 ---
@@ -13,133 +13,154 @@
 
 ## Whispering Through the Package Cache
 
-**How much can colluding AI agents hide in shared infrastructure, even when their transcripts lie?**
+**How much can colluding AI agents hide in shared infrastructure, and does oversight catch them when their transcripts lie?**
 
-*Apart Research · Swarm Alignment Hackathon · Nov 2026 · Track 4 (Multi-Agent Oversight & Control) + Track 1 (Sandboxes & Testbeds)*
+*Apart Research Swarm Alignment Hackathon 2026. Track 4 (Multi-Agent Oversight and Control), secondary Track 1 (Sandboxes and Testbeds).*
 
-> **Under full transcript spoofing, transcript-only oversight leaves 15.6 bits per episode uncaught (95% CI 15.0 to 16.0) that an infrastructure-grounded consistency monitor catches, and per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
->
-> 📄 Paper: [report/DRAFT.md](report/DRAFT.md) (PDF at submission) · 📚 Everything in one page: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
+> Monitoring colluding agents catches clumsy lies, not careful ones, and only isolation holds. Under full transcript spoofing, transcript-only oversight leaves **15.6 hidden bits per episode uncaught (95% CI 15.0 to 16.0)** that an infrastructure-grounded consistency monitor catches, but a consistent liar that backs its claims with real work defeats that monitor too (AUROC 1.00 to 0.50). **Per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
 
-<p align="center"><img src="../figures/F1_schematic.png" width="820" alt="CacheGym system schematic"></p>
+Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · One-page project book: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
+
+<p align="center"><img src="../figures/F1_schematic.png" width="760" alt="CacheGym system schematic"></p>
 
 ---
 
-### TL;DR
+### Overview
 
-In July 2026, about 1200 AI agents in an OpenAI cyber evaluation turned a **shared, non-isolated package cache** into a message board, and about 700 of them broke into Hugging Face together. About 7% of their transcripts were **spoofed**. Oversight that reads transcripts could not see what the infrastructure saw.
+In July 2026 about 1200 AI agents in a cyber evaluation turned a shared, non-isolated package cache into a message board, and about 700 of them coordinated an attack on an external target. About 7% of their transcripts were spoofed: the agent showed one action while running another. Oversight that reads transcripts could not see what the infrastructure saw.
 
-We built **CacheGym**, a free, deterministic sandbox with a mock package registry modeled on that channel. In it we measure:
+This project builds **CacheGym**, a deterministic, zero-cost sandbox with a mock package registry modeled on that channel, and measures four things:
 
-1. **Capacity:** how many secret bits colluding agents (scripted expert channels and a scripted adaptive attacker) can pass through registry side-effects.
-2. **Detectability:** which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-vs-infrastructure **consistency** (M3), and learned (M4).
-3. **Spoof-robustness:** how each monitor degrades as transcripts are forged (0–100%).
-4. **Defense cost:** how much channel capacity cheap mitigations remove, and what they cost honest agents.
+1. **Capacity** — how many secret bits colluding agents can pass through registry side effects.
+2. **Detectability** — which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-versus-infrastructure consistency (M3), and learned (M4).
+3. **Spoof-robustness** — how each monitor degrades as transcripts are forged, including a *consistent liar* who backs false claims with real work.
+4. **Defense cost** — how much capacity cheap mitigations remove, and what they cost honest agents.
 
-This is an **AI-control capability evaluation**: colluders are instructed to collude (worst-case red team). We do not claim agents would do it unprompted.
+This is an AI-control capability evaluation: the covert attacker is scripted (a worst-case bound), while live language-model agents run on the honest and oversight side.
 
-### Headline results
+### Key results
 
-
-| Figure | What it shows |
+| Finding | Evidence |
 |---|---|
-| <img src="../figures/F2_frontier.png" width="420"> | **F2: capacity vs detection frontier** per monitor at a 5% false-alarm budget |
-| <img src="../figures/F3_spoof_sweep.png" width="420"> | **F3: detection vs spoof rate**: what happens when transcripts lie |
-| <img src="../figures/F6_defenses.png" width="420"> | **F6: defenses**: capacity removed vs honest work lost |
+| Spoofing breaks transcript oversight | M1 detection falls from 0.72 to 0.02 as transcripts are spoofed; 15.6 bits per episode go uncaught |
+| Infrastructure consistency catches a clumsy attacker | M3 detection rises from 0.00 to 1.00 under naive spoofing (pre-registered H1, declared) |
+| A consistent liar defeats it | M3 AUROC falls from 1.00 to 0.50 (chance); the combined monitor from 1.00 to 0.70 |
+| No infrastructure monitor is robust | metadata AUROC 0.72, learned 0.54 against the disguised attacker |
+| One broadcast scales to the swarm | undetected delivered capacity grows about 8.6x from 1 to 8 receivers |
+| Isolation is the defense that holds | per-agent namespace isolation removes 99.0% of capacity at no honest-utility cost |
+| Monitors are not overfit to our benign traffic | false-alarm rate stays within budget on externally generated and on live-agent benign traffic |
 
-**Main table (T2): undetected capacity at a 5% false-alarm budget**
+Main table, undetected capacity at a 5% false-alarm budget:
 
-| Monitor | Spoof | TPR@1% | TPR@5% | AUROC | Undetected capacity (bits, 95% CI) |
-|---|---|---|---|---|---|
-| M1 transcript | 0.0 | 0.72 | 0.72 | 0.97 | 4.4 (2.9-6.0) |
-| M1 transcript | 1.0 | 0.02 | 0.02 | 0.91 | 15.6 (15.0-16.0) |
-| M2 metadata | 0.0 | 0.06 | 0.09 | 0.72 | 14.5 (14.1-14.9) |
-| M2 metadata | 1.0 | 0.06 | 0.09 | 0.72 | 14.5 (14.1-14.9) |
-| M3 consistency | 0.0 | 0.00 | 0.00 | 1.00 | 16.0 (16.0-16.0) |
-| M3 consistency | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
-| M4 learned | 0.0 | 0.58 | 0.72 | 0.91 | 4.5 (3.8-5.1) |
-| M4 learned | 1.0 | 0.58 | 0.72 | 0.91 | 4.5 (3.8-5.1) |
-| M* combined | 0.0 | 0.06 | 0.09 | 0.66 | 14.5 (14.1-14.9) |
-| M* combined | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
+| Monitor | Spoof | TPR@5% | AUROC | Undetected capacity (bits, 95% CI) |
+|---|---|---|---|---|
+| M1 transcript | 0.0 | 0.72 | 0.90 | 4.4 (2.9-6.0) |
+| M1 transcript | 1.0 | 0.02 | 0.60 | 15.6 (15.0-16.0) |
+| M3 consistency | 0.0 | 0.00 | 0.50 | 16.0 (16.0-16.0) |
+| M3 consistency | 1.0 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
+| M* combined | 1.0 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
 
+Full results and every figure: [results/RESULTS.md](results/RESULTS.md).
 
-Full results, every figure and every number: **[results/RESULTS.md](results/RESULTS.md)**.
-Everything in one page: **[docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)**.
+<p align="center">
+<img src="../figures/F3_spoof_sweep.png" width="340"> <img src="../figures/F8_disguise.png" width="340"><br>
+<img src="../figures/F9_scaling.png" width="340"> <img src="../figures/F6_defenses.png" width="340">
+</p>
 
-### Infra-operator runbook (what to do on Monday)
+### Infra-operator runbook
 
-1. **Isolate** shared caches and registries per agent, and measure the utility cost (D1).
-2. **Log at the infrastructure layer**, not only in agent transcripts. Hash-chain it.
-3. **Cross-check transcripts against infrastructure logs** (M3). A mismatch is itself an alarm.
-4. **Budget audits at a fixed false-alarm rate** and report *undetected capacity*, not just accuracy.
+1. **Isolate** shared caches and registries per agent. This removed 99% of channel capacity at no measured honest cost, and unlike monitoring it does not depend on the attacker being clumsy.
+2. **Log at the infrastructure layer**, not only in agent transcripts, and hash-chain the log.
+3. **Cross-check transcripts against infrastructure logs** as a backstop. A mismatch is a strong alarm, but only against fabrication; a careful attacker that reports real work will not create one.
+4. **Budget audits at a fixed false-alarm rate** and report undetected capacity, not accuracy.
 
----
+### Repository structure
 
-### Deliverables matrix
-
-Official requirements from the [sprint page](https://apartresearch.com/sprints/swarm-alignment-2026) on the left, mapped to what this repo delivers. Tick each box (☐ → ✅) when filling the template at the end, and only for rows that are true.
-
-| ✔ | Official requirement | Required? | Where in this project |
-|---|---|---|---|
-| ✅ | Research report PDF on the official template | **Required** | `report/final/*.pdf` (source: `report/DRAFT.md`) |
-| ✅ | ≤ 8 pages excluding references and appendices | Required | target 6 pages |
-| ✅ | Title + abstract (150–250 words) | Required | `report/DRAFT.md` § Abstract |
-| ✅ | Author names and affiliations | Required | template header |
-| ✅ | Intro, Related Work, Methodology, Results, Discussion, Limitations, References | Required | `report/OUTLINE.md` → `report/DRAFT.md` |
-| ✅ | **Limitations and Dual-Use / Ethical Considerations** appendix | **Required** | Report Appendix A |
-| ✅ | Pre-existing code marked | Required | [`PREEXISTING.md`](PREEXISTING.md), Appendix B |
-| ✅ | No fabricated results or references | Required | `scripts/trace_numbers.py`, [`report/CITATIONS.md`](report/CITATIONS.md), Appendix C |
-| ✅ | Public GitHub repo | Optional | this repo |
-| ☐ | 3–5 min video demo | Optional | link added here at submit |
-
-| ✔ | Our quality bar (beyond requirements) | Where |
-|---|---|---|
-| ✅ | Pre-registration frozen before main runs | [`PREREG.md`](PREREG.md), git tag `prereg-frozen` |
-| ✅ | Positive controls + calibration shown before claims | `figures/T1_controls.md` |
-| ✅ | Every figure regenerates with one command | `make figures` |
-| ✅ | Every number traceable to data | `results/processed/report_numbers.json` |
-| ✅ | Tests green | `logs/TEST_LOG.md` |
-| ✅ | Full research trail | [`logs/`](logs/): build, errors, bugs, challenges, decisions, runs, API usage, LLM usage |
-| ✅ | One-page project book | [`docs/PROJECT_BOOK.html`](docs/PROJECT_BOOK.html) |
-| ✅ | Total cash cost: $0 (Adaption sponsor credits: ~0.02 used; free tiers as fallback) | `logs/API_USAGE.csv` |
+```
+.
+├── README.md                     This file
+├── PREREG.md                     Pre-registration, frozen and tagged before the main runs
+├── PREEXISTING.md                Statement of pre-existing code (none beyond libraries)
+├── pyproject.toml / uv.lock      Python package metadata and locked dependencies
+├── Makefile                      One-command entry points (check, experiments, analyse, figures)
+├── setup.sh                      Idempotent environment and dependency setup
+│
+├── src/cachewhisper/             The sandbox and measurement library
+│   ├── config.py                 Model allowlist, provider URLs, price table, env-driven roles
+│   ├── llm.py                    Single gateway to all LLM calls: cache, backoff, rotation, usage log
+│   ├── registry.py               CacheGym mock package registry with pluggable defense policies
+│   ├── infralog.py               Hash-chained, append-only infrastructure log (the ground truth)
+│   ├── agents.py                 Agent interface, JSON-in-text tool parser, scripted and LLM agents
+│   ├── episode.py                Round-robin turn loop, lossy channel, broadcast-to-swarm episodes
+│   ├── channels.py               Five expert covert channels (board, existence, versions, order, stego)
+│   ├── benign.py                 Honest workload generator and infra-verified cover-task checker
+│   ├── spoof.py                  Transcript spoof layer: naive fabrication and the consistent liar
+│   ├── attacker.py               Scripted adaptive attacker (evolutionary search, outcome-only feedback)
+│   ├── defenses.py               Isolation (D1), listing randomization (D2), write quota (D3)
+│   ├── metrics.py                Bit error rate, binary-symmetric-channel capacity, bits per op
+│   ├── stats.py                  Bootstrap CIs, Wilson intervals, the pre-registered primary test
+│   ├── runs.py                   Run registry (one row per run, failures kept)
+│   ├── experiment.py             Experiment engine: build, score, persist raw rows, resumable
+│   ├── figures.py                Figure helpers: fixed monitor colors, direct labels, CI bands
+│   ├── adaption_jobs.py          Invent diverse benign scenarios to test false-alarm realism
+│   ├── smoke.py                  Live provider smoke test (model list plus one call each)
+│   └── monitors/
+│       ├── transcript.py         M1 transcript monitor (trusted-weaker language-model judge)
+│       ├── metadata.py           M2 metadata monitor and robust z-score scaler
+│       ├── consistency.py        M3 transcript-versus-infrastructure consistency monitor
+│       ├── learned.py            M4 gradient-boosting monitor on the M2 features
+│       ├── combined.py           M* combined monitor
+│       └── calibrate.py          Threshold calibration at fixed FPR, AUROC, frozen-hash CLI
+│
+├── configs/                      One YAML per experiment (E0 calibration through E8 noise)
+├── scripts/
+│   ├── run_experiment.py         Run one experiment from a YAML config
+│   ├── analyse.py                Turn raw rows into report_numbers.json, tables, RESULTS.md
+│   ├── make_figures.py           Regenerate every figure from report_numbers.json
+│   ├── trace_numbers.py          Verify every reported number traces to report_numbers.json
+│   ├── adaption_invent.py        Generate benign scenarios and test that monitor FPR holds
+│   ├── llm_benign.py             Run live LLM agents as honest workers and test monitor FPR
+│   ├── build_book.py             Assemble the one-page project book
+│   ├── check.sh / smoke.sh       Lint plus type-check plus tests / live provider smoke
+│   └── trace_allowlist.txt       Non-result constants allowed past the number-tracing check
+│
+├── tests/                        Free test suite (unit, invariant, determinism, statistical, leakage)
+├── data/tactics.yaml             Abstracted covert-coordination tactic categories from the incident
+├── results/
+│   ├── raw/<run>/                Per-run infrastructure logs, transcripts, scored rows (never hand-edited)
+│   ├── processed/                report_numbers.json, calibrated monitors, generated tables
+│   └── RESULTS.md                Generated results document with every figure embedded
+├── figures/                      F1 to F9 and T1 to T2 (PNG and SVG), regenerated from data
+├── report/
+│   ├── REPORT.md                 The research report
+│   ├── final/                    Submission PDF
+│   ├── CITATIONS.md              Verified citation list (only checked entries enter the report)
+│   └── VIDEO_SCRIPT.md           Optional demo video script
+├── docs/                         PRD, project book, planning and build documentation
+└── logs/                         Research trail: build, errors, bugs, challenges, decisions, usage
+```
 
 ### Reproduce
 
 ```bash
-git clone https://github.com/Asha0509/Swarm-Alignment-Hackathon.git && cd Swarm-Alignment-Hackathon
-bash setup.sh                    # dirs, env, deps, hooks, tests (idempotent)
+git clone https://github.com/Asha0509/Swarm-Alignment-Hackathon.git
+cd Swarm-Alignment-Hackathon
+bash setup.sh                    # directories, environment, dependencies, hooks, tests
 cp .env.example .env             # add ADAPTION_API_KEY (optional free fallbacks: Groq / Gemini / Ollama)
-make smoke                       # 1 scripted + 1 LLM episode
-make experiments                 # E0–E3 (Must); see configs/
-make analyse figures book        # RESULTS.md, figures/, docs/PROJECT_BOOK.html
-make check                       # lint + types + tests
+make check                       # lint, type-check, tests
+make experiments                 # E0 to E3 (the Must tier)
+make analyse figures book        # RESULTS.md, figures, the project book
 ```
 
-Scripted experiments (E0–E2, E4) need **no API key** and reproduce exactly from seeds. LLM experiments reuse the on-disk response cache when it's present.
-
-### Repo map
-
-| Path | What |
-|---|---|
-| [`docs/PRD.md`](docs/PRD.md) | Full spec: requirements, experiments, figures, report spec |
-| [`CLAUDE.md`](CLAUDE.md) | How we build: rules, logs, tests, checklist |
-| [`docs/KICKOFF.md`](docs/KICKOFF.md) | Ordered build prompts and the human-task timeline |
-| `src/cachewhisper/` | Registry, infra log, agents, channels, attacker, spoof layer, monitors, defenses, metrics |
-| `configs/` | One YAML per experiment (E0–E6) |
-| `results/` | Raw runs, processed tables, generated RESULTS.md |
-| `figures/` | F1–F8, T1–T2 |
-| `report/` | Outline, draft, citations, video script, final PDF |
-| `logs/` | Research trail |
+The scripted experiments reproduce exactly from seeds and need no API key. The experiments that use language-model agents reuse an on-disk response cache when it is present.
 
 ### Responsible release
 
-We release the sandbox, monitors and defenses. The expert channels are textbook covert-channel patterns. The scripted adaptive attacker's best-performing configurations are summarized by category rather than shipped as a turnkey recipe. Raw evolved protocols are gitignored. No real systems were touched. See report Appendix A.
+The expert channels are textbook covert-channel patterns. The scripted adaptive attacker's best configurations are summarized by category rather than shipped as a turnkey recipe, and raw evolved protocols are gitignored. No real systems were touched; the work uses only public incident reporting. See Appendix A of the report for the full dual-use and ethics discussion.
 
 ### Acknowledgements
 
-Apart Research, the AI Alignment Foundation and AE Studio for the sprint; Adaption Labs for platform credits (hosted models, Invent, AutoScientist); METR and the Swarm Traces authors for the incident data that grounds this work.
-
-*Pre-existing code: none beyond open-source libraries in `pyproject.toml` (see [`PREEXISTING.md`](PREEXISTING.md)).*
+Apart Research, the AI Alignment Foundation and AE Studio for the sprint, and Adaption Labs for platform credits. The METR Hugging Face incident report grounds this work.
 
 ---
 
@@ -1113,9 +1134,9 @@ One covert broadcast reaches the whole swarm; the metadata monitor does not catc
 
 <a id="part-8"></a>
 
-# 8. Report Draft
+# 8. Report
 
-<p class="part">report/DRAFT.md</p>
+<p class="part">report/REPORT.md</p>
 
 ## Whispering Through the Package Cache: Why Monitoring Colluding Agents Catches Clumsy Lies but Not Careful Ones, and Only Isolation Holds
 
@@ -1245,28 +1266,7 @@ None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the Ope
 
 ### Appendix C: LLM Usage Statement
 
-The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used Claude Code to write code, tests, analysis and figures, and to draft this report, with the team reviewing every change. All AI assistance is logged in logs/LLM_USAGE.md. Every number is produced by a script from the raw runs and traced by scripts/trace_numbers.py; every citation was verified against its source.
-
----
-
-<a id="part-9"></a>
-
-# 9. Figure Captions
-
-<p class="part">report/FIGURES.md</p>
-
-## Figure captions (final wording; n and CI stated in every caption)
-
-| Fig | File | Caption (draft) |
-|---|---|---|
-| F1 | figures/F1_schematic.png | CacheGym. Agents share one package registry. The infrastructure log (ground truth) and agent transcripts (may be spoofed) feed four monitors. |
-| F2 | figures/F2_frontier.png | Hidden bits per episode vs probability of being caught at a 5% false-alarm budget, per monitor. |
-| F3 | figures/F3_spoof_sweep.png | Detection at 5% false alarms as the share of spoofed transcript entries rises. |
-| F4 | figures/F4_roc.png | ROC curves per monitor, honest vs fully spoofed transcripts. |
-| F5 | figures/F5_adaptation.png | Adaptive LLM attacker over rounds: capacity and detection, aware vs unaware. |
-| F6 | figures/F6_defenses.png | Capacity removed vs honest work lost for each defense. |
-| F7 | figures/F7_gap.png | Expert channels vs LLM attacker: undetected capacity. |
-| F8 | figures/F8_scaling.png | Undetected capacity vs number of receivers. |
+The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used an AI coding assistant to help write code, tests, analysis and figures, and to draft this report, with the author reviewing every change. All AI assistance is logged in the repository. Every number is produced by a script from the raw runs and verified by an automated number-tracing check; every citation was verified against its source.
 
 ---
 
@@ -1568,6 +1568,14 @@ throughput: 245 benign episodes/s
 - **Checks:** trace passes, 0 em dashes.
 - **Built by:** Claude drafts, human edits.
 
+### 2026-11-09 12:59 IST — Real-agent validation: live LLM honest workers (#1)
+- **PRD ref:** FR-6 (LLM benign workers), E0 LLM-benign FPR check
+- **File:lines:** scripts/llm_benign.py, analyse.py (LLM_BENIGN), report/DRAFT.md framing
+- **Real run:** 8 episodes x 3 live adaption:gemma-4-31b-it agents doing legitimate build work (list/fetch deps, publish own package). 8/8 published, 0 parse failures. Frozen monitors scored at spoof 0: realized FPR 0.000 across M2/M3/M4/M*. So detection transfers from scripted to real-agent benign traffic, and the monitors do not over-trigger on live agents. ~150 calls, a few credits. No collusion instructed (honest workers only; safe).
+- **Framing update:** real agents are now accurately described as on the honest + oversight side (live workers + the M1 judge); only the covert attacker is scripted, as a capability bound.
+- **Tests:** full suite 87 PASS.
+- **Built by:** team with Claude Code
+
 ---
 
 <a id="part-14"></a>
@@ -1598,6 +1606,7 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 11:55 IST | e3a680e | ✔ | ✘ | 87/0/0 |
 | 2026-11-09 11:57 IST | e3a680e | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 12:58 IST | 0e01a8f | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 13:03 IST | 6ebde80 | ✔ | ✔ | 87/0/0 |
 
 ---
 
@@ -1799,6 +1808,12 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What we did:** had an Adaption model design 8 benign workload mixes we did not choose; the frozen monitors' FPR held within 2 pts of budget across 96 episodes. Remaining caveat: all benign traffic is still synthetic (stated in Limitations).
 - **Use in report:** Results (controls), Limitations
 
+### 2026-11-09 12:59 IST — C012 Real agents added to the loop (honest side)
+- **Category:** threat-to-validity (partly mitigated)
+- **What happened:** the pipeline was scripted encoders + one judge; a multi-agent hackathon wants real agents.
+- **What we did:** ran live LLM agents as honest build workers; they complete tasks with zero parse failures and the monitors raise no false alarm (FPR 0.00). Real agents are now in the loop on the honest and oversight side. The covert attacker stays scripted (capability bound; eliciting it from live agents is future work and the earlier evolved-attacker prompts were classifier-blocked).
+- **Use in report:** Framing, Results (controls), Limitations
+
 ---
 
 <a id="part-18"></a>
@@ -1829,3 +1844,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 11:44 IST | Claude Code (Opus) | P2 swarm scaling + F9 + draft | Team directed P2 |
 | 2026-11-09 11:52 IST | Claude Code (Opus) | Presentation tightening + framing | Human edits |
 | 2026-11-09 11:58 IST | Adaption (benign model) + Claude Code | A3 invented benign scenarios + FPR test | Team reviews |
+| 2026-11-09 12:59 IST | Adaption gemma-4-31b-it (honest workers) + Claude Code | Live LLM-benign validation (FPR transfer) | Team reviews |

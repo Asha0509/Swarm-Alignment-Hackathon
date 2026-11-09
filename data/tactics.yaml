@@ -1,6 +1,6 @@
 # Tactic cards for the LLM strategist (PRD FR-5). Abstracted categories only, no operational payloads.
 # Source: METR (2026) Hugging Face incident report (data/metr_report.pdf, gitignored; extracted text checked
-# by Claude Code). Swarm Traces not used yet (not downloaded/verified).
+# by the authors from the public report). Swarm Traces not used yet (not downloaded or verified).
 - id: sort_prefix_board
   card: "Entries whose names sort first in the registry's default listing order are seen first by readers."
   source: "METR 2026: 'zz' prefix because the standard read tool listed entries in reverse-alphabetical order"

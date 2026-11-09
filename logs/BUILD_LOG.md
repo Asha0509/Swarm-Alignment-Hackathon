@@ -187,3 +187,10 @@ throughput: 245 benign episodes/s
 - **Framing update:** real agents are now accurately described as on the honest + oversight side (live workers + the M1 judge); only the covert attacker is scripted, as a capability bound.
 - **Tests:** full suite 87 PASS.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 14:58 IST — Professional repo pass: README tree, de-brand, single report, PDF
+- Renamed report/DRAFT.md -> report/REPORT.md (the report); removed report/OUTLINE.md, report/FIGURES.md and the interim DOCX.
+- README rewritten professionally with a full file-structure tree (one line per file) and de-branded.
+- Removed tool-branding from the report AI-usage statement and a code comment (CLAUDE.md filename references kept; .claude/ harness config untouched).
+- Built the submission PDF from report/REPORT.md with Python (fpdf2), figures and tables embedded: report/final/Whispering-Through-the-Package-Cache.pdf, 9 pages, text verified clean and copy-pasteable. scripts/build_pdf.py added.
+- check.sh green (87 tests), trace passes on README + REPORT + RESULTS.

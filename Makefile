@@ -22,7 +22,7 @@ analyse:
 figures:
 > uv run python scripts/make_figures.py
 trace:
-> uv run python scripts/trace_numbers.py report/DRAFT.md results/RESULTS.md
+> uv run python scripts/trace_numbers.py report/REPORT.md results/RESULTS.md
 book:
 > uv run python scripts/build_book.py
 all: check analyse figures trace book

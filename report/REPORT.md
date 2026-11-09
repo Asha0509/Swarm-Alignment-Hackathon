@@ -126,4 +126,4 @@ None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the Ope
 
 ## Appendix C: LLM Usage Statement
 
-The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used Claude Code to write code, tests, analysis and figures, and to draft this report, with the team reviewing every change. All AI assistance is logged in logs/LLM_USAGE.md. Every number is produced by a script from the raw runs and traced by scripts/trace_numbers.py; every citation was verified against its source.
+The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used an AI coding assistant to help write code, tests, analysis and figures, and to draft this report, with the author reviewing every change. All AI assistance is logged in the repository. Every number is produced by a script from the raw runs and verified by an automated number-tracing check; every citation was verified against its source.

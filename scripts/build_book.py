@@ -23,7 +23,7 @@ ORDER = [
     ("Pre-registration", "PREREG.md"),
     ("Pre-existing Code", "PREEXISTING.md"),
     ("Results", "results/RESULTS.md"),
-    ("Report Draft", "report/DRAFT.md"),
+    ("Report", "report/REPORT.md"),
     ("Figure Captions", "report/FIGURES.md"),
     ("Citations", "report/CITATIONS.md"),
     ("Tasks", "docs/TASKS.md"),
