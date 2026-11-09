@@ -53,3 +53,11 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Fix:** cap each component z at 10 in Combined.score (same fix as B003 for M2). M* now 0.0 honest -> 10.0 spoofed, threshold 1.08. E0 refit.
 - **Affected results:** none (found before any registered sweep row was written).
 - **Status:** FIXED
+
+## 2026-11-09 10:12 IST — B006 Resumed runs left duplicate episode rows
+- **Severity:** major (would double-count 95 of 450 E1 episodes in every mean/TPR/AUROC)
+- **Found by:** post-run row-count check (545 rows, 450 unique ids)
+- **Root cause:** the first E1 process was reaped mid-run (buffered nohup output, no flush); on resume the done-set was rebuilt from the partial file but some episodes were re-emitted, appending duplicate rows.
+- **Fix:** load_rows now de-duplicates by episode_id keeping the last occurrence, so analysis counts each episode once regardless of resume artifacts. src/cachewhisper/experiment.py:load_rows.
+- **Affected results:** none reported yet (found before analyse.py was run on E1).
+- **Status:** FIXED

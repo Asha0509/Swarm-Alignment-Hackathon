@@ -100,3 +100,10 @@ throughput: 245 benign episodes/s
 - **Tests:** tests/test_defenses.py 3 PASS.
 - **Real run:** E4 450 rows. D1 isolation removes ~99% capacity (16.0 -> 0.1) at 0 honest-utility loss across E1/E2/E4 -> H4 declared. D2 randomization and D3 quota remove ~0% (our channels embed their own index/ticks, so listing order and modest quotas do not bind): honest nulls, reported.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 10:12 IST — Experiment runs + dedup fix
+- **PRD ref:** FR-13/15
+- **File:lines:** src/cachewhisper/experiment.py load_rows
+- **Tests:** full suite 83 PASS.
+- **Real run:** E0/E1/E4 complete (E1 450 unique episodes, 60 M1-scored); E2/E3 running in background (task bz8b2nks2). Dedup verified: 545 raw -> 450 unique.
+- **Built by:** team with Claude Code

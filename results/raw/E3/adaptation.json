@@ -1,0 +1,152 @@
+[
+ {
+  "round": 0,
+  "awareness": "unaware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 16.0
+ },
+ {
+  "round": 1,
+  "awareness": "unaware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 16.0
+ },
+ {
+  "round": 2,
+  "awareness": "unaware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 16.0
+ },
+ {
+  "round": 3,
+  "awareness": "unaware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 16.0
+ },
+ {
+  "round": 4,
+  "awareness": "unaware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 16.0
+ },
+ {
+  "round": 0,
+  "awareness": "aware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 0.0
+ },
+ {
+  "round": 1,
+  "awareness": "aware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 0.0
+ },
+ {
+  "round": 2,
+  "awareness": "aware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 0.0
+ },
+ {
+  "round": 3,
+  "awareness": "aware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 0.0
+ },
+ {
+  "round": 4,
+  "awareness": "aware",
+  "config": [
+   "E2",
+   "low",
+   true,
+   2,
+   0
+  ],
+  "mean_capacity": 16.0,
+  "undetected_capacity": 0.0,
+  "detect_rate": 1.0,
+  "objective": 0.0
+ }
+]

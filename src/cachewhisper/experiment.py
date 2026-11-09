@@ -201,8 +201,12 @@ def _run_e3(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
 
 
 def load_rows(run_id: str) -> list[dict]:
+    """Rows for a run, de-duplicated by episode_id (keep the last), so a resumed/rewritten run is counted once."""
     p = RAW / run_id / "rows.jsonl"
-    return [json.loads(line) for line in p.read_text().splitlines()] if p.exists() else []
+    if not p.exists():
+        return []
+    by_id = {json.loads(line)["episode_id"]: json.loads(line) for line in p.read_text().splitlines() if line}
+    return list(by_id.values())
 
 
 def _run_e4(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
