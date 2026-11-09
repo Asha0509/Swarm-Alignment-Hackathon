@@ -103,6 +103,8 @@ def run_config(cfg: dict) -> Path:
         return _run_e0(cfg, out)
     if exp == "E3":
         return _run_e3(cfg, out, rows_path, done)
+    if exp == "E4":
+        return _run_e4(cfg, out, rows_path, done)
 
     bundle = Bundle.load()
     n_written = 0
@@ -201,3 +203,25 @@ def _run_e3(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
 def load_rows(run_id: str) -> list[dict]:
     p = RAW / run_id / "rows.jsonl"
     return [json.loads(line) for line in p.read_text().splitlines()] if p.exists() else []
+
+
+def _run_e4(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
+    """Defenses: per defense x channel x seed, record capacity and honest utility (for F6 / H4)."""
+    from cachewhisper.defenses import DEFENSES
+
+    n = 0
+    with rows_path.open("a") as f:
+        for dname in cfg["defenses"]:
+            for ch in cfg["channels"]:
+                for seed in range(*cfg["seeds"]):
+                    hint = f"E4-{dname}-{ch}-s{seed}"
+                    if hint in done:
+                        continue
+                    _, info = build_episode("channel", seed, channel=ch, level=cfg.get("level", "med"),
+                                            policy=DEFENSES[dname]())
+                    _, binfo = build_episode("benign", seed, policy=DEFENSES[dname]())
+                    f.write(json.dumps({"episode_id": hint, "defense": dname, "channel": ch, "seed": seed,
+                                        "capacity": info["capacity"], "utility": binfo["utility"]}, default=str) + "\n")
+                    n += 1
+    runs.finish_run(cfg["run_id"], "done", n_llm_calls=0)
+    return out

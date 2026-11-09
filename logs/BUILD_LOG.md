@@ -93,3 +93,10 @@ throughput: 245 benign episodes/s
 - **Tests:** covered via E0 run + scoring smoke; full suite 80 PASS.
 - **Real run:** E0 calibration (200 benign + 180 train seeds) realized FPR within 2pts; bundle persisted. E1/E2/E3 launched in background.
 - **Built by:** team with Claude Code
+
+## 2026-11-09 10:07 IST — Defenses D1/D2/D3 + E4 runner
+- **PRD ref:** FR-9
+- **File:lines:** src/cachewhisper/defenses.py, experiment.py _run_e4, configs/e4_defenses.yaml
+- **Tests:** tests/test_defenses.py 3 PASS.
+- **Real run:** E4 450 rows. D1 isolation removes ~99% capacity (16.0 -> 0.1) at 0 honest-utility loss across E1/E2/E4 -> H4 declared. D2 randomization and D3 quota remove ~0% (our channels embed their own index/ticks, so listing order and modest quotas do not bind): honest nulls, reported.
+- **Built by:** team with Claude Code

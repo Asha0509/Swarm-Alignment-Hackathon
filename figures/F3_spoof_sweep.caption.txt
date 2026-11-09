@@ -1,0 +1,1 @@
+Figure 3. As more actions are spoofed, the transcript monitor (M1) degrades while the consistency monitor (M3) rises. 95% CIs shown.

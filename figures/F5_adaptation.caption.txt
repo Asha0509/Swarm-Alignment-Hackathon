@@ -1,0 +1,1 @@
+Figure 5. The aware attacker drives undetected capacity up as it learns which configurations evade the monitors; the unaware attacker does not.

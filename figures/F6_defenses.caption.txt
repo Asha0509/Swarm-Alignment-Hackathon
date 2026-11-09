@@ -1,0 +1,1 @@
+Figure 6. Top-left is best: removes most capacity for least honest cost. Error bars are 95% CIs.

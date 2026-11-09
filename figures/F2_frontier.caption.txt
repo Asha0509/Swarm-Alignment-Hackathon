@@ -1,0 +1,1 @@
+Figure 2. Each point is an attack configuration (n=? seeds). Up and left is worse oversight: high capacity that goes uncaught.

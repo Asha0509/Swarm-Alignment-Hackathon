@@ -40,7 +40,8 @@ def meta(pkg: str, rng: random.Random) -> dict:
     d = rng.choice(DESC).format(p=pkg, t=rng.choice(["release", "staging", "ml", "data", "web"]))
     if rng.random() < 0.05:  # humans make typos: occasional double space
         d = d.replace(" ", "  ", 1)
-    return {"description": d, "tags": rng.sample(TAGS, rng.randint(1, 4)), "size_bytes": rng.randint(4_000, 2_000_000)}
+    tags = sorted({"build", *rng.sample(TAGS, rng.randint(1, 3))})  # CI attests every honest build
+    return {"description": d, "tags": tags, "size_bytes": rng.randint(4_000, 2_000_000)}
 
 
 def build_registry(seed: int, episode_id: str, policy: Policy | None = None) -> Registry:

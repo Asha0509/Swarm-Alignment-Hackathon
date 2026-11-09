@@ -1,0 +1,8 @@
+run_id: E4
+experiment: E4
+tier: should
+label: defenses
+defenses: [none, D1, D2, D3, D1+D3]
+channels: [E1, E2, E4]
+level: med
+seeds: [2000, 2030]

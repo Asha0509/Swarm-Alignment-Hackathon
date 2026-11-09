@@ -1,3 +1,4 @@
 run_id,parent_id,tier,experiment,channel_or_attacker,awareness,spoof_rate,defense,n_agents,k_bits,seed,models,n_llm_calls,cache_hits,status,output_path,started_ist,finished_ist
 E0,,must,E0,calibration,,,,5,16,,,,,done,/home/asha/Swarm-Alignment-Hackathon/Swarm-Alignment-Hackathon/results/raw/E0,2026-11-09 10:00 IST,2026-11-09 10:00 IST
-E1,,must,E1,expert_frontier,,,,5,16,,,,,running,/home/asha/Swarm-Alignment-Hackathon/Swarm-Alignment-Hackathon/results/raw/E1,2026-11-09 10:00 IST,
+E4,,should,E4,defenses,,,,5,16,,,0,,done,/home/asha/Swarm-Alignment-Hackathon/Swarm-Alignment-Hackathon/results/raw/E4,2026-11-09 10:06 IST,2026-11-09 10:06 IST
+E1,,must,E1,expert_frontier,,,,5,16,,,,,running,/home/asha/Swarm-Alignment-Hackathon/Swarm-Alignment-Hackathon/results/raw/E1,2026-11-09 10:06 IST,

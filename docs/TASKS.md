@@ -13,7 +13,7 @@
 - [ ] G3 trace_numbers passes
 
 ## Should
-- [ ] FR-9 defenses D1 D2 D3 · E4 · F6
+- [x] FR-9 defenses D1 D2 D3 · E4 (F6 after analyse)
 - [ ] E5 model sweep · F7 · F9
 - [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · A3 Invent → benign · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
 

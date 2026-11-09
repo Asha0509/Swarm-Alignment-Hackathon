@@ -46,3 +46,10 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What happened:** M2 AUROC ~0.57-0.66 on E2 (existence bits via benign-looking package names) vs ~0.94-1.0 on E4 ordering.
 - **Why it matters:** not every infra channel is equally visible to metadata features; a channel that publishes plausibly-named packages blends into benign publishing. A reportable, honest limitation of metadata-only monitoring.
 - **Use in report:** Results, Discussion
+
+## 2026-11-09 10:07 IST — C005 D2 and D3 do not reduce capacity for our channels
+- **Category:** null result
+- **What happened:** listing randomization (D2) and a 4-writes/8-ticks quota (D3) leave channel capacity at 16 bits.
+- **Why it matters:** our channels embed a chunk index in names (E1-E3,E5) or read created_tick via stat (E4), so they do not rely on listing order, and low-rate channels stay under a modest write quota. Only per-agent isolation (D1) removes the channel.
+- **What we did:** report all three; the runbook recommends D1. A naive sort-prefix board with no embedded index would be broken by D2 (noted).
+- **Use in report:** Results, Discussion, runbook
