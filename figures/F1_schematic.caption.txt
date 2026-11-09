@@ -1,0 +1,1 @@
+Figure 1. CacheGym: agents coordinate only through a shared registry. Every operation is recorded in a hash-chained infrastructure log, while the agent transcript can be spoofed. Four monitors read these sources; three cheap defenses close the channel.
