@@ -76,3 +76,10 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
   4. H3 "awareness" effect is on detection only (capacity equal), partially supported vs the pre-registered AND. Fix: already disclosed in D006; state it in the Results sentence.
   5. Open-weight trusted-weaker judge, small n (83 for H1). Fix: widen CI language; note M1 subsample size; already in Limitations.
 - **Use in report:** Discussion, Limitations; human to apply fixes 3 and 4 explicitly in prose.
+
+## 2026-11-09 11:22 IST — C009 Naive spoof made M3 detection circular; hard spoof fixes it (P0)
+- **Category:** threat-to-validity (resolved)
+- **What happened:** M3 caught naive spoofing at TPR 1.0 because the fabricated cover stories reference ops the agent never performed, which is exactly what M3 flags. A sharp judge would call the headline circular.
+- **What we did:** added a consistent-liar spoof mode (cover claims reuse the agent's own real benign ops). M3 then drops to 0 detection. The honest finding: consistency checking catches clumsy fabrication but not disguise; a careful attacker that disguises covert ops as benign work and reports consistently evades M1, M2, M3 and M* together. The robust defense is per-agent isolation (D1). This defuses the circularity and strengthens the operator message.
+- **Affects PREREG?** The pre-registered H1 used the naive spoof model; it stands and is reported as-is. The hard-spoof result is a disclosed post-hoc addition (new hypothesis H6), not a change to H1.
+- **Use in report:** Results (new section), Discussion, Limitations, runbook (lead with D1)

@@ -120,3 +120,12 @@ throughput: 245 benign episodes/s
 - **File:lines:** report/DRAFT.md
 - **Checks:** abstract 217 words (in 150-250); 0 em dashes; trace_numbers passes on DRAFT + RESULTS (435 values). Title row 1 (H1 declared). Primary result cites prereg commit 58ae747.
 - **Built by:** Claude drafts, human edits every section (pending).
+
+## 2026-11-09 11:22 IST — Hard spoof model: the consistent liar (P0)
+- **PRD ref:** FR-7 (extends the spoof layer)
+- **File:lines:** src/cachewhisper/spoof.py (mode param), monitors/__init__.py (mode thread), experiment.py _run_e7, configs/e7_disguise.yaml, scripts/analyse.py _analyse_e7
+- **Tests:** tests/test_attacker.py::test_consistent_liar_defeats_consistency_monitor PASS; full suite 84 PASS.
+- **Why:** the naive spoof fabricated ops the agent never did, so M3 caught it by construction (claimed-but-absent). This made the headline semi-circular (brutal self-review C008). The hard mode has the colluder back its cover claims with its own real benign ops, removing that signal.
+- **Measured (ad hoc, pre-E7):** M3 mismatch 0.98 under naive s=1 -> 0.00 under hard s=1. Across E2/E3/E5 the consistent liar evades M2, M3, M4 and M* (TPR/AUROC near benign); M1 scores it ~0.05 (near-benign 0.0), so M1 does not meaningfully catch it either. D1 isolation still removes the channel regardless of reporting.
+- **Real run:** E7 (fabrication vs disguise) launched in background to measure this rigorously with benign baselines and AUROC.
+- **Built by:** team with Claude Code

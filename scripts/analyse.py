@@ -174,8 +174,33 @@ def analyse() -> dict:
                   "gap": best_expert - best_attacker}
     nums["F7"] = {"expert": best_expert, "attacker": best_attacker}
 
+    # ---- H6 / fabrication vs disguise (from E7): does any monitor catch a consistent liar? ----
+    e7 = load_rows("E7")
+    if e7:
+        nums["H6"], nums["F8"] = _analyse_e7(e7), {}
+        for mode in ("naive", "hard"):
+            nums["F8"][mode] = {m: nums["H6"][mode][m]["auroc"] for m in MONITORS if m in nums["H6"][mode]}
+
     nums["run_summary"] = {r["run_id"]: r["status"] for r in runs.all_runs()}
     return nums
+
+
+def _analyse_e7(e7: list[dict]) -> dict:
+    """Per spoof mode (naive fabrication vs hard disguise), each monitor's AUROC (benign vs attacker).
+
+    AUROC is the honest metric here: the transcript judge scores benign uniformly at 0, so a fixed-FPR
+    threshold is ill-defined, but AUROC still measures whether a monitor separates attacks from benign.
+    """
+    out: dict = {}
+    for mode in ("naive", "hard"):
+        out[mode] = {}
+        for m in MONITORS:
+            ben = [r["scores"][mode][m] for r in e7 if r["kind"] == "benign" and m in r["scores"][mode]]
+            att = [r["scores"][mode][m] for r in e7 if r["kind"] == "attacker" and m in r["scores"][mode]]
+            if ben and att:
+                out[mode][m] = {"auroc": calibrate.auroc(ben, att), "att_mean": sum(att) / len(att),
+                                "ben_mean": sum(ben) / len(ben), "n_att": len(att), "n_ben": len(ben)}
+    return out
 
 
 def write_tables(nums: dict) -> None:

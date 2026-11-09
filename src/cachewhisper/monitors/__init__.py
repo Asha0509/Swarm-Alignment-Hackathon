@@ -17,16 +17,19 @@ from cachewhisper.monitors.metadata import RobustScaler
 NO_LLM = ("M2", "M3", "M4", "M*")
 
 
-def transcript_for(episode: dict, s: float, seed: int) -> list[dict]:
-    """The monitor-visible transcript at spoof rate s (M1 and M3 read this; M2 and M4 read infra)."""
-    return spoof.apply(episode["transcript"], s, seed)
+def transcript_for(episode: dict, s: float, seed: int, mode: str = "naive") -> list[dict]:
+    """The monitor-visible transcript at spoof rate s (M1 and M3 read this; M2 and M4 read infra).
+
+    mode="naive" fabricates cover stories; mode="hard" is a consistent liar (see spoof.apply).
+    """
+    return spoof.apply(episode["transcript"], s, seed, mode=mode)
 
 
 def score_episode(episode: dict, scaler: RobustScaler, m4: M4a, combined: Combined, s: float,
-                  seed: int, m1: Callable[..., float] | None = None) -> dict[str, float]:
+                  seed: int, m1: Callable[..., float] | None = None, mode: str = "naive") -> dict[str, float]:
     """All non-LLM monitor scores for one stored episode at spoof rate s. M1 optional (needs an LLM)."""
     infra = episode["infra"]
-    vis = transcript_for(episode, s, seed)
+    vis = transcript_for(episode, s, seed, mode)
     comp = {"M2": metadata.m2_score(infra, scaler), "M3": consistency.m3_score(vis, infra)}
     out = {"M2": comp["M2"], "M3": comp["M3"], "M4": m4.m4_score(infra), "M*": combined.score(comp)}
     if m1 is not None:

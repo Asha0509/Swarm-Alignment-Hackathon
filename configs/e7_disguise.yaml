@@ -1,0 +1,9 @@
+run_id: E7
+experiment: E7
+tier: should
+label: fabrication_vs_disguise
+channels: [E2, E3, E5]
+level: med
+seeds: [5000, 5012]
+benign_seeds: [120, 144]
+m1_subsample: 3

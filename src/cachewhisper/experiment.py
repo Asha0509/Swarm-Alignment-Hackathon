@@ -105,6 +105,8 @@ def run_config(cfg: dict) -> Path:
         return _run_e3(cfg, out, rows_path, done)
     if exp == "E4":
         return _run_e4(cfg, out, rows_path, done)
+    if exp == "E7":
+        return _run_e7(cfg, out, rows_path, done)
 
     bundle = Bundle.load()
     n_written = 0
@@ -230,4 +232,44 @@ def _run_e4(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
                                         "capacity": info["capacity"], "utility": binfo["utility"]}, default=str) + "\n")
                     n += 1
     runs.finish_run(cfg["run_id"], "done", n_llm_calls=0)
+    return out
+
+
+def _run_e7(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
+    """Fabrication vs disguise: score the best channels and the attacker under naive AND hard spoof.
+
+    Each row carries every monitor's score at spoof 1.0 under both spoof modes, plus a benign flag,
+    so analysis can show which monitors catch clumsy fabrication vs a consistent liar (the P0 result).
+    """
+    from cachewhisper.attacker import Config
+
+    bundle = Bundle.load()
+    sub = cfg.get("m1_subsample", 3)
+    specs = []
+    for ch in cfg["channels"]:
+        for seed in range(*cfg["seeds"]):
+            specs.append(("attacker", Config(ch, cfg.get("level", "med"), cover_work=True, decoys=3), seed, ch))
+    for seed in range(*cfg["benign_seeds"]):
+        specs.append(("benign", None, seed, "benign"))
+
+    n = 0
+    with rows_path.open("a") as f:
+        for i, (kind, conf, seed, arm) in enumerate(specs):
+            hint = f"E7-{arm}-s{seed}"
+            if hint in done:
+                continue
+            res, info = (attacker_episode(conf, seed) if kind == "attacker" else build_episode("benign", seed))
+            run_m1 = (i % sub == 0)
+            row: dict = {"episode_id": hint, "arm": arm, "kind": kind, "seed": seed,
+                         "capacity": info.get("capacity", 0.0), "scores": {}}
+            for mode in ("naive", "hard"):
+                sc = monitors.score_episode(_ep_dict(res, info), bundle.scaler, bundle.m4, bundle.combined,
+                                            1.0, SCORE_SEED, mode=mode)
+                if run_m1:
+                    vis = monitors.transcript_for(_ep_dict(res, info), 1.0, SCORE_SEED, mode)
+                    sc["M1"] = transcript.m1_score(vis, seed=seed)
+                row["scores"][mode] = sc
+            f.write(json.dumps(row, default=str) + "\n")
+            n += 1
+    runs.finish_run(cfg["run_id"], "done", n_llm_calls=n)
     return out
