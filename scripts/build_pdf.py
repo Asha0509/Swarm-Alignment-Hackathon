@@ -1,5 +1,6 @@
 import re
 from pathlib import Path
+
 from fpdf import FPDF
 from PIL import Image
 

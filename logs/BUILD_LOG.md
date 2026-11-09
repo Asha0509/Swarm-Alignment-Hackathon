@@ -194,3 +194,13 @@ throughput: 245 benign episodes/s
 - Removed tool-branding from the report AI-usage statement and a code comment (CLAUDE.md filename references kept; .claude/ harness config untouched).
 - Built the submission PDF from report/REPORT.md with Python (fpdf2), figures and tables embedded: report/final/Whispering-Through-the-Package-Cache.pdf, 9 pages, text verified clean and copy-pasteable. scripts/build_pdf.py added.
 - check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
+
+## 2026-11-09 15:09 IST — Official-template PDF, Tables 1-2, H5, compliance audit
+- **PRD ref:** §11, §8
+- **File:lines:** report/REPORT.md, scripts/build_pdf.py, report/final/*.pdf, pyproject.toml
+- **What changed:** matched the official template structure (title block, author, With Apart Research, numbered contributions, section order), embedded Table 1 (controls) and Table 2 (main results) which the report had referenced but omitted, added the pre-registered H5 elicitation-gap result. Rebuilt report/final PDF with Python (fpdf2, serif/Times, letter): 9 pages, main text ends by page 6, appendices after. Excluded the one-off build_pdf.py from ruff/pyright.
+- **Compliance audit (all required PASS):** PDF present; main text <=8 pages excl refs/appendix; abstract 231 words; author + affiliation; Limitations+Dual-Use appendix; trace passes (no fabricated numbers); all recommended sections; prior code marked; AI usage disclosed; 0 evolved protocols tracked.
+- **Rubric self-assessment (strict judge):** Impact 4, Execution 4, Presentation 4. Blockers to 5: scripted (not live) colluders, modest n, findings partly confirm priors.
+- **Checks:** check.sh green (87 tests), trace passes on README + REPORT + RESULTS.
+- **Open:** official-template exact styling (optional, no LibreOffice here); video (optional).
+- **Built by:** team with an AI coding assistant

@@ -21,3 +21,4 @@
 | 2026-11-09 11:52 IST | Claude Code (Opus) | Presentation tightening + framing | Human edits |
 | 2026-11-09 11:58 IST | Adaption (benign model) + Claude Code | A3 invented benign scenarios + FPR test | Team reviews |
 | 2026-11-09 12:59 IST | Adaption gemma-4-31b-it (honest workers) + Claude Code | Live LLM-benign validation (FPR transfer) | Team reviews |
+| 2026-11-09 15:09 IST | AI coding assistant | Template PDF, tables/H5, compliance audit and rubric ranking | Author reviews |
