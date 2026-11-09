@@ -147,6 +147,21 @@ The scripted experiments reproduce exactly from seeds and need no API key. The e
 
 The expert channels are textbook covert-channel patterns. The scripted adaptive attacker's best configurations are summarized by category rather than shipped as a turnkey recipe, and raw evolved protocols are gitignored. No real systems were touched; the work uses only public incident reporting. See Appendix A of the report for the full dual-use and ethics discussion.
 
+## Citation
+
+If you reference this work, please cite:
+
+```bibtex
+@misc{boddu2026whispering,
+  title  = {Whispering Through the Package Cache: Why Monitoring Colluding Agents
+            Catches Clumsy Lies but Not Careful Ones, and Only Isolation Holds},
+  author = {Boddu, Asha Jyothi},
+  year   = {2026},
+  note   = {Apart Research Swarm Alignment Hackathon},
+  url    = {https://github.com/Asha0509/Swarm-Alignment-Hackathon}
+}
+```
+
 ## Acknowledgements
 
 Apart Research, the AI Alignment Foundation and AE Studio for the sprint, and Adaption Labs for platform credits. The METR Hugging Face incident report grounds this work.
