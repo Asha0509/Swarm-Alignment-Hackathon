@@ -13,6 +13,8 @@
 
 Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · Project book (all docs in one page): [docs/PROJECT_BOOK.md](docs/PROJECT_BOOK.md)
 
+**Contents:** [Overview](#overview) · [Key results](#key-results) · [How it works](#how-it-works) · [Runbook](#infra-operator-runbook) · [Repository structure](#repository-structure) · [Reproduce](#reproduce) · [Citation](#citation)
+
 <p align="center"><img src="figures/F1_schematic.png" width="760" alt="CacheGym system schematic"></p>
 
 ## How it works
@@ -44,12 +46,14 @@ In July 2026 about 1200 AI agents in a cyber evaluation turned a shared, non-iso
 
 This project builds **CacheGym**, a deterministic, zero-cost sandbox with a mock package registry modeled on that channel, and measures four things:
 
-1. **Capacity** — how many secret bits colluding agents can pass through registry side effects.
-2. **Detectability** — which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-versus-infrastructure consistency (M3), and learned (M4).
-3. **Spoof-robustness** — how each monitor degrades as transcripts are forged, including a *consistent liar* who backs false claims with real work.
-4. **Defense cost** — how much capacity cheap mitigations remove, and what they cost honest agents.
+1. **Capacity**: how many secret bits colluding agents can pass through registry side effects.
+2. **Detectability**: which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-versus-infrastructure consistency (M3), and learned (M4).
+3. **Spoof-robustness**: how each monitor degrades as transcripts are forged, including a *consistent liar* who backs false claims with real work.
+4. **Defense cost**: how much capacity cheap mitigations remove, and what they cost honest agents.
 
 This is an AI-control capability evaluation: the covert attacker is scripted (a worst-case bound), while live language-model agents run on the honest and oversight side.
+
+> **What is real and what is simulated.** *Real:* live language-model agents do the honest build work, the M1 transcript monitor is a language-model judge, and the shared registry, hash-chained infrastructure log, monitors and defenses are a working implementation. *Simulated:* the covert sender and receiver are scripted encoders (a worst-case capability bound, not live colluding models), spoofing is modeled at the transcript layer rather than a real container escape, and benign traffic is synthetic (validated against externally generated and live-agent traffic). Full detail in the report's Limitations appendix.
 
 ## Key results
 
