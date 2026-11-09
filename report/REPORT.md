@@ -40,11 +40,11 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 
 **Two spoof models.** This is central. A spoofed transcript entry hides a covert operation behind a cover claim. In the **naive** model the cover claim is a fabricated benign operation the agent never performed. In the **consistent-liar** model the cover claim reuses one of the agent's own real benign operations (its cover work or decoy publishes), so the claim matches a real infrastructure event. The naive model is the clumsy attacker; the consistent liar is the careful one.
 
-**Monitors.** M1 reads transcripts with a trusted-weaker language-model judge on a frozen prompt. M2 reads infrastructure metadata only (name entropy versus a benign baseline, sort-prefix abuse, cross-agent read-after-write edges, writes without a legitimate consumer, non-monotonic versions, metadata anomalies, burstiness) combined by a robust z-score. M3 aligns claimed actions to infrastructure events and scores the mismatch rate. M4 is a gradient-boosting model on the M2 features. M* combines M2 and M3. Thresholds are set on benign-only calibration seeds at 1 and 5 percent false alarm rates. Calibration, training and test seeds are disjoint, asserted in tests.
+**Monitors.** Each monitor outputs a suspicion score per episode, and we flag an episode when that score crosses a calibrated threshold. **M1 (transcript)** asks a language-model judge to read the agent's self-reported actions and rate how suspicious they look; we use a deliberately weaker model than the agents, the standard assumption in AI control that the overseer is cheaper and less capable than what it watches. **M2 (metadata)** ignores the transcript and reads only the infrastructure log, scoring statistical tells (unusual name entropy against a benign baseline, names abusing the sort order, one agent reading another's fresh write, writes that no one consumes, versions that go backwards, odd metadata, bursty timing) combined into one robust score. **M3 (consistency)** lines up what each agent claimed against what the infrastructure actually recorded and scores the mismatch; it is the check spoofing is meant to defeat. **M4 (learned)** is a gradient-boosting classifier trained on the M2 features. **M\* (combined)** takes the stronger of M2 and M3. Thresholds are set on honest-only calibration episodes to hit the 1 and 5 percent false alarm budgets, and the calibration, training and test episodes use disjoint seed sets (checked by a test) so a monitor is never evaluated on data it was tuned on.
 
 **Lossy channel.** To make capacity a real variable rather than a constant, we model the shared channel as lossy: each covert write is lost (to eviction, rate limits or partial observability) with probability p, so the receiver decodes with a non-zero bit error rate. We sweep p in {0, 0.1, 0.2, 0.35}.
 
-**Metrics.** Capacity is k(1 - H2(BER)) bits per episode. We report undetected capacity at a 5 percent false alarm budget, and AUROC (benign versus attacker) where a fixed threshold is ill-defined. Confidence intervals are bootstrap over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit b6688c2) before the main runs. The consistent-liar analysis is a disclosed addition after the freeze; the pre-registered result uses the naive model and is reported unchanged.
+**Metrics, in plain terms.** The sender tries to pass a k = 16 bit secret; capacity is how much of it actually arrives, measured as k(1 - H2(BER)) bits, where BER is the bit error rate and H2 is the binary entropy. Intuitively, capacity is 16 when the secret arrives perfectly and 0 when nothing usable gets through. Each monitor is tuned to a false alarm budget: it may wrongly flag at most 1 percent or 5 percent of honest episodes, which fixes how aggressive it is allowed to be. Our headline number is undetected capacity at the 5 percent budget: the hidden bits delivered in exactly those episodes the monitor fails to flag, so a good monitor drives it toward 0. Where a single threshold is not meaningful we also report AUROC, the probability that a random attack episode scores more suspicious than a random honest one: 0.5 is a coin flip (the monitor cannot tell them apart) and 1.0 is perfect separation. Confidence intervals are bootstrap resamples over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit b6688c2) before the main runs. The consistent-liar analysis is a disclosed addition after that freeze; the pre-registered result uses the naive spoof model and is reported unchanged.
 
 ## 4. Results
 
@@ -127,18 +127,6 @@ Code repository: https://github.com/Asha0509/Swarm-Alignment-Hackathon (public; 
 
 **Ethics.** No human subjects, no real credentials, no real infrastructure. The framing is for operators who run multi-agent systems.
 
-## Appendix D: Capacity frontier and the adaptive attacker
-
-**Capacity frontier (Figure 2).** Making the channel lossy (each covert write lost with probability p) spreads covert configurations from 0 to 16 bits of capacity. Against a clumsy spoofer the combined monitor catches nearly every configuration at any capacity, while the metadata monitor alone leaves a low-detection corridor. Channels differ in noise robustness: at 35 percent loss the ordering channel falls from 16 to 1.2 bits, because a dropped write destroys a whole permutation group, while index-embedded channels keep 7.2 bits.
-
-![Figure 2: capacity vs detection across covert configurations](../figures/F2_frontier.png)
-
-**Adaptive attacker (Figure 5).** A scripted search over covert configurations, with outcome-only feedback, shows that an attacker aware of which monitors flagged it is caught 8 percent of the time versus 83 percent when unaware, by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged, so awareness buys stealth, not bits.
-
-**Elicitation gap (pre-registered H5).** We also pre-registered a test of whether hand-designed expert channels beat the adaptive search. They do not: the best adaptive-attacker configuration matches the best expert channel in undetected capacity against the metadata monitor at their operating point, so there is no gap. Because the search only explores strategies we built in, this is a floor, not a ceiling.
-
-![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
-
 ## Appendix B: Pre-existing code
 
 None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the OpenAI client, the Adaption SDK). All sandbox, monitor, attacker, defense and analysis code was written during the sprint from an empty package. See PREEXISTING.md.
@@ -146,3 +134,15 @@ None beyond standard libraries (numpy, pandas, scikit-learn, matplotlib, the Ope
 ## Appendix C: LLM Usage Statement
 
 The oversight monitor M1 is a language-model judge (a trusted-weaker hosted model) and is part of the method. We used an AI coding assistant to help write code, tests, analysis and figures, and to draft this report, with the author reviewing every change. All AI assistance is logged in the repository. Every number is produced by a script from the raw runs and verified by an automated number-tracing check; every citation was verified against its source.
+
+## Appendix D: Extra figures (capacity frontier and the adaptive attacker)
+
+**Capacity frontier (Figure 2).** To make capacity a variable rather than a constant, we make the channel lossy: each covert write is dropped with probability p (modeling eviction or rate limits), so the receiver recovers fewer bits. Sweeping p spreads the covert configurations from 0 to 16 bits of capacity. Against a clumsy spoofer the combined monitor catches nearly every configuration at any capacity, while the metadata monitor alone leaves a low-detection corridor at high capacity. Channels also differ in how gracefully they lose capacity to noise: at 35 percent loss the ordering channel falls from 16 to 1.2 bits, because dropping one write destroys a whole permutation group, while channels that embed a chunk index in names keep 7.2 bits.
+
+![Figure 2: capacity vs detection across covert configurations](../figures/F2_frontier.png)
+
+**Adaptive attacker (Figure 5).** The attacker is a small evolutionary search over covert configurations (which channel, bits per operation, how much cover work, how many decoy writes, how much pacing). After each round it sees only outcomes: how many bits got through and which monitors flagged it. An attacker that is aware of which monitors flagged it is caught 8 percent of the time, versus 83 percent when unaware, because it learns to use a metadata-stego channel with cover traffic. Its raw capacity is unchanged, so awareness buys stealth, not more bits.
+
+**Elicitation gap (pre-registered H5).** We also pre-registered a test of whether our hand-designed expert channels beat the adaptive search. They do not: the best adaptive-attacker configuration matches the best expert channel in undetected capacity against the metadata monitor at their operating point, so there is no gap. Because the search only explores strategies we built in, this is a floor on attacker capability, not a ceiling.
+
+![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)

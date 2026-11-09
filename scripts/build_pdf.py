@@ -175,8 +175,8 @@ while i < len(LINES):
         continue
     if line.startswith("## "):
         title = line[3:]
-        if (title.startswith("References") or title.startswith("Appendix")) and pdf.get_y() > pdf.t_margin + 12:
-            pdf.add_page()  # References and each appendix start on a fresh page
+        if title.startswith("References") and pdf.get_y() > pdf.t_margin + 12:
+            pdf.add_page()  # references start on a fresh page; appendices then flow continuously
         heading(title, 12.5, before=2.2, keep=55)
         i += 1
         continue
