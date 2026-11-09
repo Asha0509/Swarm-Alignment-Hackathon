@@ -1,0 +1,12 @@
+run_id: E3
+experiment: E3
+tier: must
+label: adaptive_attacker
+awareness: [unaware, aware]
+rounds: 5
+round_seeds: [5000, 5012]    # 12 seeds/round for the adaptive search
+pop_size: 6
+seeds: [5000, 5012]          # final-config episodes scored for H1/frontier
+attacker_config: {channel: E2, level: med}
+spoofs: [0.0, 1.0]
+m1_subsample: 3

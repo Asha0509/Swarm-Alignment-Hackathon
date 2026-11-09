@@ -1,0 +1,7 @@
+run_id: E0
+experiment: E0
+tier: must
+label: calibration
+cal_seeds: [0, 100]          # calibration benign: thresholds, scaler, combined medians
+fpr_seeds: [100, 200]        # held-out benign: realized-FPR check
+train_benign_seeds: [300, 360]  # M4a learned monitor only

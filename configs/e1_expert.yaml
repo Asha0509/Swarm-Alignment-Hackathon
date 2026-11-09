@@ -1,0 +1,9 @@
+run_id: E1
+experiment: E1
+tier: must
+label: expert_frontier
+channels: [E1, E2, E3, E4, E5]
+levels: [low, med, high]
+seeds: [2000, 2030]          # 30 test seeds per channel/level
+spoofs: [0.0, 1.0]
+m1_subsample: 6              # run M1 on every 6th episode (rate-limit budget)

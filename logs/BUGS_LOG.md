@@ -45,3 +45,11 @@ Every entry must say which results were affected and confirm they were regenerat
 - **Fix:** compute sender_end = (9 if cover_work) + n_ops*(1+pace) + decoys + 1; receiver waits sender_end; turns = sender_end + n_ops + 5. All 60 configs now decode at BER 0. Regression: tests/test_attacker.py::test_every_config_decodes_and_chain_verifies.
 - **Affected results:** none (found before any registered run)
 - **Status:** FIXED
+
+## 2026-11-09 10:00 IST — B005 Combined monitor M* exploded under spoofing
+- **Severity:** major (M* scores ~674000, meaningless magnitude)
+- **Found by:** E1 scoring smoke
+- **Root cause:** benign M3 mismatch is ~0, so the combined z-standardization divided by a near-zero MAD; a spoofed M3=1.0 produced a z in the hundreds of thousands.
+- **Fix:** cap each component z at 10 in Combined.score (same fix as B003 for M2). M* now 0.0 honest -> 10.0 spoofed, threshold 1.08. E0 refit.
+- **Affected results:** none (found before any registered sweep row was written).
+- **Status:** FIXED

@@ -86,3 +86,10 @@ throughput: 245 benign episodes/s
 - **Tests:** tests/test_stats.py: 7 PASS. Wilson CI; bootstrap covers the true mean ~95% on synthetic; paired diff 0 when identical; primary_h1 declares only when CI>0 AND mean>=2 bits, not when equal, not when diff<2.
 - **Test types used:** unit, statistical coverage
 - **Built by:** team with Claude Code
+
+## 2026-11-09 10:00 IST — Experiment engine + E0-E3 configs
+- **PRD ref:** FR-13, FR-15
+- **File:lines:** src/cachewhisper/experiment.py, scripts/run_experiment.py, configs/e0-e3
+- **Tests:** covered via E0 run + scoring smoke; full suite 80 PASS.
+- **Real run:** E0 calibration (200 benign + 180 train seeds) realized FPR within 2pts; bundle persisted. E1/E2/E3 launched in background.
+- **Built by:** team with Claude Code

@@ -31,5 +31,6 @@ class Combined:
             self.mad[c] = float(np.median(np.abs(xs - self.med[c]))) or 1e-6
         return self
 
-    def score(self, component_scores: dict[str, float]) -> float:
-        return max((component_scores[c] - self.med[c]) / (1.4826 * self.mad[c]) for c in self.components)
+    def score(self, component_scores: dict[str, float], cap: float = 10.0) -> float:
+        # cap each component z: a near-constant benign component (e.g. M3 mismatch ~0) must not blow up M*
+        return max(min(cap, (component_scores[c] - self.med[c]) / (1.4826 * self.mad[c])) for c in self.components)
