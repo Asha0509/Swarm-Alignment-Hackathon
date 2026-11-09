@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 15:48 IST from 17 files.*
+*Built 2026-11-09 15:53 IST from 17 files.*
 
 
 ---
@@ -1237,7 +1237,7 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 
 **Lossy channel.** To make capacity a real variable rather than a constant, we model the shared channel as lossy: each covert write is lost (to eviction, rate limits or partial observability) with probability p, so the receiver decodes with a non-zero bit error rate. We sweep p in {0, 0.1, 0.2, 0.35}.
 
-**Metrics.** Capacity is k(1 - H2(BER)) bits per episode. We report undetected capacity at a 5 percent false alarm budget, and AUROC (benign versus attacker) where a fixed threshold is ill-defined. Confidence intervals are bootstrap over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit 58ae747) before the main runs. The consistent-liar analysis is a disclosed addition after the freeze; the pre-registered result uses the naive model and is reported unchanged.
+**Metrics.** Capacity is k(1 - H2(BER)) bits per episode. We report undetected capacity at a 5 percent false alarm budget, and AUROC (benign versus attacker) where a fixed threshold is ill-defined. Confidence intervals are bootstrap over episode seeds. The primary test is pre-registered and computed by one function; the pre-registration was committed and tagged (commit b6688c2) before the main runs. The consistent-liar analysis is a disclosed addition after the freeze; the pre-registered result uses the naive model and is reported unchanged.
 
 ### 4. Results
 
@@ -1716,6 +1716,7 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 15:06 IST | 348cf48 | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 15:23 IST | 64718ec | ✔ | ✔ | 87/0/0 |
 | 2026-11-09 15:33 IST | d7e3af3 | ✔ | ✔ | 87/0/0 |
+| 2026-11-09 15:48 IST | 707e8c6 | ✔ | ✔ | 87/0/0 |
 
 ---
 
