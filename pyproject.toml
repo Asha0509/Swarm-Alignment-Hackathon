@@ -36,6 +36,7 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.ruff]
 line-length = 120
 target-version = "py311"
+extend-exclude = ["scripts/build_pdf.py"]  # one-off PDF builder, run via uv --with (optional dep)
 
 [tool.ruff.lint]
 select = ["E", "F", "B", "I", "NPY", "PD", "UP"]
@@ -43,4 +44,5 @@ ignore = ["PD901"]
 
 [tool.pyright]
 include = ["src", "tests", "scripts"]
+exclude = ["scripts/build_pdf.py"]
 typeCheckingMode = "basic"
