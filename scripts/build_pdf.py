@@ -65,11 +65,20 @@ def table(rows):
         return
     ncol = max(len(r) for r in cells)
     w = CW / ncol
+    # measure every row, and if the whole table fits on one page, keep it together
+    heights = []
+    for r in cells:
+        rr = r + [""] * (ncol - len(r))
+        pdf.set_font("Times", "", 8.5)
+        heights.append(4.0 * max(1, *[len(pdf.multi_cell(w, 4.0, c, dry_run=True, output="LINES")) for c in rr]))
+    total = sum(heights) + 2
+    usable = pdf.page_break_trigger - pdf.t_margin
+    if pdf.get_y() + total > pdf.page_break_trigger and total <= usable:
+        pdf.add_page()
     for ri, r in enumerate(cells):
         r = r + [""] * (ncol - len(r))
-        pdf.set_font("Times", "B" if ri == 0 else "", 8.5)
-        h = 4.0 * max(1, *[len(pdf.multi_cell(w, 4.0, c, dry_run=True, output="LINES")) for c in r])
-        room(h + 2)
+        h = heights[ri]
+        room(h + 2)  # fallback only for a table taller than a full page
         y0 = pdf.get_y()
         for ci, c in enumerate(r):
             pdf.set_xy(22 + ci * w, y0)
@@ -165,7 +174,10 @@ while i < len(LINES):
         i += 1
         continue
     if line.startswith("## "):
-        heading(line[3:], 12.5, before=2.2, keep=55)
+        title = line[3:]
+        if (title.startswith("References") or title.startswith("Appendix")) and pdf.get_y() > pdf.t_margin + 12:
+            pdf.add_page()  # References and each appendix start on a fresh page
+        heading(title, 12.5, before=2.2, keep=55)
         i += 1
         continue
     if line.startswith("### "):
