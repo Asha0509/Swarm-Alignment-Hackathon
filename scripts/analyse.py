@@ -139,6 +139,37 @@ def analyse() -> dict:
             if series:
                 nums["F3"][m] = series
 
+    # ---- H4 / F6 defenses (from E4) ----
+    e4 = load_rows("E4")
+    nums["F6"], nums["H4"] = {}, {}
+    if e4:
+        base = {}
+        for r in e4:
+            if r["defense"] == "none":
+                base.setdefault(r["channel"], []).append(r["capacity"])
+        base_mean = {c: sum(v) / len(v) for c, v in base.items()}
+        for d in sorted({r["defense"] for r in e4}):
+            if d == "none":
+                continue
+            caps = [r["capacity"] for r in e4 if r["defense"] == d]
+            utils = [r["utility"] for r in e4 if r["defense"] == d]
+            overall_base = sum(base_mean.values()) / len(base_mean)
+            removed = 100 * (1 - (sum(caps) / len(caps)) / overall_base) if overall_base else 0.0
+            util_loss = 100 * (1 - sum(utils) / len(utils))
+            nums["F6"][d] = {"capacity_removed": removed, "utility_loss": util_loss}
+            if d == "D1":
+                nums["H4"] = {"capacity_removed_pct": removed, "utility_loss_pts": util_loss,
+                              "declared": removed >= 80 and util_loss <= 20}
+
+    # ---- H5 / F7 elicitation gap: best expert channel vs best attacker config (undetected cap at 5%) ----
+    best_expert = max((max(undetected_at([r for r in e1 if r["arm"] == arm], "M*", "1.0", thr), default=0.0)
+                       for arm in {r["arm"] for r in e1}), default=0.0) if e1 else 0.0
+    best_attacker = max((max(undetected_at([r for r in e3 if r["arm"] == arm], "M*", "1.0", thr), default=0.0)
+                         for arm in {r["arm"] for r in e3}), default=0.0) if e3 else 0.0
+    nums["H5"] = {"best_expert_undetected": best_expert, "best_attacker_undetected": best_attacker,
+                  "gap": best_expert - best_attacker}
+    nums["F7"] = {"expert": best_expert, "attacker": best_attacker}
+
     nums["run_summary"] = {r["run_id"]: r["status"] for r in runs.all_runs()}
     return nums
 

@@ -9,3 +9,4 @@
 | 2026-11-09 03:51 IST | Claude Code (Opus) | Monitors M1-M4a + calibration, tests, M1 smoke, logs | Team reviews diffs; M1 prompt pending human approval |
 | 2026-11-09 03:55 IST | Claude Code (Opus) | Scripted adaptive attacker + tests + logs | Team reviews diffs |
 | 2026-11-09 10:00 IST | Claude Code (Opus) | Experiment engine, configs, E0 run | Team reviews |
+| 2026-11-09 10:10 IST | WebFetch (arXiv), WebSearch | Verify 8 citations (titles/authors/years/DOIs) | Human spot-checks |
