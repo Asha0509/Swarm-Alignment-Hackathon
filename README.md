@@ -4,9 +4,11 @@
 
 *Apart Research Swarm Alignment Hackathon 2026. Track 4 (Multi-Agent Oversight and Control), secondary Track 1 (Sandboxes and Testbeds).*
 
+[![CI](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml/badge.svg)](https://github.com/Asha0509/Swarm-Alignment-Hackathon/actions/workflows/ci.yml)
+
 > Monitoring colluding agents catches clumsy lies, not careful ones, and only isolation holds. Under full transcript spoofing, transcript-only oversight leaves **15.6 hidden bits per episode uncaught (95% CI 15.0 to 16.0)** that an infrastructure-grounded consistency monitor catches, but a consistent liar that backs its claims with real work defeats that monitor too (AUROC 1.00 to 0.50). **Per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
 
-Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · One-page project book: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
+Report: [report/REPORT.md](report/REPORT.md) and [report/final/](report/final/) (PDF) · Project book (all docs in one page): [docs/PROJECT_BOOK.md](docs/PROJECT_BOOK.md)
 
 <p align="center"><img src="figures/F1_schematic.png" width="760" alt="CacheGym system schematic"></p>
 

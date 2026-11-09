@@ -209,3 +209,9 @@ throughput: 245 benign episodes/s
 - **File:lines:** scripts/build_pdf.py (keep-with-next heading logic)
 - **What changed:** headings now reserve room for the heading plus ~4 body lines; if the space is not there the heading moves to the next page with its paragraph. Verified: no page ends with a bare section title (0 orphans across 9 pages). Tables and images also keep-together. Main text still 6 pages; references and appendices follow.
 - **Built by:** team with an AI coding assistant
+
+## 2026-11-09 15:23 IST — Untrack heavy book HTML, add CI, dedup check
+- Removed docs/PROJECT_BOOK.html from version control (3.3 MB base64 file GitHub refuses to render); gitignored it, kept the renderable PROJECT_BOOK.md, and pointed the README at the .md. Regenerate the HTML locally with make book.
+- Added .github/workflows/ci.yml: on push/PR it installs with uv and runs ruff, pyright and the free pytest suite (no secrets). Added a CI badge to the README.
+- Duplication scan: no duplicate content among tracked files except the six intentional .gitkeep placeholders; nothing removed.
+- **Built by:** team with an AI coding assistant

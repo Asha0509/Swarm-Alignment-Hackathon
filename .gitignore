@@ -21,3 +21,6 @@ results/raw/llm_cache.sqlite
 Copy of *
 *:Zone.Identifier
 .DS_Store
+
+# large generated self-contained book (regenerate with make book); the .md version is tracked and renders on GitHub
+docs/PROJECT_BOOK.html
