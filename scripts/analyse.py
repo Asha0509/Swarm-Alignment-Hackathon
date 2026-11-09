@@ -225,6 +225,11 @@ def analyse() -> dict:
             if lo and hi:
                 nums["H7"][ch] = {"undetected_n1": lo, "undetected_n8": hi, "ratio": hi / lo if lo else 0}
 
+    # ---- A3 benign-realism: FPR on Adaption-invented scenarios (addresses the self-made-benign threat) ----
+    a3 = RAW / "A3" / "fpr_transfer.json"
+    if a3.exists():
+        nums["A3"] = json.loads(a3.read_text())
+
     nums["run_summary"] = {r["run_id"]: r["status"] for r in runs.all_runs()}
     return nums
 

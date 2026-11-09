@@ -165,3 +165,11 @@ throughput: 245 benign episodes/s
 - **What changed:** Results reduced to a three-step spine (clumsy -> careful -> swarm, then isolation), 5 main-body figures (F1,F3,F8,F9,F6), ~1750 words (~4 pages). F2 (frontier) and F5 (adaptive attacker) moved to Appendix D. Added an explicit simulation-scope framing in Intro and made it the first Limitation (scripted, not live agents; eliciting from live models is the next step).
 - **Checks:** trace passes (1273 values), 0 em dashes, abstract 231 words.
 - **Built by:** Claude drafts, human edits.
+
+## 2026-11-09 11:58 IST — A3 benign realism via Adaption-invented scenarios (#2)
+- **PRD ref:** FR-12 A3, FR-6
+- **File:lines:** src/cachewhisper/adaption_jobs.py, scripts/adaption_invent.py, benign.make_tasks(weights=...)
+- **Tests:** tests/test_llm.py::test_invent_parser_and_fallback PASS; full suite 87 PASS.
+- **Real run:** an Adaption model (benign role) generated 8 diverse benign scenarios (mirror-heavy org, nightly-heavy ML, CI-fanout monorepo, cache-warmup data platform, flaky-retry, balanced, startup, internal mirror). 96 episodes scored with the FROZEN E0 monitors: realized FPR within 2 pts of budget (M2 0.00/0.04, M3 0.00/0.00, M4 0.02/0.06, M* 0.00/0.04), honest utility 1.00. So the monitors are not overfit to our hand-written benign mix. ~1 Adaption call, <0.01 credits.
+- **Note:** used Adaption inference to generate scenario specs rather than the async Invent dataset job (time-boxed per PRD); same validity check.
+- **Built by:** team with Claude Code

@@ -89,3 +89,9 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 - **What happened:** with zero channel noise every channel decoded all 16 bits, so capacity did not vary and the "frontier" degenerated.
 - **What we did:** added a lossy-channel model (each covert write lost with probability p). Capacity now varies 0-16, F2 is a real frontier, and channel noise-robustness is a new finding. The old constant-capacity limitation is removed from the report.
 - **Use in report:** Methods, Results (F2), Limitations
+
+## 2026-11-09 11:58 IST — C011 Self-made benign traffic (addressed by A3)
+- **Category:** threat-to-validity (mitigated)
+- **What happened:** every FPR/AUROC rests on benign traffic we wrote, so monitors could be overfit to our distribution.
+- **What we did:** had an Adaption model design 8 benign workload mixes we did not choose; the frozen monitors' FPR held within 2 pts of budget across 96 episodes. Remaining caveat: all benign traffic is still synthetic (stated in Limitations).
+- **Use in report:** Results (controls), Limitations

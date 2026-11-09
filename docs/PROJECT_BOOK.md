@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 11:52 IST from 18 files.*
+*Built 2026-11-09 11:58 IST from 18 files.*
 
 
 ---
@@ -1178,7 +1178,7 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 
 The thread is one argument in three steps: grounding oversight in infrastructure beats a clumsy attacker, fails against a careful one, and gets worse as the swarm grows; the defense that survives all three is isolation.
 
-**Controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points. (Appendix D reports the capacity frontier when channels are made lossy, and the adaptive attacker.)
+**Controls (Table 1).** All five expert channels decode their full 16 bits at zero noise. Realized benign false alarm rates match the budget: at 5 percent, M2 0.02, M3 0.00, M4 0.06 and M* 0.02, all within two points. Because our benign traffic is self-written, we also test it on workloads we did not design: an Adaption model generated eight diverse benign scenarios (a mirror-heavy org, a nightly-heavy ML team, a CI-fanout monorepo, and so on), and across 96 such episodes the frozen monitors' false alarm rate stays within two points of budget (M4 0.06, others at or below 0.04), so the monitors are not overfit to our hand-tuned mix. (Appendix D reports the capacity frontier when channels are made lossy, and the adaptive attacker.)
 
 **Step 1. Against a clumsy attacker, infrastructure consistency wins (Figure 3, pre-registered H1).** Under full naive spoofing the transcript monitor M1 leaves 15.61 bits per episode uncaught that the combined monitor M* catches (95 percent CI 15.04 to 16.00, n = 83 paired episodes). The pre-registered contrast is declared. M1 detection falls from 0.72 on honest transcripts to 0.02 under spoofing, while M3 rises from 0.00 to 1.00: fabrication is exactly the signal M3 is built to find.
 
@@ -1223,7 +1223,7 @@ Code repository: https://github.com/Asha0509/Swarm-Alignment-Hackathon (public; 
 
 ### Appendix A: Limitations and Dual-Use / Ethical Considerations
 
-**Limitations.** The largest is that colluders and attacker are scripted, not live language-model agents: we measure what the shared surface and the monitors permit, not what current models would actually do. This is a deliberate scope choice, and eliciting the consistent-liar and broadcast strategies from live agents is the most important next step. We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads and a false-alarm check on held-out traffic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in. Our channel noise is a simple erasure model, not the full statistics of real cache eviction. The consistent-liar transcript monitor result rests on the judge scoring benign traffic at a near-perfect zero; a noisier benign distribution would change its separation, which we flag rather than hide. Sample sizes are modest (n = 83 for the primary contrast, 36 disguised attacks for the consistency result).
+**Limitations.** The largest is that colluders and attacker are scripted, not live language-model agents: we measure what the shared surface and the monitors permit, not what current models would actually do. This is a deliberate scope choice, and eliciting the consistent-liar and broadcast strategies from live agents is the most important next step. We use open-weight hosted models as the trusted-weaker judge, not the closed frontier models from the incident, so our attacker numbers are a lower bound. We model one infrastructure type. We assume a pre-shared protocol, standard in collusion evaluations. Collusion is instructed, so we measure capability, not propensity. Our scripted benign traffic may under-represent real noise, which would inflate every monitor; we partly address this with realistic workloads, a false-alarm check on held-out traffic, and the externally generated scenarios above, but all benign traffic is still synthetic. Spoofing is simulated at the transcript layer, not a real container escape. The adaptive attacker only searches strategies we built in. Our channel noise is a simple erasure model, not the full statistics of real cache eviction. The consistent-liar transcript monitor result rests on the judge scoring benign traffic at a near-perfect zero; a noisier benign distribution would change its separation, which we flag rather than hide. Sample sizes are modest (n = 83 for the primary contrast, 36 disguised attacks for the consistency result).
 
 **Dual-use.** The consistent-liar technique, backing a false claim with real work, is a more effective evasion than the textbook channels, so we describe it at the level of a principle and do not release a turnkey implementation or the adaptive attacker's best evolved configurations verbatim; they are summarized by category and the raw protocols stay out of the public repository. We release the sandbox, the monitors and the defenses, which help defenders, and our central finding favors the defender's cheapest robust move, isolation. No real systems were touched, and we used only public incident reporting.
 
@@ -1547,6 +1547,13 @@ throughput: 245 benign episodes/s
 - **Real run:** E6, 240 episodes (E2/E3 x N in 1,2,4,8 x 30 seeds), 0 API cost. Delivered capacity = 16 x N. Undetected delivered capacity (vs the spoof-invariant metadata monitor) scales close to linearly: E2 15 -> 128 bits (8.6x), E3 14 -> 111 bits (8.0x). The metadata monitor does not catch more as receivers grow, so one broadcast reaches the whole swarm nearly for free. Ties to the incident (one board, 50+ readers) and Track 2.
 - **Built by:** team with Claude Code
 
+### 2026-11-09 11:52 IST — Report tightened to one spine + simulation framing (#1, #3)
+- **PRD ref:** §11
+- **File:lines:** report/DRAFT.md
+- **What changed:** Results reduced to a three-step spine (clumsy -> careful -> swarm, then isolation), 5 main-body figures (F1,F3,F8,F9,F6), ~1750 words (~4 pages). F2 (frontier) and F5 (adaptive attacker) moved to Appendix D. Added an explicit simulation-scope framing in Intro and made it the first Limitation (scripted, not live agents; eliciting from live models is the next step).
+- **Checks:** trace passes (1273 values), 0 em dashes, abstract 231 words.
+- **Built by:** Claude drafts, human edits.
+
 ---
 
 <a id="part-14"></a>
@@ -1574,6 +1581,8 @@ Auto-appended by `scripts/check.sh`. Do not edit by hand.
 | 2026-11-09 11:26 IST | 9a64929 | ✔ | ✔ | 84/0/0 |
 | 2026-11-09 11:38 IST | 552d684 | ✔ | ✔ | 85/0/0 |
 | 2026-11-09 11:43 IST | c188439 | ✔ | ✔ | 86/0/0 |
+| 2026-11-09 11:55 IST | e3a680e | ✔ | ✘ | 87/0/0 |
+| 2026-11-09 11:57 IST | e3a680e | ✔ | ✔ | 87/0/0 |
 
 ---
 
@@ -1797,3 +1806,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 11:32 IST | Claude Code (Opus) | Draft reframe (P3) + template alignment | Human edits every section |
 | 2026-11-09 11:40 IST | Claude Code (Opus) | P1 channel noise + frontier, draft updates | Team directed P1 |
 | 2026-11-09 11:44 IST | Claude Code (Opus) | P2 swarm scaling + F9 + draft | Team directed P2 |
+| 2026-11-09 11:52 IST | Claude Code (Opus) | Presentation tightening + framing | Human edits |

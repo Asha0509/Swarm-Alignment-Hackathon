@@ -15,7 +15,7 @@
 ## Should
 - [x] FR-9 defenses D1 D2 D3 · E4 (F6 after analyse)
 - [~] F7 gap (E5 model sweep dropped with LLM attacker, D003)
-- [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · A3 Invent → benign · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
+- [ ] FR-12 Adaption: A1 inference (Must) · A2 model sweep E5 · [x] A3 Invent->benign (FPR holds) · A4 AutoScientist → M4b (start 07:00, go/no-go 11:00)
 
 ## Could
 - [x] P1 channel noise + real F2 frontier (E8)

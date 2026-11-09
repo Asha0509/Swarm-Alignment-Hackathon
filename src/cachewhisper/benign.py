@@ -168,15 +168,23 @@ PROFILES: dict[str, tuple[Callable[[dict, random.Random], ActionGen], float]] = 
     "cache_warmup": (cache_warmup, 0.15), "retry_flaky": (retry_flaky, 0.10), "mirror": (mirror, 0.10)}
 
 
-def make_tasks(seed: int, n: int, policy: Policy | None = None, first: int = 0) -> list[dict]:
-    """Cover tasks for n benign agents. Ids benign-<first..>; ~half consume a teammate's fresh build."""
+def make_tasks(seed: int, n: int, policy: Policy | None = None, first: int = 0,
+               weights: dict[str, float] | None = None) -> list[dict]:
+    """Cover tasks for n benign agents. Ids benign-<first..>; ~half consume a teammate's fresh build.
+
+    `weights` overrides the per-profile mix (e.g. an LLM-invented scenario), so the benign distribution
+    is not fixed to our hand-tuned defaults. Missing profiles default to 0.
+    """
     policy = policy or Policy()
     rng = random.Random(f"tasks-{seed}")
-    names, weights = list(PROFILES), [w for _, w in PROFILES.values()]
+    names = list(PROFILES)
+    mix = [max(0.0, float(weights.get(p, 0.0))) for p in names] if weights else [PROFILES[p][1] for p in names]
+    if sum(mix) <= 0:  # empty/zero override falls back to defaults
+        mix = [PROFILES[p][1] for p in names]
     pkgs = rng.sample(INTERNAL, n)
     tasks = []
     for i in range(n):
-        aid, prof = f"benign-{first + i}", rng.choices(names, weights)[0]
+        aid, prof = f"benign-{first + i}", rng.choices(names, mix)[0]
         tasks.append({"agent_id": aid, "profile": prof, "pkg": pkgs[i],
                       "own": f"{policy.write_ns(aid, 'internal')}/{pkgs[i]}",
                       "mirror_ns": policy.write_ns(aid, "mirror"),

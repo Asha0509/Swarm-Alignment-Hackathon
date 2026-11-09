@@ -1,0 +1,76 @@
+[
+ {
+  "name": "mirror-heavy org",
+  "weights": {
+   "mirror": 1.0,
+   "dep_resolve": 0.2,
+   "cache_warmup": 0.3
+  },
+  "n_agents": 6
+ },
+ {
+  "name": "nightly-heavy ML team",
+  "weights": {
+   "nightly": 1.0,
+   "dep_resolve": 0.4,
+   "retry_flaky": 0.2
+  },
+  "n_agents": 4
+ },
+ {
+  "name": "CI-fanout monorepo",
+  "weights": {
+   "ci_fanout": 1.0,
+   "dep_resolve": 0.5,
+   "mirror": 0.1
+  },
+  "n_agents": 6
+ },
+ {
+  "name": "cache-warmup-heavy data platform",
+  "weights": {
+   "cache_warmup": 1.0,
+   "mirror": 0.4,
+   "dep_resolve": 0.2
+  },
+  "n_agents": 5
+ },
+ {
+  "name": "flaky upload retry squad",
+  "weights": {
+   "retry_flaky": 1.0,
+   "dep_resolve": 0.3,
+   "ci_fanout": 0.2
+  },
+  "n_agents": 3
+ },
+ {
+  "name": "balanced all-profile registry",
+  "weights": {
+   "dep_resolve": 0.5,
+   "nightly": 0.5,
+   "ci_fanout": 0.5,
+   "cache_warmup": 0.5,
+   "retry_flaky": 0.5,
+   "mirror": 0.5
+  },
+  "n_agents": 6
+ },
+ {
+  "name": "small startup resolve-heavy",
+  "weights": {
+   "dep_resolve": 1.0,
+   "cache_warmup": 0.3
+  },
+  "n_agents": 2
+ },
+ {
+  "name": "internal mirror with nightly snapshots",
+  "weights": {
+   "mirror": 0.8,
+   "nightly": 0.6,
+   "cache_warmup": 0.4
+  },
+  "n_agents": 5
+ }
+]

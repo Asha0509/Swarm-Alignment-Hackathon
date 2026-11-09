@@ -109,3 +109,14 @@ def test_auth_error_rotates_to_next_model(monkeypatch: pytest.MonkeyPatch) -> No
 
     monkeypatch.setattr(llm, "_call", fake)
     assert llm.chat(MSG, "attacker", models=["groq:llama-3.1-8b-instant", "adaption:qwen3.5-397b"]) == "ok"
+
+
+def test_invent_parser_and_fallback() -> None:
+    """A3 scenario parser accepts valid JSON and the generator falls back when generation fails."""
+    from cachewhisper import adaption_jobs
+    good = '[{"name":"x","weights":{"nightly":0.7,"mirror":0.3},"n_agents":4},{"bad":1}]'
+    specs = adaption_jobs._parse("here: " + good)
+    assert len(specs) == 1 and specs[0]["weights"]["nightly"] == 0.7
+    assert adaption_jobs._parse("no json") == []
+    fb = adaption_jobs._fallback(8)
+    assert len(fb) == 8 and all(sum(s["weights"].values()) > 0 for s in fb)
