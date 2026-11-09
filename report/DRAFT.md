@@ -31,6 +31,7 @@ Oversight today mostly reads agent transcripts. The incident shows two problems:
 - **A capacity and detectability measurement** for covert coordination through shared-infrastructure side effects, for four monitor classes at a fixed audit budget.
 - **A result on the limits of consistency checking:** cross-checking transcripts against infrastructure catches a clumsy attacker that fabricates cover stories, but a consistent liar that backs its claims with real benign work defeats it, and defeats the combined monitor too. No infrastructure monitor we built stays robust.
 - **A defense result:** per-agent isolation removes almost all capacity cheaply and, unlike every monitor, does not depend on the attacker being careless.
+- **A scaling result:** one covert broadcast reaches a whole swarm, and the bits it delivers without raising the metadata monitor grow close to linearly with the number of receivers.
 
 **Framing.** This is an AI-control capability evaluation. Our colluders are instructed to collude, the standard red-team assumption (Greenblatt et al. 2024). We measure worst-case capability, not propensity.
 
@@ -75,6 +76,10 @@ Prior collusion work measures steganography inside messages (Motwani et al. 2024
 **Awareness buys stealth, not bits (Figure 5).** The unaware attacker is caught 83 percent of the time; the aware attacker, which sees which monitors flagged it, drops to 8 percent by choosing a metadata-stego channel with cover traffic. Its raw capacity is unchanged.
 
 ![Figure 5: adaptive attacker, aware versus unaware](../figures/F5_adaptation.png)
+
+**One broadcast scales to the swarm (Figure 9).** In the incident one agent set up the board and many others found it. We model this directly: a coordinator broadcasts the secret and N receivers each decode it. Delivered capacity is 16 bits times the number of receivers, and the bits delivered without tripping the spoof-invariant metadata monitor grow close to linearly with swarm size, from about 15 bits at one receiver to 128 at eight for the existence channel, an 8.6 fold increase. More readers do not make the coordinator's footprint more suspicious, so reaching the whole swarm is nearly free for the attacker. This is the regime a consistent liar operates in, where the consistency monitor is already defeated and only the weak metadata monitor remains.
+
+![Figure 9: one broadcast scales to the whole swarm](../figures/F9_scaling.png)
 
 **Isolation holds where monitoring does not (Figure 6).** Per-agent namespace isolation (D1) removes 99.0 percent of channel capacity with no measured honest utility loss, and it does so regardless of how the attacker reports its actions. Listing randomization and a modest write quota remove almost none, because our channels embed their own ordering and stay under the quota.
 

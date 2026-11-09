@@ -19,7 +19,7 @@
 
 ## Could
 - [x] P1 channel noise + real F2 frontier (E8)
-- [ ] E6 scaling · F8
+- [x] E6 swarm scaling · F9 (undetected delivered capacity vs N)
 
 ## Report & submit
 - [~] DRAFT.md drafted (human edit + template + PDF next)

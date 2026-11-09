@@ -1,0 +1,1 @@
+Figure 9. A coordinator broadcasts a 16 bit secret to N receivers (30 seeds each). Undetected bits delivered, measured against the spoof-invariant metadata monitor, grow close to linearly with swarm size, because more readers do not raise the monitor's detection. One board reaches many agents nearly for free, as in the incident.

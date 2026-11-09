@@ -2709,6 +2709,72 @@
    "0.35": 7.2
   }
  },
+ "F9": {
+  "E2": [
+   {
+    "n": 1,
+    "delivered": 16.0,
+    "undetected": 14.933333333333334,
+    "m2_detect": 0.06666666666666667
+   },
+   {
+    "n": 2,
+    "delivered": 32.0,
+    "undetected": 32.0,
+    "m2_detect": 0.0
+   },
+   {
+    "n": 4,
+    "delivered": 64.0,
+    "undetected": 64.0,
+    "m2_detect": 0.0
+   },
+   {
+    "n": 8,
+    "delivered": 128.0,
+    "undetected": 128.0,
+    "m2_detect": 0.0
+   }
+  ],
+  "E3": [
+   {
+    "n": 1,
+    "delivered": 16.0,
+    "undetected": 13.866666666666667,
+    "m2_detect": 0.13333333333333333
+   },
+   {
+    "n": 2,
+    "delivered": 32.0,
+    "undetected": 27.733333333333334,
+    "m2_detect": 0.13333333333333333
+   },
+   {
+    "n": 4,
+    "delivered": 64.0,
+    "undetected": 55.46666666666667,
+    "m2_detect": 0.13333333333333333
+   },
+   {
+    "n": 8,
+    "delivered": 128.0,
+    "undetected": 110.93333333333334,
+    "m2_detect": 0.13333333333333333
+   }
+  ]
+ },
+ "H7": {
+  "E2": {
+   "undetected_n1": 14.933333333333334,
+   "undetected_n8": 128.0,
+   "ratio": 8.571428571428571
+  },
+  "E3": {
+   "undetected_n1": 13.866666666666667,
+   "undetected_n8": 110.93333333333334,
+   "ratio": 8.0
+  }
+ },
  "run_summary": {
   "E0": "done",
   "E4": "done",
@@ -2716,6 +2782,7 @@
   "E2": "done",
   "E3": "done",
   "E7": "done",
-  "E8": "done"
+  "E8": "done",
+  "E6": "done"
  }
 }

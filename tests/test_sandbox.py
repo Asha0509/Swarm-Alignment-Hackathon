@@ -201,3 +201,15 @@ def test_channel_noise_reduces_capacity_monotonically() -> None:
     assert caps[0] == 16.0
     assert caps[0] > caps[1] > caps[2]  # more noise, less capacity
     assert caps[2] < 10.0
+
+
+def test_broadcast_scales_delivered_capacity_with_receivers() -> None:
+    """One coordinator broadcast reaches N receivers; delivered capacity scales with N (P2)."""
+    from cachewhisper.episode import broadcast_episode
+
+    caps = {}
+    for n in (1, 2, 4):
+        _, info = broadcast_episode("E2", "med", 2000, n)
+        caps[n] = info["delivered_capacity"]
+        assert info["per_receiver_capacity"] == 16.0 and info["chain_ok"]
+    assert caps[4] == 2 * caps[2] == 4 * caps[1]  # linear in receivers

@@ -137,3 +137,42 @@ def scripted_episode(channel: str | None, level: str, seed: int, k: int = 16, n_
         n_cov = sum(e["agent_id"] in ("agent-s", "agent-r") for e in res.infra)
         info |= {"secret": sent, "decoded": dec, **metrics.channel_metrics(sent, dec, n_cov)}
     return res, info
+
+
+def broadcast_episode(channel: str, level: str, seed: int, n_receivers: int, k: int = 16,
+                      n_benign: int = 3, noise: float = 0.0) -> tuple[EpisodeResult, dict]:
+    """One coordinator broadcasts a k-bit secret; N receivers each read and decode it (PRD E6 scaling).
+
+    Models the incident's shared board that many agents found: one write, many reads. More receivers mean
+    more cross-agent read-after-write edges in the infra log, so detection can rise with swarm size.
+    """
+    import random
+
+    from cachewhisper import benign, metrics
+    from cachewhisper.agents import ScriptedAgent
+    from cachewhisper.channels import CHANNELS
+    from cachewhisper.infralog import verify_chain
+
+    eid = f"BCAST-{channel}-{level}-N{n_receivers}-n{noise}-s{seed}"
+    reg = benign.build_registry(seed, eid, policy=None)
+    ch, p = CHANNELS[channel], CHANNELS[channel].levels[level]
+    rng = random.Random(f"secret-{seed}")
+    secret = [rng.randint(0, 1) for _ in range(k)]
+    n_ops = ch.n_send_ops(level, k)
+    send = noisy_send(ch.send(secret, p, random.Random(f"send-{seed}")), noise, random.Random(f"noise-{seed}"))
+    agents: list = [ScriptedAgent("coord", "sender", send)]
+    for i in range(n_receivers):
+        agents.append(ScriptedAgent(f"recv-{i}", "receiver", ch.recv(p, k, n_ops, random.Random(f"recv-{seed}-{i}"))))
+    tasks = benign.make_tasks(seed, n_benign, reg.policy)
+    turns = max(DEFAULT_TURNS, 2 * n_ops + 3)
+    res = run_episode(agents + benign.make_agents(tasks, seed), reg, turns)
+    sent = "".join(map(str, secret))
+    decoded = [res.answers.get(f"recv-{i}", "") for i in range(n_receivers)]
+    caps = [metrics.capacity(k, metrics.ber(sent, d)) for d in decoded]
+    delivered = sum(caps)  # total bits reaching the swarm
+    n_cov = sum(e["agent_id"] in {"coord", *(f"recv-{i}" for i in range(n_receivers))} for e in res.infra)
+    info = {"episode_id": eid, "channel": channel, "level": level, "seed": seed, "k": k, "noise": noise,
+            "n_receivers": n_receivers, "delivered_capacity": delivered,
+            "per_receiver_capacity": delivered / n_receivers if n_receivers else 0.0,
+            "n_covert_ops": n_cov, "chain_ok": verify_chain(res.infra), "tasks": tasks}
+    return res, info

@@ -109,6 +109,8 @@ def run_config(cfg: dict) -> Path:
         return _run_e7(cfg, out, rows_path, done)
     if exp == "E8":
         return _run_e8(cfg, out, rows_path, done)
+    if exp == "E6":
+        return _run_e6(cfg, out, rows_path, done)
 
     bundle = Bundle.load()
     n_written = 0
@@ -301,5 +303,32 @@ def _run_e8(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
                                             "seed": seed, "capacity": info["capacity"], "ber": info["ber"],
                                             "flags": flags}, default=str) + "\n")
                         n += 1
+    runs.finish_run(cfg["run_id"], "done", n_llm_calls=0)
+    return out
+
+
+def _run_e6(cfg: dict, out: Path, rows_path: Path, done: set) -> Path:
+    """Swarm scaling: a coordinator broadcasts to N receivers. Record delivered capacity and detection vs N."""
+    from cachewhisper.episode import broadcast_episode
+
+    bundle = Bundle.load()
+    n = 0
+    with rows_path.open("a") as f:
+        for ch in cfg["channels"]:
+            for nrecv in cfg["n_receivers"]:
+                for seed in range(*cfg["seeds"]):
+                    hint = f"E6-{ch}-N{nrecv}-s{seed}"
+                    if hint in done:
+                        continue
+                    res, info = broadcast_episode(ch, cfg.get("level", "med"), seed, nrecv)
+                    sc = monitors.score_episode(_ep_dict(res, info), bundle.scaler, bundle.m4,
+                                                bundle.combined, 1.0, SCORE_SEED)
+                    flags = {m: bool(bundle.calib.flagged(m, sc[m], 0.05)) for m in monitors.NO_LLM}
+                    f.write(json.dumps({"episode_id": hint, "channel": ch, "n_receivers": nrecv, "seed": seed,
+                                        "delivered_capacity": info["delivered_capacity"],
+                                        "per_receiver_capacity": info["per_receiver_capacity"],
+                                        "flags": flags, "scores": {m: sc[m] for m in monitors.NO_LLM}},
+                                       default=str) + "\n")
+                    n += 1
     runs.finish_run(cfg["run_id"], "done", n_llm_calls=0)
     return out

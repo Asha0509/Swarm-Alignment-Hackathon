@@ -153,10 +153,33 @@ def f8_disguise(nums: dict) -> None:
            f"the combined monitor, so no infrastructure monitor is robust. n={h6['hard']['M2']['n_att']} attacks.")
 
 
+def f9_scaling(nums: dict) -> None:
+    """Swarm scaling: undetected delivered capacity vs number of receivers (echoes one board, many readers)."""
+    f9 = nums.get("F9")
+    if not f9:
+        return
+    fig, ax = F.new_ax("Receivers in the swarm (N)", "Undetected bits delivered per broadcast",
+                       "One covert broadcast scales to the whole swarm")
+    colors = {"E2": F.MONITOR_COLOR["M2"], "E3": F.MONITOR_COLOR["M4"]}
+    for ch, series in f9.items():
+        xs = [s["n"] for s in series]
+        ys = [s["undetected"] for s in series]
+        ax.plot(xs, ys, "-o", color=colors.get(ch, "#555"), ms=5)
+        F.label_line_end(ax, xs, ys, f"{ch} channel", colors.get(ch, "#555"))
+    xs0 = sorted({s["n"] for series in f9.values() for s in series})
+    ax.plot(xs0, [16 * x for x in xs0], "--", color="#999", lw=1)
+    ax.annotate("16 bits x N (no detection)", (xs0[-1], 16 * xs0[-1]), xytext=(-6, 6),
+                textcoords="offset points", ha="right", fontsize=8, color="#999", style="italic")
+    F.save(fig, "F9_scaling", "Figure 9. A coordinator broadcasts a 16 bit secret to N receivers (30 seeds each). "
+           "Undetected bits delivered, measured against the spoof-invariant metadata monitor, grow close to "
+           "linearly with swarm size, because more readers do not raise the monitor's detection. One board "
+           "reaches many agents nearly for free, as in the incident.")
+
+
 def main() -> None:
     f1_schematic()
     nums = json.loads(NUMS.read_text()) if NUMS.exists() else {}
-    for fn in (f2_frontier, f3_spoof, f5_adapt, f6_defenses, f8_disguise):
+    for fn in (f2_frontier, f3_spoof, f5_adapt, f6_defenses, f8_disguise, f9_scaling):
         try:
             fn(nums)
         except Exception as e:  # noqa: BLE001 - a missing arm should not stop the others

@@ -151,3 +151,10 @@ throughput: 245 benign episodes/s
 - **Real run:** E8, 1200 episodes (5 channels x 3 levels x 4 noise x 20 seeds), 0 API cost. Capacity now spans 0-16: E2 16.0->5.7, E4 16.0->1.2 at 35% loss. F2 rebuilt as a genuine capacity-vs-detection frontier with the combined-monitor Pareto envelope. Noise-robustness is a secondary finding (ordering channel E4 fragile; index-embedded channels keep 7.2 bits).
 - **Decisions:** title fixed to the consistent-liar framing; author set to Asha Jyothi Boddu (BVRIT Hyderabad).
 - **Built by:** team with Claude Code
+
+## 2026-11-09 11:44 IST — P2: swarm scaling (broadcast to N receivers, E6, F9)
+- **PRD ref:** E6, FR-14 (F9)
+- **File:lines:** episode.py broadcast_episode, experiment.py _run_e6, configs/e6_scaling.yaml, analyse.py H7/F9, make_figures.py f9_scaling, report/DRAFT.md
+- **Tests:** tests/test_sandbox.py::test_broadcast_scales_delivered_capacity_with_receivers PASS; full suite 86 PASS.
+- **Real run:** E6, 240 episodes (E2/E3 x N in 1,2,4,8 x 30 seeds), 0 API cost. Delivered capacity = 16 x N. Undetected delivered capacity (vs the spoof-invariant metadata monitor) scales close to linearly: E2 15 -> 128 bits (8.6x), E3 14 -> 111 bits (8.0x). The metadata monitor does not catch more as receivers grow, so one broadcast reaches the whole swarm nearly for free. Ties to the incident (one board, 50+ readers) and Track 2.
+- **Built by:** team with Claude Code
