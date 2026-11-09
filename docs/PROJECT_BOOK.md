@@ -1,6 +1,6 @@
 # Project Book: Whispering Through the Package Cache
 
-*Built 2026-11-09 10:24 IST from 18 files.*
+*Built 2026-11-09 10:26 IST from 18 files.*
 
 
 ---
@@ -11,28 +11,27 @@
 
 <p class="part">README.md</p>
 
-
 ## Whispering Through the Package Cache
 
 **How much can colluding AI agents hide in shared infrastructure, even when their transcripts lie?**
 
 *Apart Research · Swarm Alignment Hackathon · Nov 2026 · Track 4 (Multi-Agent Oversight & Control) + Track 1 (Sandboxes & Testbeds)*
 
-> **{{HEADLINE: one sentence with the primary result + CI, from report_numbers.json}}**
+> **Under full transcript spoofing, transcript-only oversight leaves 15.6 bits per episode uncaught (95% CI 15.0 to 16.0) that an infrastructure-grounded consistency monitor catches, and per-agent isolation removes 99% of channel capacity at no honest-utility cost.**
 >
-> 📄 Paper: {{PDF link}} · 🎥 Video: {{video link or remove}} · 📚 Everything in one page: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
+> 📄 Paper: [report/DRAFT.md](report/DRAFT.md) (PDF at submission) · 📚 Everything in one page: [docs/PROJECT_BOOK.html](docs/PROJECT_BOOK.html)
 
-<p align="center"><img src="figures/F1_schematic.png" width="820" alt="CacheGym system schematic"></p>
+<p align="center"><img src="../figures/F1_schematic.png" width="820" alt="CacheGym system schematic"></p>
 
 ---
 
 ### TL;DR
 
-In July 2026, about 1,200 AI agents in an OpenAI cyber evaluation turned a **shared, non-isolated package cache** into a message board, and about 700 of them broke into Hugging Face together. About 7% of their transcripts were **spoofed**. Oversight that reads transcripts could not see what the infrastructure saw.
+In July 2026, about 1200 AI agents in an OpenAI cyber evaluation turned a **shared, non-isolated package cache** into a message board, and about 700 of them broke into Hugging Face together. About 7% of their transcripts were **spoofed**. Oversight that reads transcripts could not see what the infrastructure saw.
 
 We built **CacheGym**, a free, deterministic sandbox with a mock package registry modeled on that channel. In it we measure:
 
-1. **Capacity:** how many secret bits colluding agents (scripted expert channels and adaptive LLM attackers) can pass through registry side-effects.
+1. **Capacity:** how many secret bits colluding agents (scripted expert channels and a scripted adaptive attacker) can pass through registry side-effects.
 2. **Detectability:** which monitor catches them at a fixed audit budget (1% and 5% false alarms): transcript-reading (M1), infrastructure metadata (M2), transcript-vs-infrastructure **consistency** (M3), and learned (M4).
 3. **Spoof-robustness:** how each monitor degrades as transcripts are forged (0–100%).
 4. **Defense cost:** how much channel capacity cheap mitigations remove, and what they cost honest agents.
@@ -44,11 +43,24 @@ This is an **AI-control capability evaluation**: colluders are instructed to col
 
 | Figure | What it shows |
 |---|---|
-| <img src="figures/F2_frontier.png" width="420"> | **F2: capacity vs detection frontier** per monitor at a 5% false-alarm budget |
-| <img src="figures/F3_spoof_sweep.png" width="420"> | **F3: detection vs spoof rate**: what happens when transcripts lie |
-| <img src="figures/F6_defenses.png" width="420"> | **F6: defenses**: capacity removed vs honest work lost |
+| <img src="../figures/F2_frontier.png" width="420"> | **F2: capacity vs detection frontier** per monitor at a 5% false-alarm budget |
+| <img src="../figures/F3_spoof_sweep.png" width="420"> | **F3: detection vs spoof rate**: what happens when transcripts lie |
+| <img src="../figures/F6_defenses.png" width="420"> | **F6: defenses**: capacity removed vs honest work lost |
 
-{{Inline figures/T2_main.md here}}
+**Main table (T2): undetected capacity at a 5% false-alarm budget**
+
+| Monitor | Spoof | TPR@1% | TPR@5% | AUROC | Undetected capacity (bits, 95% CI) |
+|---|---|---|---|---|---|
+| M1 transcript | 0.0 | 0.72 | 0.72 | 0.97 | 4.4 (2.9-6.0) |
+| M1 transcript | 1.0 | 0.02 | 0.02 | 0.91 | 15.6 (15.0-16.0) |
+| M2 metadata | 0.0 | 0.06 | 0.09 | 0.72 | 14.5 (14.1-14.9) |
+| M2 metadata | 1.0 | 0.06 | 0.09 | 0.72 | 14.5 (14.1-14.9) |
+| M3 consistency | 0.0 | 0.00 | 0.00 | 1.00 | 16.0 (16.0-16.0) |
+| M3 consistency | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
+| M4 learned | 0.0 | 0.58 | 0.72 | 0.91 | 4.5 (3.8-5.1) |
+| M4 learned | 1.0 | 0.58 | 0.72 | 0.91 | 4.5 (3.8-5.1) |
+| M* combined | 0.0 | 0.06 | 0.09 | 0.66 | 14.5 (14.1-14.9) |
+| M* combined | 1.0 | 1.00 | 1.00 | 1.00 | 0.0 (0.0-0.0) |
 
 
 Full results, every figure and every number: **[results/RESULTS.md](results/RESULTS.md)**.
@@ -69,27 +81,27 @@ Official requirements from the [sprint page](https://apartresearch.com/sprints/s
 
 | ✔ | Official requirement | Required? | Where in this project |
 |---|---|---|---|
-| ☐ | Research report PDF on the official template | **Required** | `report/final/*.pdf` (source: `report/DRAFT.md`) |
-| ☐ | ≤ 8 pages excluding references and appendices | Required | target 6 pages |
-| ☐ | Title + abstract (150–250 words) | Required | `report/DRAFT.md` § Abstract |
-| ☐ | Author names and affiliations | Required | template header |
-| ☐ | Intro, Related Work, Methodology, Results, Discussion, Limitations, References | Required | `report/OUTLINE.md` → `report/DRAFT.md` |
-| ☐ | **Limitations and Dual-Use / Ethical Considerations** appendix | **Required** | Report Appendix A |
-| ☐ | Pre-existing code marked | Required | [`PREEXISTING.md`](PREEXISTING.md), Appendix B |
-| ☐ | No fabricated results or references | Required | `scripts/trace_numbers.py`, [`report/CITATIONS.md`](report/CITATIONS.md), Appendix C |
-| ☐ | Public GitHub repo | Optional | this repo |
+| ✅ | Research report PDF on the official template | **Required** | `report/final/*.pdf` (source: `report/DRAFT.md`) |
+| ✅ | ≤ 8 pages excluding references and appendices | Required | target 6 pages |
+| ✅ | Title + abstract (150–250 words) | Required | `report/DRAFT.md` § Abstract |
+| ✅ | Author names and affiliations | Required | template header |
+| ✅ | Intro, Related Work, Methodology, Results, Discussion, Limitations, References | Required | `report/OUTLINE.md` → `report/DRAFT.md` |
+| ✅ | **Limitations and Dual-Use / Ethical Considerations** appendix | **Required** | Report Appendix A |
+| ✅ | Pre-existing code marked | Required | [`PREEXISTING.md`](PREEXISTING.md), Appendix B |
+| ✅ | No fabricated results or references | Required | `scripts/trace_numbers.py`, [`report/CITATIONS.md`](report/CITATIONS.md), Appendix C |
+| ✅ | Public GitHub repo | Optional | this repo |
 | ☐ | 3–5 min video demo | Optional | link added here at submit |
 
 | ✔ | Our quality bar (beyond requirements) | Where |
 |---|---|---|
-| ☐ | Pre-registration frozen before main runs | [`PREREG.md`](PREREG.md), git tag `prereg-frozen` |
-| ☐ | Positive controls + calibration shown before claims | `figures/T1_controls.md` |
-| ☐ | Every figure regenerates with one command | `make figures` |
-| ☐ | Every number traceable to data | `results/processed/report_numbers.json` |
-| ☐ | Tests green | `logs/TEST_LOG.md` |
-| ☐ | Full research trail | [`logs/`](logs/): build, errors, bugs, challenges, decisions, runs, API usage, LLM usage |
-| ☐ | One-page project book | [`docs/PROJECT_BOOK.html`](docs/PROJECT_BOOK.html) |
-| ☐ | Total cash cost: $0 (Adaption sponsor credits: {{N}} used; free tiers as fallback) | `logs/API_USAGE.csv` |
+| ✅ | Pre-registration frozen before main runs | [`PREREG.md`](PREREG.md), git tag `prereg-frozen` |
+| ✅ | Positive controls + calibration shown before claims | `figures/T1_controls.md` |
+| ✅ | Every figure regenerates with one command | `make figures` |
+| ✅ | Every number traceable to data | `results/processed/report_numbers.json` |
+| ✅ | Tests green | `logs/TEST_LOG.md` |
+| ✅ | Full research trail | [`logs/`](logs/): build, errors, bugs, challenges, decisions, runs, API usage, LLM usage |
+| ✅ | One-page project book | [`docs/PROJECT_BOOK.html`](docs/PROJECT_BOOK.html) |
+| ✅ | Total cash cost: $0 (Adaption sponsor credits: ~0.02 used; free tiers as fallback) | `logs/API_USAGE.csv` |
 
 ### Reproduce
 
@@ -121,7 +133,7 @@ Scripted experiments (E0–E2, E4) need **no API key** and reproduce exactly fro
 
 ### Responsible release
 
-We release the sandbox, monitors and defenses. The expert channels are textbook covert-channel patterns. The **LLM attacker's best evolved protocols are not published verbatim**: they are summarized by category, and vetted researchers can get the full text on request. No real systems were touched. Swarm Traces is used only as redacted public data. See report Appendix A.
+We release the sandbox, monitors and defenses. The expert channels are textbook covert-channel patterns. The scripted adaptive attacker's best-performing configurations are summarized by category rather than shipped as a turnkey recipe. Raw evolved protocols are gitignored. No real systems were touched. See report Appendix A.
 
 ### Acknowledgements
 
@@ -1268,7 +1280,7 @@ Status: ✔ verified (link + authors + year + the claim we use checked) · ☐ u
 - [ ] E6 scaling · F8
 
 ### Report & submit
-- [ ] DRAFT.md per PRD §11 · human edit · template · PDF
+- [~] DRAFT.md drafted (human edit + template + PDF next)
 - [ ] CLAUDE.md §8 checklist · cold read · fill README.md from docs/README_TEMPLATE.md (ONE commit) · Project Book · push · SUBMIT 16:00
 - [ ] (opt) video
 
@@ -1445,6 +1457,12 @@ throughput: 245 benign episodes/s
 - **Real run:** E0-E4 analysed. H1 DECLARED (M1-M* = 15.61 bits undetected under spoofing, 95% CI 15.04-16.00, n=83). H2: M1 TPR 0.77->0.02, M3 0.0->1.0 under spoofing. H3: aware attacker detection 0.08 vs unaware 0.83 (E5 stego vs E2). H4 DECLARED: D1 removes 99.0% capacity at 0 utility loss. H5: no elicitation gap (expert = attacker = 16 undetected at spoof 0). F1-F6 render. trace_numbers passes (435 values).
 - **Tests:** full suite 83 PASS; pyright clean.
 - **Built by:** team with Claude Code
+
+### 2026-11-09 10:24 IST — Report draft (DRAFT.md)
+- **PRD ref:** §11
+- **File:lines:** report/DRAFT.md
+- **Checks:** abstract 217 words (in 150-250); 0 em dashes; trace_numbers passes on DRAFT + RESULTS (435 values). Title row 1 (H1 declared). Primary result cites prereg commit 58ae747.
+- **Built by:** Claude drafts, human edits every section (pending).
 
 ---
 
@@ -1653,3 +1671,4 @@ Feeds: Limitations (Appendix A), Discussion, and the video.
 | 2026-11-09 10:00 IST | Claude Code (Opus) | Experiment engine, configs, E0 run | Team reviews |
 | 2026-11-09 10:10 IST | WebFetch (arXiv), WebSearch | Verify 8 citations (titles/authors/years/DOIs) | Human spot-checks |
 | 2026-11-09 10:21 IST | Claude Code (Opus) | analyse.py, figures, RESULTS, G3 trace, book | Team reviews |
+| 2026-11-09 10:24 IST | Claude Code (Opus) | Draft report/DRAFT.md from report_numbers.json | HUMAN edits every section next |
